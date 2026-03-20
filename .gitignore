@@ -1,0 +1,7 @@
+venv/
+node_modules/
+.env
+*.sqlite3
+serviceAccountKey.json
+__pycache__/
+*.pyc
