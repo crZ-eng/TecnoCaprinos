@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganado Dijital - Iniciar Sesión</title>
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{% static 'logo.jpeg' %}" alt="Logo" height="70px">
+        <h1 id="wlc">GANADO DIJITAL</h1>
+        <a href="{% url 'bienvenido' %}"><button>Mas Info</button></a>
+    </div>
+    <div class="cuadro">
+        <form method="POST">
+            <h2>Inicia Sesión</h2>
+            {% csrf_token %}
+            <label>Correo:</label>
+            <input type="email" name="email" placeholder="email@example.com" required><br>
+            <label>Contraseña:</label>
+            <input type="password" name="password" placeholder="Minimo 6 caracteres" required><br>
+            <div class="btn">
+                <button type="submit">Iniciar sesión</button>
+            </div>
+            <h3 class="extra">¿Eres Nuevo?</h3>
+            <a class="link" href="{% url 'registro' %}">Regístrate</a>
+            <div class="error"></div>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="mensaje {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+    </div>
+    </form>
+    </div>
+</body>
+</html>

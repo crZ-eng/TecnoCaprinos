@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="header">
+        {% load static %}
+
+        <img src="{% static 'logo.jpeg' %}" alt="Logo Ganado Dijital" height="70px">
+        <h1 id="wlc">GANADO DIJITAL</h1>
+        <h4>Bienvenido/a, {{ datos.nombre }}</h4>
+    </div>
+    <div class="contenido">
+        <div class="tarjeta">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="mensaje {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            <h2>Información del Ganadero</h2>
+            <div class="info">
+                <strong>Nombre:</strong> {{ datos.nombre }}
+            </div>
+            <div class="info">
+                <strong>Correo:</strong> {{ datos.email }}
+            </div>
+            <div class="info">
+                <strong>UID:</strong> {{ datos.uid }}
+            </div>
+            <div class="info">
+                <strong>Fecha de registro:</strong> {{ datos.fecha_registro }}
+            </div>
+            <div class="acciones">
+                <form action="{% url 'logout' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">
+                        Cerrar sesión
+                    </button>
+                </form>
+                <a href="" class="btn-productos">
+                    Ver mis animales
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
