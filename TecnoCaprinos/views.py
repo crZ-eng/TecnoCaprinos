@@ -61,7 +61,7 @@ def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        apiKey = os.getenv('FIREBASE_WEB_API_KEY')
+        apiKey = os.getenv('AIzaSyDnHUov15lQlXJ0W_PnXFPZbVq1CcP60FI')
 
         # Endpoind oficial de Google
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}"
