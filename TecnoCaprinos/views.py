@@ -12,7 +12,7 @@ import requests
 db = initialize_firebase()
 
 def bienvenido(request):
-    return render(request, 'bienvenido.html')
+    return render(request, 'home.html')
 
 def registro_usuario(request):
     mensaje = None
