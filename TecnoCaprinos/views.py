@@ -11,9 +11,8 @@ import requests
 
 db = initialize_firebase()
 
-# cambie el bienvenido por el home xd
 def bienvenido(request):
-    return render(request, 'home.html') 
+    return render(request, 'home.html')
 
 def registro_usuario(request):
     mensaje = None
@@ -57,12 +56,12 @@ def login_required_firebase(view_func):
 
 def login(request):
     if ('uid' in request.session):
-        return redirect('dashboard')
+        return redirect('info_animales')
     
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        apiKey = os.getenv('AIzaSyDnHUov15lQlXJ0W_PnXFPZbVq1CcP60FI')
+        apiKey = os.getenv('FIREBASE_WEB_API_KEY')
 
         # Endpoind oficial de Google
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}"
@@ -85,7 +84,7 @@ def login(request):
                 request.session['email'] = data['email']
                 request.session['idToken'] = data['idToken']
                 messages.success(request, f'👌 Acceso correcto al sistema')
-                return redirect('dashboard')
+                return redirect('info_animales')
             else:
                 # Error: Analizarlo
                 errorMessage = data.get('error', {}).get('message', 'UNKNOWN ERROR')
@@ -137,3 +136,12 @@ def dashboard(request):
     except Exception as e:
         messages.error(request, f'Error al cargar los datos de la base de datos: {e}')
     return render(request, 'dashboard.html', {'datos': datosUser})
+
+@login_required_firebase
+def info_animales(request):
+    """
+    Renderiza la pantalla de categorías de animales.
+    Más adelante, aquí pasaremos la lógica para contar 
+    cuántos animales hay en cada estado.
+    """
+    return render(request, 'info_animales.html')
