@@ -10,4 +10,16 @@ urlpatterns = [
     
     # info animales primera pestaña
     path('info-animales/', views.info_animales, name= 'info_animales'),
+    
+    
+    path('info-animales/cinta', views.cinta, name= 'cinta'),
+    path('info-animales/vacunas', views.vacunas, name= 'vacunas'),
+    path('info-animales/produccion', views.produccion, name= 'produccion'),
+    path('info-animales/enfermas', views.enfermas, name= 'enfermas'),
+    
+    
+    #btn añadir cabra
+    path('info-animales/anadir', views.anadir, name= 'anadir'),
+    
+    
 ]

@@ -145,3 +145,42 @@ def info_animales(request):
     cuántos animales hay en cada estado.
     """
     return render(request, 'info_animales.html')
+
+@login_required_firebase
+def cinta(request):
+    """
+  
+    """
+    return render(request, 'info/cinta.html')
+
+@login_required_firebase
+def vacunas(request):
+    """
+  
+    """
+    return render(request, 'info/vacunas.html')
+
+@login_required_firebase
+def enfermas(request):
+    """
+  
+    """
+    return render(request, 'info/enfermas.html')
+
+@login_required_firebase
+def produccion(request):
+    """
+  
+    """
+    return render(request, 'info/produccion.html')
+
+
+
+@login_required_firebase
+def anadir(request):
+    """
+  
+    """
+    return render(request, 'anadir.html')
+
+
