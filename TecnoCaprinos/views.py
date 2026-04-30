@@ -11,8 +11,9 @@ import requests
 
 db = initialize_firebase()
 
+# cambie el bienvenido por el home xd
 def bienvenido(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html') 
 
 def registro_usuario(request):
     mensaje = None
@@ -56,7 +57,7 @@ def login_required_firebase(view_func):
 
 def login(request):
     if ('uid' in request.session):
-        return redirect('info_animales')
+        return redirect('dashboard')
     
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -84,7 +85,7 @@ def login(request):
                 request.session['email'] = data['email']
                 request.session['idToken'] = data['idToken']
                 messages.success(request, f'👌 Acceso correcto al sistema')
-                return redirect('info_animales')
+                return redirect('dashboard')
             else:
                 # Error: Analizarlo
                 errorMessage = data.get('error', {}).get('message', 'UNKNOWN ERROR')
@@ -136,78 +137,3 @@ def dashboard(request):
     except Exception as e:
         messages.error(request, f'Error al cargar los datos de la base de datos: {e}')
     return render(request, 'dashboard.html', {'datos': datosUser})
-
-@login_required_firebase
-def info_animales(request):
-    """
-    Renderiza la pantalla de categorías de animales.
-    Más adelante, aquí pasaremos la lógica para contar 
-    cuántos animales hay en cada estado.
-    """
-    return render(request, 'info_animales.html')
-
-@login_required_firebase
-def cinta(request):
-    """
-  
-    """
-    return render(request, 'info/cinta.html')
-
-@login_required_firebase
-def vacunas(request):
-    """
-  
-    """
-    return render(request, 'info/vacunas.html')
-
-@login_required_firebase
-def enfermas(request):
-    """
-  
-    """
-    return render(request, 'info/enfermas.html')
-
-@login_required_firebase
-def produccion(request):
-    """
-  
-    """
-    return render(request, 'info/produccion.html')
-
-
-
-@login_required_firebase
-def anadir(request):
-    """
-  
-    """
-    return render(request, 'anadir.html')
-
-# agregar cabra 
-
-from .models import Cabra
-from django.shortcuts import render, redirect
-
-def agregar_cabra(request):
-    if request.method == 'POST':
-        nombre = request.POST.get('nombre')
-        edad = request.POST.get('edad')
-        peso = request.POST.get('peso')
-        raza = request.POST.get('raza')
-        fecha_nacimiento = request.POST.get('fecha_nacimiento')
-        observaciones = request.POST.get('observaciones'),
-        tamaño = request.POST.get('tamaño'),
-
-        Cabra.objects.create(
-            nombre=nombre,
-            edad=edad,
-            peso=peso,
-            raza=raza,
-            fecha_nacimiento=fecha_nacimiento,
-            observaciones=observaciones,
-            tamaño = tamaño,
-        )
-
-        return redirect('info_animales')
-
-    return render(request, 'anadir.html')
