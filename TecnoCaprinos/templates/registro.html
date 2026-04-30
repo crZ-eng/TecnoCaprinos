@@ -4,6 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - TecnoCaprinos</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/registro.css' %}">
+
+    <style>
+        .photo-wrapper {
+            background-image: url("{% static 'img2.webp' %}");
+        }
+    </style>
     <title>Registro</title>
 
 <style>
@@ -111,8 +123,40 @@
 
 </style>
 </head>
-
 <body>
+
+    <div class="page-container">
+        
+        <div class="form-section">
+            <div class="register-card">
+                <h2>Registrarse</h2>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" name="username" placeholder="Nombre" class="input-style" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="email" name="email" placeholder="Email" class="input-style" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" name="password" placeholder="Contraseña" class="input-style" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-register">Registro</button>
+                </form>
+            </div>
+            
+            <p class="login-link-text">¿Ya tienes cuenta? <a href="{% url 'login' %}">inicia sesion</a></p>
+        </div>
+
+        <div class="photo-section">
+            <div class="photo-wrapper"></div>
+        </div>
+
+    </div>
 
     <div class="form-container">
         <form method="POST">

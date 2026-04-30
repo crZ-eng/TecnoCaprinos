@@ -168,35 +168,43 @@
         
         <div class="categoria-item">
             <div class="circulo">
-                <img src="{% static 'cinta.jpg' %}" alt="En cinta">
+                <a href="{% url 'cinta' %}">
+                    <img src="{% static 'cinta.jpg' %}" alt="En cinta">
+                </a>
             </div>
             <h3>EN CINTA</h3>
         </div>
 
         <div class="categoria-item">
             <div class="circulo">
-                <img src="{% static 'vacunas.jpg' %}" alt="Vacunas">
+                <a href="{% url 'vacunas' %}">
+                    <img src="{% static 'vacunas.jpg' %}" alt="Vacunas">
+                </a>
             </div>
             <h3>VACUNAS</h3>
         </div>
 
         <div class="categoria-item">
             <div class="circulo">
-                <img src="{% static 'enfermas.jpg' %}" alt="Enfermas">
+                <a href="{% url 'enfermas' %}">
+                    <img src="{% static 'enfermas.jpg' %}" alt="Enfermas">
+                </a>
             </div>
             <h3>ENFERMAS</h3>
         </div>
 
         <div class="categoria-item">
             <div class="circulo">
-                <img src="{% static 'produccion.jpg' %}" alt="Producción">
+                <a href="{% url 'produccion' %}">
+                    <img src="{% static 'produccion.jpg' %}" alt="Producción">
+                </a>
             </div>
             <h3>PRODUCCION</h3>
         </div>
 
     </div>
 
-    <a href="#" class="btn-añadir">añadir +</a>
+    <a href="{% url 'anadir' %}" class="btn-añadir">añadir +</a>
 
 </body>
 </html>
