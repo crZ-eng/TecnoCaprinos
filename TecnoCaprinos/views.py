@@ -57,7 +57,7 @@ def login_required_firebase(view_func):
 
 def login(request):
     if ('uid' in request.session):
-        return redirect('dashboard')
+        return redirect('info_animales')
     
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -85,7 +85,7 @@ def login(request):
                 request.session['email'] = data['email']
                 request.session['idToken'] = data['idToken']
                 messages.success(request, f'👌 Acceso correcto al sistema')
-                return redirect('dashboard')
+                return redirect('info_animales')
             else:
                 # Error: Analizarlo
                 errorMessage = data.get('error', {}).get('message', 'UNKNOWN ERROR')
@@ -137,3 +137,96 @@ def dashboard(request):
     except Exception as e:
         messages.error(request, f'Error al cargar los datos de la base de datos: {e}')
     return render(request, 'dashboard.html', {'datos': datosUser})
+
+@login_required_firebase # Verifica que el usuario esta loggeado
+def anadir_cabra(request):
+    """
+    CREATE: Reciben los datos desde el formulario y se almacenan
+    """
+    if (request.method == 'POST'):
+        cod = request.POST.get('cod')
+        nombre = request.POST.get('nombre')
+        raza = request.POST.get('raza')
+        peso = request.POST.get('peso')
+        fecha_nacimiento = request.POST.get('fecha_nacimiento')
+        sexo = request.POST.get('sexo')
+        color = request.POST.get('color')
+        cod_madre = request.POST.get('cod_madre')
+        cod_padre = request.POST.get('cod_padre')
+        uid = request.session.get('uid')
+
+        try:
+            db.collection('cabras').add({
+                'codigo': cod,
+                'nombre': nombre,
+                'raza' : raza,
+                'peso': peso,
+                'fecha_nacimiento' : fecha_nacimiento,
+                'sexo' : sexo,
+                'color' : color,
+                'usuario_id' : uid,
+                'codigo_madre' : cod_madre,
+                'codigo_padre' : cod_padre,
+                'fecha_añadido': firestore.SERVER_TIMESTAMP
+            })
+            messages.success(request, "producto añadido con exito")
+            return redirect('listar_productos')
+        except Exception as e:
+            messages.error(request, f"Error al añadir el producto {e}")
+        
+    return render(request, 'anadir.html')
+
+@login_required_firebase
+def listar_cabras(request):
+    uid = request.session.get('uid')
+    cabras = []
+
+    try:
+        #Vamos a filtrar las cabras que registro del usuario
+
+        docs = db.collection('cabras').where('usuario_id', '==', uid).stream()
+        for doc in docs:
+            cabra = doc.to_dict()
+            cabra['id'] = doc.id
+            cabras.append(cabra)
+    except Exception as e:
+        messages.error(request, f"Hubo un error al obtener sus cabra {e}")
+    
+    return render(request, 'info/listar_cabras.html', {'cabras' : cabras})
+
+@login_required_firebase
+def cinta(request):
+    """
+  
+    """
+    return render(request, 'info/cinta.html')
+
+@login_required_firebase
+def vacunas(request):
+    """
+  
+    """
+    return render(request, 'info/vacunas.html')
+
+@login_required_firebase
+def enfermas(request):
+    """
+  
+    """
+    return render(request, 'info/enfermas.html')
+
+@login_required_firebase
+def produccion(request):
+    """
+  
+    """
+    return render(request, 'info/produccion.html')
+
+@login_required_firebase
+def info_animales(request):
+    """
+    Renderiza la pantalla de categorías de animales.
+    Más adelante, aquí pasaremos la lógica para contar 
+    cuántos animales hay en cada estado.
+    """
+    return render(request, 'info_animales.html')
