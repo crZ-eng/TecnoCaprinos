@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AÑADIR</title>
+</head>
+<body>
+    <h1>añadir</h1>
+    <h2>Agregar Cabra</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="nombre" placeholder="Nombre"><br>
+    <input type="number" name="edad" placeholder="Edad"><br>
+    <input type="number" step="0.1" name="peso" placeholder="Peso"><br>
+    <input type="text" name="raza" placeholder="Raza"><br>
+    <input type="text" name="tamaño" placeholder="Tamaño"><br>
+
+    <select name="estado">
+        <option value="cinta">En cinta</option>
+        <option value="vacunas">Vacunas</option>
+        <option value="enferma">Enferma</option>
+        <option value="produccion">Producción</option>
+    </select><br>
+
+    <input type="date" name="fecha_nacimiento"><br>
+
+    <textarea name="observaciones" placeholder="Observaciones"></textarea><br>
+
+    <button type="submit">Guardar</button>
+</form>
+</body>
+</html>
