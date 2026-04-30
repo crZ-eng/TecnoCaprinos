@@ -4,53 +4,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - TecnoCaprinos</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <title>Registro</title>
 
-    <link rel="stylesheet" href="{% static 'css/registro.css' %}">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap');
 
-    <style>
-        .photo-wrapper {
-            background-image: url("{% static 'img2.webp' %}");
-        }
-    </style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Bagel Fat One", system-ui;
+        background-color: #D6C2A6;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        overflow: hidden; /* Evita scrolls innecesarios */
+    }
+
+    /* CONTENEDOR DEL FORMULARIO */
+    .form-container {
+        padding-left: 80px; /* Ajuste para que no esté pegado al borde izquierdo */
+        z-index: 10;
+    }
+
+    form {
+        width: 380px;
+        background-color: #C09A6C;
+        padding: 40px 35px;
+        border-radius: 50px; /* Bordes más redondeados */
+        border: 7px solid #7F5637;
+        text-align: center;
+    }
+
+    h2 {
+        color: #7F5637;
+        font-size: 3rem;
+        margin-top: 0;
+        margin-bottom: 25px;
+    }
+
+    /* ESTILO DE LOS INPUTS */
+    input {
+        width: 100%;
+        box-sizing: border-box; /* Crucial para que el padding no ensanche el input */
+        padding: 18px 25px;
+        margin: 10px 0;
+        border-radius: 35px;
+        border: none;
+        background-color: #EAD4B8;
+        font-family: inherit;
+        font-size: 1.2rem;
+        color: #7F5637; /* Color del texto dentro */
+    }
+
+    /* Placeholder con el mismo tono café */
+    input::placeholder {
+        color: #B28B61;
+    }
+
+    button {
+        margin-top: 25px;
+        padding: 12px 50px;
+        border-radius: 30px;
+        background: #7F5637;
+        color: #EAD4B8;
+        border: none;
+        font-family: inherit;
+        font-size: 1.3rem;
+        cursor: pointer;
+    }
+
+    .footer {
+        margin-top: 20px;
+        color: #7F5637;
+        font-size: 1.1rem;
+        text-align: left; /* Alineado al inicio del formulario */
+        padding-left: 10px;
+    }
+
+    .footer a {
+        color: #7F5637;
+        text-decoration: none;
+    }
+
+    /* SECCIÓN DE LA IMAGEN (LA CABRA) */
+    .image-section {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 55vw; /* Ocupa un poco más de la mitad de la pantalla */
+        height: 100vh;
+        
+        /* Usa el nombre exacto que aparece en tu carpeta static */
+        background-image: url("{% static 'cabra_registro.jpg' %}");
+        background-size: cover;
+        background-position: center;
+
+        /* Forma de semicírculo */
+        border-top-left-radius: 500px; 
+        border-bottom-left-radius: 500px;
+
+        /* Borde solo en la parte curva */
+        border-left: 8px solid #7F5637;
+        border-top: 8px solid #7F5637;
+        border-bottom: 8px solid #7F5637;
+    }
+
+</style>
 </head>
+
 <body>
 
-    <div class="page-container">
-        
-        <div class="form-section">
-            <div class="register-card">
-                <h2>Registrarse</h2>
-                
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <input type="text" name="username" placeholder="Nombre" class="input-style" required>
-                    </div>
-                    
-                    <div class="input-group">
-                        <input type="email" name="email" placeholder="Email" class="input-style" required>
-                    </div>
-                    
-                    <div class="input-group">
-                        <input type="password" name="password" placeholder="Contraseña" class="input-style" required>
-                    </div>
-                    
-                    <button type="submit" class="btn-register">Registro</button>
-                </form>
-            </div>
-            
-            <p class="login-link-text">¿Ya tienes cuenta? <a href="{% url 'login' %}">inicia sesion</a></p>
-        </div>
+    <div class="form-container">
+        <form method="POST">
+            <h2>Registrarse</h2>
+            {% csrf_token %}
 
-        <div class="photo-section">
-            <div class="photo-wrapper"></div>
-        </div>
+            <input type="text" name="nombre" placeholder="Nombre">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Contraseña" required>
 
+            <button type="submit">Registro</button>
+
+            {% if mensaje %}
+            <p>{{ mensaje }}</p>
+            {% endif %}
+        </form>
+
+        <p class="footer">
+            ¿Ya tienes cuenta? 
+            <a href="{% url 'login' %}">Inicia sesión</a>
+        </p>
     </div>
+
+    <div class="image-section"></div>
 
 </body>
 </html>
