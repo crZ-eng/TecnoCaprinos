@@ -126,7 +126,7 @@
 </head>
 <body>
     <div class="white-header">
-        <img src="{% static 'LOGO_TECNOCAP.png' %}" alt="Logo" style="height: 60px;">
+        <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
         <h1 class="header-title">TECNOCAPRINOS - ENFERMOS</h1>
         <a href="{% url 'registrar_enfermo' %}" class="btn-plus">+</a>
     </div>
@@ -166,5 +166,7 @@
             </tbody>
         </table>
     </div>
+     <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
+
 </body>
 </html>

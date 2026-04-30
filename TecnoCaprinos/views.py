@@ -173,7 +173,7 @@ def anadir(request):
     """
   
     """
-    return render(request, 'anadir.html')
+    return render(request, 'anadir.html') 
 
 
 @login_required_firebase
@@ -185,15 +185,34 @@ def info_animales(request):
     """
     return render(request, 'info_animales.html')
 
-
+# dirección destinadas a carpeta agregar
 def registrar_enfermo(request):
-    return render(request, 'info/registrar_enfermo.html')
+    return render(request, 'info/agregar/registrar_enfermo.html')
 
 def registrar_vacuna(request):
-    return render (request, 'info/registrar_vacuna.html') 
+    return render (request, 'info/agregar/registrar_vacuna.html') 
 
 def agregar_produccion(request):
-    return render (request, 'info/agregar_produccion')
+    return render (request, 'info/agregar/agregar_produccion.html')
 
 def registrar_seguimiento_gestacion(request):
-    return render (request, 'info/registrar_seguimiento_gestacion')
+    return render (request, 'info/agregar/registrar_seguimiento_gestacion.html')
+
+# vista para producción (agrega vista de nombre de usuario a producción)
+
+@login_required_firebase
+def produccion(request):
+    uid = request.session.get('uid')
+    username = ""
+
+    try:
+        doc = db.collection('usuarios').document(uid).get()
+        if doc.exists:
+            data = doc.to_dict()
+            username = data.get('nombre', '')
+    except Exception as e:
+        print("Error:", e)
+
+    return render(request, 'info/produccion.html', {
+        'username': username
+    })

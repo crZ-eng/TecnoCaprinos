@@ -169,7 +169,7 @@
 
     <div class="white-header">
         <div class="logo-container">
-            <img src="{% static 'LOGO_TECNOCAP.png' %}" alt="Logo">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo">
         </div>
         <h1 class="header-title">TECNOCAPRINOS - PRODUCCIÓN</h1>
         <a href="{% url 'agregar_produccion' %}" class="btn-plus">+</a>
@@ -181,7 +181,7 @@
             <h2>Control Lechero</h2>
             <img src="{% static 'img_produccion.webp' %}" alt="Producción de leche">
             <p style="color: var(--color-trazos); font-weight: 600; margin-top: 15px;">
-                Bienvenido, {{ user.username }}. Monitorea el rendimiento diario.
+                Bienvenido, {{ username }}. Monitorea el rendimiento diario.
             </p>
         </div>
 
@@ -206,8 +206,8 @@
                     {% for registro in registros %}
                     <tr>
                         <td><span class="date-tag">{{ registro.fecha|date:"d/m/Y" }}</span></td>
-                        <td>{{ registro.ordeño_mañana }}</td>
-                        <td>{{ registro.ordeño_tarde }}</td>
+                        <td>{{ registro.ordeno_manana }}</td>
+                        <td>{{ registro.ordeno_tarde }}</td>
                         <td>{{ registro.total_diario }}</td>
                         <td>{{ registro.grasa }}</td>
                         <td>{{ registro.observaciones|default:"-" }}</td>
@@ -221,7 +221,11 @@
                 </tbody>
             </table>
         </div>
+   
     </div>
+
+      <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
+
 
 </body>
 </html>
