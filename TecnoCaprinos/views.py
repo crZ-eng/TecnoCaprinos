@@ -204,15 +204,18 @@ def registrar_seguimiento_gestacion(request):
 def produccion(request):
     uid = request.session.get('uid')
     username = ""
+    registros = []
 
     try:
         doc = db.collection('usuarios').document(uid).get()
         if doc.exists:
-            data = doc.to_dict()
-            username = data.get('nombre', '')
+            username = doc.to_dict().get('nombre', '')
+
+
     except Exception as e:
-        print("Error:", e)
+        print(e)
 
     return render(request, 'info/produccion.html', {
-        'username': username
+        'username': username,
+        'registros': registros
     })
