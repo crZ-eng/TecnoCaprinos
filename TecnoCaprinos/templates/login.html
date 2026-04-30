@@ -7,25 +7,100 @@
     <title>Ganado Dijital - Iniciar Sesión</title>
     <link rel="icon" href="{% static 'logo.jpeg' %}">
     <style>
+        body{
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .header{
+            background-color: rgb(24, 185, 24);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        img{
+            border-radius: 100%;
+        }
         
+        button{
+            background-color: white;
+            border: none;
+            height: 30px;
+            width: 110px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 500ms;
+        }
+
+        button:hover{
+            height: 60px;
+            width: 132px;
+            transition: 500ms;
+        }
+
+        a{
+            background-color: white;
+            padding: 10px;
+            color: black;
+            border-radius: 30px;
+            transition: 500ms;
+        }
+
+        a:hover{
+            padding: 15px;
+            transition: 500ms;
+        }
+
+        .cuadro{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form{
+            background-color: rgb(24, 185, 24);
+            padding: 30px;
+            margin-top: 30px;
+            border-radius: 30px;
+        }
+
+        input{
+            background-color: white;
+            border: 1px solid black;
+            height: 25px;
+            width: 250px;
+            padding: 10px;
+            border-radius: 30px;
+        }
+
+        h2{
+            margin-top: 0;
+        }
+
+        p{
+            margin-bottom: 3px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <img src="{% static 'logo.jpeg' %}" alt="Logo" height="70px">
-        <h1 id="wlc">GANADO DIJITAL</h1>
+        <h1 id="wlc">TecnoCaprinos</h1>
         <a href="{% url 'bienvenido' %}"><button>Mas Info</button></a>
     </div>
     <div class="cuadro">
         <form method="POST">
             <h2>Inicia Sesión</h2>
             {% csrf_token %}
-            <label>Correo:</label>
+            <p>Correo:</p>
             <input type="email" name="email" placeholder="email@example.com" required><br>
-            <label>Contraseña:</label>
+            <p>Contraseña:</p>
             <input type="password" name="password" placeholder="Minimo 6 caracteres" required><br>
             <div class="btn">
-                <button type="submit">Iniciar sesión</button>
+                <button type="submit" id="is">Iniciar sesión</button>
             </div>
             <h3 class="extra">¿Eres Nuevo?</h3>
             <a class="link" href="{% url 'registro' %}">Regístrate</a>
