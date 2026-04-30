@@ -11,9 +11,8 @@ import requests
 
 db = initialize_firebase()
 
-# cambie el bienvenido por el home xd
 def bienvenido(request):
-    return render(request, 'home.html') 
+    return render(request, 'home.html')
 
 def registro_usuario(request):
     mensaje = None
@@ -57,7 +56,7 @@ def login_required_firebase(view_func):
 
 def login(request):
     if ('uid' in request.session):
-        return redirect('dashboard')
+        return redirect('info_animales')
     
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -85,7 +84,7 @@ def login(request):
                 request.session['email'] = data['email']
                 request.session['idToken'] = data['idToken']
                 messages.success(request, f'👌 Acceso correcto al sistema')
-                return redirect('dashboard')
+                return redirect('info_animales')
             else:
                 # Error: Analizarlo
                 errorMessage = data.get('error', {}).get('message', 'UNKNOWN ERROR')
@@ -139,40 +138,10 @@ def dashboard(request):
     return render(request, 'dashboard.html', {'datos': datosUser})
 
 @login_required_firebase
-def cinta(request):
+def info_animales(request):
     """
-  
+    Renderiza la pantalla de categorías de animales.
+    Más adelante, aquí pasaremos la lógica para contar 
+    cuántos animales hay en cada estado.
     """
-    return render(request, 'info/cinta.html')
-
-@login_required_firebase
-def vacunas(request):
-    """
-  
-    """
-    return render(request, 'info/vacunas.html')
-
-@login_required_firebase
-def enfermas(request):
-    """
-  
-    """
-    return render(request, 'info/enfermas.html')
-
-@login_required_firebase
-def produccion(request):
-    """
-  
-    """
-    return render(request, 'info/produccion.html')
-
-
-
-@login_required_firebase
-def anadir(request):
-    """
-  
-    """
-    return render(request, 'anadir.html')
-
-
+    return render(request, 'info_animales.html')
