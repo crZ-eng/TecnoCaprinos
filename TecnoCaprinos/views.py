@@ -184,3 +184,16 @@ def info_animales(request):
     cuántos animales hay en cada estado.
     """
     return render(request, 'info_animales.html')
+
+
+def registrar_enfermo(request):
+    return render(request, 'info/registrar_enfermo.html')
+
+def registrar_vacuna(request):
+    return render (request, 'info/registrar_vacuna.html') 
+
+def agregar_produccion(request):
+    return render (request, 'info/agregar_produccion')
+
+def registrar_seguimiento_gestacion(request):
+    return render (request, 'info/registrar_seguimiento_gestacion')

@@ -22,4 +22,10 @@ urlpatterns = [
     path('info-animales/anadir', views.anadir, name= 'anadir'),
     
     
+    path('registrar-enfermo/', views.registrar_enfermo, name='registrar_enfermo'),
+    path('registrar-vacuna/', views.registrar_vacuna, name='registrar_vacuna'),
+    path('agregar-produccion/', views.agregar_produccion, name='agregar_produccion'),
+    path('registrar_seguimiento_gestacion/', views.registrar_seguimiento_gestacion, name='registrar_seguimiento_gestacion'),
+    
+    
 ]
