@@ -183,4 +183,31 @@ def anadir(request):
     """
     return render(request, 'anadir.html')
 
+# agregar cabra 
 
+from .models import Cabra
+from django.shortcuts import render, redirect
+
+def agregar_cabra(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        edad = request.POST.get('edad')
+        peso = request.POST.get('peso')
+        raza = request.POST.get('raza')
+        fecha_nacimiento = request.POST.get('fecha_nacimiento')
+        observaciones = request.POST.get('observaciones'),
+        tamaño = request.POST.get('tamaño'),
+
+        Cabra.objects.create(
+            nombre=nombre,
+            edad=edad,
+            peso=peso,
+            raza=raza,
+            fecha_nacimiento=fecha_nacimiento,
+            observaciones=observaciones,
+            tamaño = tamaño,
+        )
+
+        return redirect('info_animales')
+
+    return render(request, 'anadir.html')

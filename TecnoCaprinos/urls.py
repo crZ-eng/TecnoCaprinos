@@ -21,5 +21,8 @@ urlpatterns = [
     #btn añadir cabra
     path('info-animales/anadir', views.anadir, name= 'anadir'),
     
+
+    path('anadir/', views.agregar_cabra, name='anadir'),
+    
     
 ]
