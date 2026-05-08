@@ -30,5 +30,8 @@ urlpatterns = [
 
     # Animales
     path('guardar_animal/', views.guardar_animal, name='guardar_animal'),
-    path('listar_cabras/', views.listar_cabras, name='listar'),
+       #btn añadir cabra
+    path('info-animales/anadir', views.anadir_cabra, name= 'anadir'),
+    path('info-animales/listar', views.listar_cabras, name= 'listar'),
+    
 ]

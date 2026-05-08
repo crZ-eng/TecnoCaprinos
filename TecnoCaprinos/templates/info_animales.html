@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoCaprinos - Info Animales</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Besley&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --cafe-fondo: #7a5230; 
+            --cafe-fondo: #7a5230;
             --beige-botones: #c5a373;
             --blanco: #ffffff;
             --bg-principal: #C9A06D;
@@ -19,6 +20,8 @@
             --white: #f8f8f8;
         }
 
+        
+
         body {
             font-family: 'Fredoka', sans-serif;
             background-color: var(--cafe-fondo);
@@ -26,7 +29,7 @@
             color: black;
         }
 
-        /* HEADER BLANCO */
+        /* HEADER */
         .white-header {
             background-color: var(--blanco);
             display: flex;
@@ -48,13 +51,9 @@
             margin: 0;
         }
 
-        .btn-info {
-            background-color: var(--cafe-fondo);
-            color: var(--blanco);
-            padding: 8px 20px;
-            border-radius: 20px;
+        /* BOTÓN PERFIL */
+        .irDashboard {
             text-decoration: none;
-            font-size: 0.9rem;
         }
 
         /* BARRA DE BÚSQUEDA */
@@ -87,7 +86,7 @@
             color: rgba(93, 58, 26, 0.7);
         }
 
-        /* GRID DE CATEGORÍAS */
+        /* GRID */
         .grid-categorias {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -110,6 +109,11 @@
             overflow: hidden;
             margin-bottom: 15px;
             background-color: #ddd;
+            transition: transform 0.3s ease;
+        }
+
+        .circulo:hover {
+            transform: scale(1.05);
         }
 
         .circulo img {
@@ -118,28 +122,33 @@
             object-fit: cover;
         }
 
+        /* TÍTULOS */
         .categoria-item h3 {
             text-transform: uppercase;
             font-size: 1.4rem;
             margin: 0;
             letter-spacing: 1px;
+            color: white;
         }
 
-        /* BOTÓN AÑADIR */
-        .btn-anadir {
+        /* BOTÓN LISTAR */
+        .btn-listar {
             background-color: var(--beige-botones);
             color: #5d3a1a;
-            padding: 15px 40px;
+            padding: 15px 30px;
             border-radius: 30px;
             text-decoration: none;
-            font-size: 1.3rem;
-            font-weight: 600;
-            display: inline-block;
-            margin: 40px 5%;
-            transition: transform 0.2s;
-        }
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            width: fit-content;
+            transition: 0.3s ease;
 
-        .btn-anadir:hover {
+            display: block;
+            margin: 50px auto 0 auto;
+    }
+
+        .btn-listar:hover {
             transform: scale(1.05);
         }
 
@@ -147,42 +156,50 @@
             .grid-categorias {
                 grid-template-columns: repeat(2, 1fr);
             }
+
             .circulo {
                 width: 140px;
                 height: 140px;
             }
-        }
 
-        .divicion{
-            background-color: white;
-            color: black;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            .header-title {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
+
 <body>
+
+    <!-- HEADER -->
     <div class="white-header">
+
         <div class="logo-container">
-            <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo">
         </div>
-        <h1 style="color: #c5a373;">TECNOCAPRINOS</h1>
+
+        <h1 class="header-title">TECNOCAPRINOS</h1>
+
         <a href="{% url 'dashboard' %}" class="irDashboard">
             <svg width="60" height="60" viewBox="0 0 24 24" fill="#c5a373">
                 <circle cx="12" cy="8" r="4"/>
                 <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
             </svg>
         </a>
+
     </div>
+
+    <!-- BARRA -->
     <div class="search-container">
         <div class="search-bar">
-            <span>🔍 </span>
-            <input type="text" placeholder="Barra de busqueda">
+            <span>🔍</span>
+            <input type="text" placeholder="Barra de búsqueda">
         </div>
     </div>
+
+    <!-- CATEGORÍAS -->
     <div class="grid-categorias">
-        
+
         <div class="categoria-item">
             <div class="circulo">
                 <a href="{% url 'cinta' %}">
@@ -191,6 +208,7 @@
             </div>
             <h3>EN CINTA</h3>
         </div>
+
         <div class="categoria-item">
             <div class="circulo">
                 <a href="{% url 'vacunas' %}">
@@ -199,6 +217,7 @@
             </div>
             <h3>VACUNAS</h3>
         </div>
+
         <div class="categoria-item">
             <div class="circulo">
                 <a href="{% url 'enfermas' %}">
@@ -207,15 +226,22 @@
             </div>
             <h3>ENFERMAS</h3>
         </div>
+
         <div class="categoria-item">
             <div class="circulo">
                 <a href="{% url 'produccion' %}">
                     <img src="{% static 'produccion.jpg' %}" alt="Producción">
                 </a>
             </div>
-            <h3>PRODUCCION</h3>
+            <h3>PRODUCCIÓN</h3>
         </div>
-         <a href="{% url 'listar' %}" class="btn-listar">VER MIS CABRAS REGISTRADAS</a>
+
+  
+
     </div>
+      <!-- BOTÓN CABRAS REGISTRADAS -->
+        <a href="{% url 'listar' %}" class="btn-listar">
+            VER MIS CABRAS REGISTRADAS
+        </a>
 </body>
 </html>

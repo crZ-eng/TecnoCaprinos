@@ -1,93 +1,115 @@
 import os
 from django.shortcuts import render, redirect
 from django.contrib import messages
-# from django.http import  HttpRequestForbidden
 from firebase_admin import firestore, auth
 from config.firebaseConnection import initialize_firebase
 from functools import wraps
 import requests
 
-# Inicializar la DB con FireStore
-
+# Inicializar Firebase
 db = initialize_firebase()
 
-# cambie el bienvenido por el home xd
+
+# =========================
+# VISTA PRINCIPAL
+# =========================
+
 def bienvenido(request):
-    return render(request, 'home.html') 
+    return render(request, 'home.html')
+
+
+# =========================
+# REGISTRO
+# =========================
 
 def registro_usuario(request):
     mensaje = None
+
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
         email = request.POST.get('email')
         password = request.POST.get('password')
+
         try:
-            # Vamos a crear en Firebase auth
             user = auth.create_user(
-                email = email,
-                password = password
+                email=email,
+                password=password
             )
 
             db.collection('usuarios').document(user.uid).set({
-                'nombre' : nombre,
-                'email' : email,
-                'uid' : user.uid,
-                'fecha_registro' : firestore.SERVER_TIMESTAMP,
+                'nombre': nombre,
+                'email': email,
+                'uid': user.uid,
+                'fecha_registro': firestore.SERVER_TIMESTAMP,
             })
 
             mensaje = f"Te has registrado correctamente 😊: {nombre}"
+
         except Exception as e:
             mensaje = f"Error: {e}"
-    return render(request, 'registro.html', {'mensaje' : mensaje})
+
+    return render(request, 'registro.html', {'mensaje': mensaje})
+
+
+# =========================
+# DECORADOR LOGIN
+# =========================
 
 def login_required_firebase(view_func):
-    # Este decorador personalizado va a proteger nuestras vistas
-    # si el usuario no ha iniciado sesión.
-    # Si el UID no existe, lo va a enviar a iniciar sesión.
 
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
+
         if 'uid' not in request.session:
             messages.warning(request, "Warning, no has iniciado sesión")
             return redirect('login')
+
         return view_func(request, *args, **kwargs)
+
     return _wrapped_view
 
-# logica para solicitarle a Google la validación
+
+# =========================
+# LOGIN
+# =========================
 
 def login(request):
-    if ('uid' in request.session):
+
+    if 'uid' in request.session:
         return redirect('info_animales')
-    
+
     if request.method == 'POST':
+
         email = request.POST.get('email')
         password = request.POST.get('password')
+
         apiKey = os.getenv('FIREBASE_WEB_API_KEY')
 
-        # Endpoind oficial de Google
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}"
 
         payload = {
-            "email" : email,
-            "password" : password,
-            "returnSecureToken" : True
+            "email": email,
+            "password": password,
+            "returnSecureToken": True
         }
 
         try:
 
-            # petición http al servicio de autenticación de google
             response = requests.post(url, json=payload)
             data = response.json()
 
             if response.status_code == 200:
-                # All good
+
                 request.session['uid'] = data['localId']
                 request.session['email'] = data['email']
                 request.session['idToken'] = data['idToken']
-                messages.success(request, f'👌 Acceso correcto al sistema')
+
+                messages.success(request, '👌 Acceso correcto al sistema')
+
                 return redirect('info_animales')
+
             else:
-                # Error: Analizarlo
+
                 errorMessage = data.get('error', {}).get('message', 'UNKNOWN ERROR')
 
                 errores_comunes = {
@@ -97,53 +119,90 @@ def login(request):
                     'TOO_MANY_ATTEMPTS_TRY_LATER': 'Demasiados intentos fallidos. Espere unos minutos.'
                 }
 
-                mensaje_usuario = errores_comunes.get(errorMessage, "Error de autenticación, revisa tus credenciales")
+                mensaje_usuario = errores_comunes.get(
+                    errorMessage,
+                    "Error de autenticación, revisa tus credenciales"
+                )
+
                 messages.error(request, mensaje_usuario)
-        except requests.exceptions.RequestException as e:
+
+        except requests.exceptions.RequestException:
             messages.error(request, "Error de conexión con el servidor")
+
         except Exception as e:
             messages.error(request, f"Error inesperado: {str(e)}")
+
     return render(request, 'login.html')
+
+
+# =========================
+# CERRAR SESIÓN
+# =========================
 
 def cerrar_sesion(request):
     request.session.flush()
     messages.info(request, 'Has cerrado sesión correctamente')
     return redirect('login')
 
-@login_required_firebase #Verifica que el user esté logueado
-def dashboard(request):
-    # Este es el panl principal, este solo lo permite si el decorador lo permite
-    # Recuparar los datos de Firestore
 
-    uid= request.session.get('uid')
+# =========================
+# DASHBOARD
+# =========================
+
+@login_required_firebase
+def dashboard(request):
+
+    uid = request.session.get('uid')
     datosUser = {}
 
     try:
-        # Consulta a Firestore usando SDK 
+
         doc_ref = db.collection('usuarios').document(uid)
         doc = doc_ref.get()
 
         if doc.exists:
+
             datosUser = doc.to_dict()
+
         else:
-            # Si entra en el out pero no tiene un perfil en Firestore vamos a manejar el caso
+
             datosUser = {
-                'nombre' : request.session.get('nombre'),
-                'email' : request.session.get('email'),
-                'rol' : request.session.get('rol'),
-                'uid' : request.session.get('uid'),
-                'fecha_registro' : firestore.SERVER_TIMESTAMP
+                'nombre': request.session.get('nombre'),
+                'email': request.session.get('email'),
+                'rol': request.session.get('rol'),
+                'uid': request.session.get('uid'),
+                'fecha_registro': firestore.SERVER_TIMESTAMP
             }
+
     except Exception as e:
-        messages.error(request, f'Error al cargar los datos de la base de datos: {e}')
+        messages.error(request, f'Error al cargar los datos: {e}')
+
     return render(request, 'dashboard.html', {'datos': datosUser})
 
-@login_required_firebase # Verifica que el usuario esta loggeado
+
+# =========================
+# INFO ANIMALES
+# =========================
+
+@login_required_firebase
+def info_animales(request):
+    return render(request, 'info_animales.html')
+
+
+# =========================
+# AÑADIR ANIMAL
+# =========================
+
+@login_required_firebase
+def anadir(request):
+    return render(request, 'info/anadir.html')
+
+
+@login_required_firebase
 def anadir_cabra(request):
-    """
-    CREATE: Reciben los datos desde el formulario y se almacenan
-    """
-    if (request.method == 'POST'):
+
+    if request.method == 'POST':
+
         cod = request.POST.get('cod')
         nombre = request.POST.get('nombre')
         raza = request.POST.get('raza')
@@ -153,124 +212,129 @@ def anadir_cabra(request):
         color = request.POST.get('color')
         cod_madre = request.POST.get('cod_madre')
         cod_padre = request.POST.get('cod_padre')
+
         uid = request.session.get('uid')
 
         try:
+
             db.collection('cabras').add({
                 'codigo': cod,
                 'nombre': nombre,
-                'raza' : raza,
+                'raza': raza,
                 'peso': peso,
-                'fecha_nacimiento' : fecha_nacimiento,
-                'sexo' : sexo,
-                'color' : color,
-                'usuario_id' : uid,
-                'codigo_madre' : cod_madre,
-                'codigo_padre' : cod_padre,
+                'fecha_nacimiento': fecha_nacimiento,
+                'sexo': sexo,
+                'color': color,
+                'usuario_id': uid,
+                'codigo_madre': cod_madre,
+                'codigo_padre': cod_padre,
                 'fecha_añadido': firestore.SERVER_TIMESTAMP
             })
-            messages.success(request, "producto añadido con exito")
-            return redirect('listar_productos')
+
+            messages.success(request, "Cabra añadida con éxito")
+
+            return redirect('listar')
+
         except Exception as e:
-            messages.error(request, f"Error al añadir el producto {e}")
-        
-    return render(request, 'anadir.html')
+            messages.error(request, f"Error al añadir la cabra: {e}")
 
-@login_required_firebase
-def listar_cabras(request):
-    uid = request.session.get('uid')
-    cabras = []
-
-    try:
-        #Vamos a filtrar las cabras que registro del usuario
-
-        docs = db.collection('cabras').where('usuario_id', '==', uid).stream()
-        for doc in docs:
-            cabra = doc.to_dict()
-            cabra['id'] = doc.id
-            cabras.append(cabra)
-    except Exception as e:
-        messages.error(request, f"Hubo un error al obtener sus cabra {e}")
-    
-    return render(request, 'info/listar_cabras.html', {'cabras' : cabras})
-
-@login_required_firebase
-def cinta(request):
-    """
-  
-    """
-    return render(request, 'info/cinta.html')
-
-@login_required_firebase
-def vacunas(request):
-    """
-  
-    """
-    return render(request, 'info/vacunas.html')
-
-@login_required_firebase
-def enfermas(request):
-    """
-  
-    """
-    return render(request, 'info/enfermas.html')
-
-@login_required_firebase
-def produccion(request):
-    """
-  
-    """
-    return render(request, 'info/produccion.html')
-
-
-
-@login_required_firebase
-def anadir(request):
-    """
-  
-    """
     return render(request, 'info/anadir.html')
 
 
+# =========================
+# LISTAR CABRAS
+# =========================
+
 @login_required_firebase
-def info_animales(request):
-    """
-    Renderiza la pantalla de categorías de animales.
-    Más adelante, aquí pasaremos la lógica para contar 
-    cuántos animales hay en cada estado.
-    """
-    return render(request, 'info_animales.html')
+def listar_cabras(request):
 
-# dirección destinadas a carpeta agregar
-def registrar_enfermo(request):
-    return render(request, 'info/agregar/registrar_enfermo.html')
+    uid = request.session.get('uid')
 
-def registrar_vacuna(request):
-    return render (request, 'info/agregar/registrar_vacuna.html') 
+    cabras = []
 
-def agregar_produccion(request):
-    return render (request, 'info/agregar/agregar_produccion.html')
+    try:
 
-def registrar_seguimiento_gestacion(request):
-    return render (request, 'info/agregar/registrar_seguimiento_gestacion.html')
+        docs = db.collection('cabras').where('usuario_id', '==', uid).stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+    except Exception as e:
+        messages.error(request, f"Hubo un error al obtener sus cabras: {e}")
+
+    return render(request, 'info/listar_cabras.html', {
+        'cabras': cabras
+    })
 
 
-def guardar_animal(request):
-    return render(request, 'info/agregar/guardar_animal.html')
+# =========================
+# EN CINTA
+# =========================
 
-# vista para producción (agrega vista de nombre de usuario a producción)
+@login_required_firebase
+def cinta(request):
+    return render(request, 'info/cinta.html')
+
+
+# =========================
+# VACUNAS
+# =========================
+
+@login_required_firebase
+def vacunas(request):
+    return render(request, 'info/vacunas.html')
+
+
+# =========================
+# ENFERMAS
+# =========================
+
+@login_required_firebase
+def enfermas(request):
+
+    casos_clinicos = []
+
+    try:
+
+        docs = db.collection('enfermos').stream()
+
+        for doc in docs:
+
+            registro = doc.to_dict()
+            registro['id'] = doc.id
+
+            casos_clinicos.append(registro)
+
+    except Exception as e:
+        print(e)
+
+    return render(request, 'info/enfermas.html', {
+        'casos_clinicos': casos_clinicos
+    })
+
+
+# =========================
+# PRODUCCIÓN
+# =========================
 
 @login_required_firebase
 def produccion(request):
+
     uid = request.session.get('uid')
+
     username = ""
     registros = []
 
     try:
+
         doc = db.collection('usuarios').document(uid).get()
+
         if doc.exists:
             username = doc.to_dict().get('nombre', '')
-
 
     except Exception as e:
         print(e)
@@ -279,6 +343,30 @@ def produccion(request):
         'username': username,
         'registros': registros
     })
-    
-    
-    
+
+
+# =========================
+# FORMULARIOS
+# =========================
+
+def registrar_enfermo(request):
+    return render(request, 'info/agregar/registrar_enfermo.html')
+
+
+def registrar_vacuna(request):
+    return render(request, 'info/agregar/registrar_vacuna.html')
+
+
+def agregar_produccion(request):
+    return render(request, 'info/agregar/agregar_produccion.html')
+
+
+def registrar_seguimiento_gestacion(request):
+    return render(
+        request,
+        'info/agregar/registrar_seguimiento_gestacion.html'
+    )
+
+
+def guardar_animal(request):
+    return render(request, 'info/agregar/guardar_animal.html')
