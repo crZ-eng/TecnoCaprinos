@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoCaprinos - Lista de tus Cabras</title>
+    <link rel="icon" href="{% static 'logo.png' %}">
+    <style>
+        :root {
+            --cafe-fondo: #7a5230; 
+            --beige-botones: #c5a373;
+            --blanco: #ffffff;
+            --bg-principal: #C9A06D;
+            --bg-cuadros: #EAD4B8;
+            --color-trazos: #7F5637;
+            --white: #f8f8f8;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--cafe-fondo);
+            margin: 0;
+            color: var(--blanco);
+        }
+
+        .header{
+            display: flex;
+            background-color: white;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .contenido{
+            color: white;
+        }
+
+        .btn-crear{
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+        }
+
+        .irDashboard{
+            padding: 0;
+        }
+
+        .irDashboard:hover{
+            padding: 0;
+        }
+
+        .encabezado-contenido{
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 20px 0 20px;
+        }
+
+        .allTarjetas{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .tarjeta{
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border-radius: 30px;
+            margin: 10px 10px 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        {% load static %}
+        <img src="{% static 'logo.png' %}" alt="Logo" height="70px">
+        <h1>Bienvenido a ¡HabitFlow!</h1>
+        <a href="{% url 'dashboard' %}" class="irDashboard">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="#c5a373">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+            </svg>
+        </a>
+    </div>
+    <div class="contenido">
+        <div class="encabezado-contenido">
+            <h2>Cabras Registradas: </h2>
+            <a href="{% url 'anadir' %}" class="btn-crear">➕ Ingresar Nueva Cabra</a>
+        </div>
+        <div class="allTarjetas">
+            {% for cabra in cabras %}
+            <div class="tarjeta">
+                <div class="info">
+                    <h3>Nombre: <span style="font-weight: normal;">{{ cabra.nombre }}</span></h3>
+                </div>
+                <div class="info">
+                    <h4>Clasificacion: <span style="font-weight: normal;">{{ cabra.peso }}</span></h4>
+                </div>
+                <div class="info">
+                    <h4>Descripción: <span style="font-weight: normal;">{{ cabra.fecha_nacimiento }}</span></h4>
+                </div>
+            </div>
+            {% empty %}
+            <h3 class="sin-productos">No tienes cabras registradas.</h3>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
