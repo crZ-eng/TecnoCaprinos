@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoCaprinos - Lista de tus Cabras</title>
-    <link rel="icon" href="{% static 'logo.png' %}">
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
     <style>
         :root {
             --cafe-fondo: #7a5230; 
@@ -74,8 +74,8 @@
 <body>
     <div class="header">
         {% load static %}
-        <img src="{% static 'logo.png' %}" alt="Logo" height="70px">
-        <h1>Bienvenido a ¡HabitFlow!</h1>
+        <img src="{% static 'logo.jpeg' %}" alt="Logo" height="70px">
+        <h1 style="color: #c5a373;">Bienvenido a ¡HabitFlow!</h1>
         <a href="{% url 'dashboard' %}" class="irDashboard">
             <svg width="60" height="60" viewBox="0 0 24 24" fill="#c5a373">
                 <circle cx="12" cy="8" r="4"/>
@@ -105,6 +105,7 @@
             <h3 class="sin-productos">No tienes cabras registradas.</h3>
             {% endfor %}
         </div>
+        <a href="{% url 'info_animales' %}"><-- VOLVER</a>
     </div>
 </body>
 </html>

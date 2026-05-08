@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Ganado Digital</title>
     <link rel="icon" href="{% static 'logo.jpeg' %}">
-    
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
             --primario: #2e7d32; /* Verde campo */
@@ -186,9 +184,7 @@
                 </div>
                 {% endfor %}
             {% endif %}
-
             <h2>Perfil del Ganadero</h2>
-            
             <div class="info">
                 <strong>Nombre:</strong> {{ datos.nombre }}
             </div>
@@ -199,12 +195,10 @@
             <div class="info">
                 <strong>Miembro desde:</strong> {{ datos.fecha_registro }}
             </div>
-
             <div class="acciones">
                 <a href="{% url 'info_animales' %}" class="btn-productos">
                         📦 Ver mis animales
                 </a>
-
                 <form action="{% url 'logout' %}" method="POST" style="width: 100%;">
                     {% csrf_token %}
                     <button type="submit" class="logout-btn">
