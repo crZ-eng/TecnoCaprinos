@@ -26,6 +26,8 @@ urlpatterns = [
     path('registrar-vacuna/', views.registrar_vacuna, name='registrar_vacuna'),
     path('agregar-produccion/', views.agregar_produccion,name='agregar_produccion'),
     path('registrar-seguimiento-gestacion/', views.registrar_seguimiento_gestacion,name='registrar_seguimiento_gestacion'),
+    
+    path('guardar_animal/', views.guardar_animal,name='guardar_animal'),
 
 
 ]

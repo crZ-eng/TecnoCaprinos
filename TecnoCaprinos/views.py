@@ -173,7 +173,7 @@ def anadir(request):
     """
   
     """
-    return render(request, 'anadir.html') 
+    return render(request, 'info/anadir.html')
 
 
 @login_required_firebase
@@ -198,6 +198,10 @@ def agregar_produccion(request):
 def registrar_seguimiento_gestacion(request):
     return render (request, 'info/agregar/registrar_seguimiento_gestacion.html')
 
+
+def guardar_animal(request):
+    return render(request, 'info/agregar/guardar_animal.html')
+
 # vista para producción (agrega vista de nombre de usuario a producción)
 
 @login_required_firebase
@@ -219,3 +223,6 @@ def produccion(request):
         'username': username,
         'registros': registros
     })
+    
+    
+    
