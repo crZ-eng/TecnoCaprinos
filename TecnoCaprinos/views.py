@@ -277,7 +277,7 @@ def listar_cabras(request):
 
 @login_required_firebase
 def cinta(request):
-    return render(request, 'info/cinta.html')
+    return render(request, 'info/cinta.html ')
 
 
 # =========================
