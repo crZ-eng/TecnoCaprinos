@@ -4,30 +4,184 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard | Ganado Digital</title>
     <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        
+        :root {
+            --primario: #2e7d32; /* Verde campo */
+            --primario-oscuro: #1b5e20;
+            --fondo: #f4f7f6;
+            --blanco: #ffffff;
+            --texto: #333333;
+            --gris-suave: #e0e0e0;
+            --error: #d32f2f;
+            --exito: #388e3c;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--fondo);
+            margin: 0;
+            color: var(--texto);
+        }
+
+        /* HEADER */
+        .header {
+            background-color: var(--blanco);
+            padding: 1rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #wlc {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--primario);
+            margin: 0;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .header h4 {
+            margin: 0;
+            font-weight: 400;
+            color: #666;
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        .contenido {
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tarjeta {
+            background: var(--blanco);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .tarjeta h2 {
+            color: var(--primario);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--fondo);
+            padding-bottom: 10px;
+        }
+
+        /* INFO DEL USUARIO */
+        .info {
+            text-align: left;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: var(--fondo);
+            border-radius: 10px;
+            font-size: 0.95rem;
+        }
+
+        .info strong {
+            color: var(--primario-oscuro);
+            display: inline-block;
+            width: 140px;
+        }
+
+        /* MENSAJES */
+        .mensaje {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        .success { background-color: #e8f5e9; color: var(--exito); border: 1px solid var(--exito); }
+        .error { background-color: #ffebee; color: var(--error); border: 1px solid var(--error); }
+        .warning { background-color: #fff3e0; color: #f57c00; border: 1px solid #f57c00; }
+
+        /* BOTONES */
+        .acciones {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-productos {
+            background-color: var(--primario);
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-productos:hover {
+            background-color: var(--primario-oscuro);
+            transform: translateY(-2px);
+        }
+
+        .logout-btn {
+            background: none;
+            border: 2px solid var(--gris-suave);
+            color: #888;
+            padding: 10px;
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #fff1f1;
+            color: var(--error);
+            border-color: var(--error);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            .info strong {
+                display: block;
+                margin-bottom: 5px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        {% load static %}
-
-        <img src="{% static 'logo.jpeg' %}" alt="Logo Ganado Dijital" height="70px">
-        <h1 id="wlc">GANADO DIJITAL</h1>
-        <h4>Bienvenido/a, {{ datos.nombre }}</h4>
+        <div class="header-left">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo Ganado Digital" height="50px">
+            <h1 id="wlc">GANADO DIGITAL</h1>
+        </div>
+        <h4>Bienvenido/a, <strong>{{ datos.nombre|default:"Ganadero" }}</strong></h4>
     </div>
     <div class="contenido">
         <div class="tarjeta">
             {% if messages %}
-            {% for message in messages %}
-            <div class="mensaje {{ message.tags }}">
-                {{ message }}
-            </div>
-            {% endfor %}
+                {% for message in messages %}
+                <div class="mensaje {{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
             {% endif %}
-            <h2>Información del Ganadero</h2>
+            <h2>Perfil del Ganadero</h2>
             <div class="info">
                 <strong>Nombre:</strong> {{ datos.nombre }}
             </div>
@@ -35,21 +189,18 @@
                 <strong>Correo:</strong> {{ datos.email }}
             </div>
             <div class="info">
-                <strong>UID:</strong> {{ datos.uid }}
-            </div>
-            <div class="info">
-                <strong>Fecha de registro:</strong> {{ datos.fecha_registro }}
+                <strong>Miembro desde:</strong> {{ datos.fecha_registro }}
             </div>
             <div class="acciones">
-                <form action="{% url 'logout' %}" method="POST">
+                <a href="{% url 'info_animales' %}" class="btn-productos">
+                        📦 Ver mis animales
+                </a>
+                <form action="{% url 'logout' %}" method="POST" style="width: 100%;">
                     {% csrf_token %}
                     <button type="submit" class="logout-btn">
                         Cerrar sesión
                     </button>
                 </form>
-                <a href="" class="btn-productos">
-                    Ver mis animales
-                </a>
             </div>
         </div>
     </div>

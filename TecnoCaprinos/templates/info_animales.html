@@ -163,12 +163,11 @@
     </style>
 </head>
 <body>
-
     <div class="white-header">
         <div class="logo-container">
             <img src="{% static 'logoCompleto.jpeg' %}" alt="Logo">
         </div>
-        <h1 class="header-title">TECNOCAPRINOS</h1>
+        <h1 style="color: #c5a373;">TECNOCAPRINOS</h1>
         <a href="{% url 'dashboard' %}" class="irDashboard">
             <svg width="60" height="60" viewBox="0 0 24 24" fill="#c5a373">
                 <circle cx="12" cy="8" r="4"/>
@@ -176,14 +175,12 @@
             </svg>
         </a>
     </div>
-
     <div class="search-container">
         <div class="search-bar">
             <span>🔍 </span>
             <input type="text" placeholder="Barra de busqueda">
         </div>
     </div>
-
     <div class="grid-categorias">
         
         <div class="categoria-item">
@@ -194,7 +191,6 @@
             </div>
             <h3>EN CINTA</h3>
         </div>
-
         <div class="categoria-item">
             <div class="circulo">
                 <a href="{% url 'vacunas' %}">
@@ -203,7 +199,6 @@
             </div>
             <h3>VACUNAS</h3>
         </div>
-
         <div class="categoria-item">
             <div class="circulo">
                 <a href="{% url 'enfermas' %}">
@@ -212,7 +207,6 @@
             </div>
             <h3>ENFERMAS</h3>
         </div>
-
         <div class="categoria-item">
             <div class="circulo">
                 <a href="{% url 'produccion' %}">
@@ -221,7 +215,6 @@
             </div>
             <h3>PRODUCCION</h3>
         </div>
-
     </div>
     <a href="{% url 'listar' %}" class="btn-listar">VER MIS CABRAS REGISTRADAS</a>
 </body>

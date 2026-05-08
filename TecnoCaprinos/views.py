@@ -57,7 +57,7 @@ def login_required_firebase(view_func):
 
 def login(request):
     if ('uid' in request.session):
-        return redirect('dashboard')
+        return redirect('info_animales')
     
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -85,7 +85,7 @@ def login(request):
                 request.session['email'] = data['email']
                 request.session['idToken'] = data['idToken']
                 messages.success(request, f'👌 Acceso correcto al sistema')
-                return redirect('dashboard')
+                return redirect('info_animales')
             else:
                 # Error: Analizarlo
                 errorMessage = data.get('error', {}).get('message', 'UNKNOWN ERROR')
