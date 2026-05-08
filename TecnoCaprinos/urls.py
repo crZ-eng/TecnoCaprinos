@@ -15,21 +15,14 @@ urlpatterns = [
     path('info-animales/produccion', views.produccion, name='produccion'),
     path('info-animales/enfermas', views.enfermas, name='enfermas'),
 
-    # Añadir cabra
-    path('info-animales/anadir', views.anadir, name='anadir'),
+  
 
     # Registros
     path('registrar-enfermo/', views.registrar_enfermo, name='registrar_enfermo'),
     path('registrar-vacuna/', views.registrar_vacuna, name='registrar_vacuna'),
     path('agregar-produccion/', views.agregar_produccion, name='agregar_produccion'),
-    path(
-        'registrar-seguimiento-gestacion/',
-        views.registrar_seguimiento_gestacion,
-        name='registrar_seguimiento_gestacion'
-    ),
+    path('registrar-seguimiento-gestacion/',views.registrar_seguimiento_gestacion,name='registrar_seguimiento_gestacion'),
 
-    # Animales
-    path('guardar_animal/', views.guardar_animal, name='guardar_animal'),
        #btn añadir cabra
     path('info-animales/anadir', views.anadir_cabra, name= 'anadir'),
     path('info-animales/listar', views.listar_cabras, name= 'listar'),
