@@ -62,6 +62,24 @@
 
         .btn-plus:hover { transform: scale(1.1); }
 
+        .btn-volver {
+            grid-column: span 2;
+            background-color:#ab7b41;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            font-family: 'Fredoka', sans-serif;
+            transition: transform 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-volver:hover { transform: scale(1.02); }
+
         /* CONTENEDOR DE TABLA */
         .main-container {
             width: 95%;
@@ -127,7 +145,7 @@
 </head>
 <body>
     <div class="white-header">
-        <img src="{% static 'LOGO_TECNOCAP.png' %}" alt="Logo" style="height: 60px;">
+        <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
         <h1 class="header-title">TECNOCAPRINOS - EN CINTA</h1>
         <a href="{% url 'registrar_seguimiento_gestacion' %}" class="btn-plus">+</a>
     </div>
@@ -168,5 +186,8 @@
             </tbody>
         </table>
     </div>
+    
+    <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
+
 </body>
 </html>
