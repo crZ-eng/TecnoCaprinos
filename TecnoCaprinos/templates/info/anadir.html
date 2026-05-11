@@ -264,6 +264,8 @@
                         <option value="F">Hembra (Cabra)</option>
                     </select>
                 </div>
+
+
                 <div class="form-group">
                     <label>Color:</label>
                     <select name="color" required>
@@ -290,6 +292,17 @@
                     <label>Codigo del Padre:</label>
                     <input type="text" name="cod_padre" placeholder="Codigo del Cabro Padre" required>
                 </div>
+
+                 <div class="form-group">
+                    <label>categoria:</label>
+                    <select name="categoria" id="categoria">
+                    <option selected>seleciona una categoria</option>
+                    <option value="vacunas">vacunas</option>
+                    <option value="produccion">productora</option>
+                    <option value="cinta">cinta</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>
                 <a href="{% url 'info_animales' %}"><-- VOLVER</a>
             </form>
