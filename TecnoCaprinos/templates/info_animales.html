@@ -1,0 +1,247 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoCaprinos - Info Animales</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Besley&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --cafe-fondo: #7a5230;
+            --beige-botones: #c5a373;
+            --blanco: #ffffff;
+            --bg-principal: #C9A06D;
+            --bg-cuadros: #EAD4B8;
+            --color-trazos: #7F5637;
+            --white: #f8f8f8;
+        }
+
+        
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--cafe-fondo);
+            margin: 0;
+            color: black;
+        }
+
+        /* HEADER */
+        .white-header {
+            background-color: var(--blanco);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 5%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .logo-container img {
+            height: 60px;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--bg-cuadros);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
+            margin: 0;
+        }
+
+        /* BOTÓN PERFIL */
+        .irDashboard {
+            text-decoration: none;
+        }
+
+        /* BARRA DE BÚSQUEDA */
+        .search-container {
+            padding: 30px 5%;
+        }
+
+        .search-bar {
+            background-color: var(--beige-botones);
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            border: none;
+        }
+
+        .search-bar input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #5d3a1a;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(93, 58, 26, 0.7);
+        }
+
+        /* GRID */
+        .grid-categorias {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            padding: 20px 5%;
+            text-align: center;
+        }
+
+        .categoria-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .circulo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 6px solid var(--blanco);
+            overflow: hidden;
+            margin-bottom: 15px;
+            background-color: #ddd;
+            transition: transform 0.3s ease;
+        }
+
+        .circulo:hover {
+            transform: scale(1.05);
+        }
+
+        .circulo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* TÍTULOS */
+        .categoria-item h3 {
+            text-transform: uppercase;
+            font-size: 1.4rem;
+            margin: 0;
+            letter-spacing: 1px;
+            color: white;
+        }
+
+        /* BOTÓN LISTAR */
+        .btn-listar {
+            background-color: var(--beige-botones);
+            color: #5d3a1a;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            text-align: center;
+            width: fit-content;
+            transition: 0.3s ease;
+
+            display: block;
+            margin: 50px auto 0 auto;
+    }
+
+        .btn-listar:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .grid-categorias {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .circulo {
+                width: 140px;
+                height: 140px;
+            }
+
+            .header-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="white-header">
+
+        <div class="logo-container">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo">
+        </div>
+
+        <h1 class="header-title">TECNOCAPRINOS</h1>
+
+        <a href="{% url 'dashboard' %}" class="irDashboard">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="#c5a373">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+            </svg>
+        </a>
+
+    </div>
+
+    <!-- BARRA -->
+    <div class="search-container">
+        <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" placeholder="Barra de búsqueda">
+        </div>
+    </div>
+
+    <!-- CATEGORÍAS -->
+    <div class="grid-categorias">
+
+        <div class="categoria-item">
+            <div class="circulo">
+                <a href="{% url 'cinta' %}">
+                    <img src="{% static 'cinta.jpg' %}" alt="En cinta">
+                </a>
+            </div>
+            <h3>EN CINTA</h3>
+        </div>
+
+        <div class="categoria-item">
+            <div class="circulo">
+                <a href="{% url 'vacunas' %}">
+                    <img src="{% static 'vacunas.jpg' %}" alt="Vacunas">
+                </a>
+            </div>
+            <h3>VACUNAS</h3>
+        </div>
+
+        <div class="categoria-item">
+            <div class="circulo">
+                <a href="{% url 'enfermas' %}">
+                    <img src="{% static 'enfermas.jpg' %}" alt="Enfermas">
+                </a>
+            </div>
+            <h3>ENFERMAS</h3>
+        </div>
+
+        <div class="categoria-item">
+            <div class="circulo">
+                <a href="{% url 'produccion' %}">
+                    <img src="{% static 'produccion.jpg' %}" alt="Producción">
+                </a>
+            </div>
+            <h3>PRODUCCIÓN</h3>
+        </div>
+
+  
+
+    </div>
+      <!-- BOTÓN CABRAS REGISTRADAS -->
+        <a href="{% url 'listar' %}" class="btn-listar">
+            VER MIS CABRAS REGISTRADAS
+        </a>
+</body>
+</html>

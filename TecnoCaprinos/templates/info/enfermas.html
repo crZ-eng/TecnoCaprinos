@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoCaprinos - Enfermos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-principal: #C9A06D;
+            --bg-cuadros: #EAD4B8;
+            --color-trazos: #7F5637;
+            --white: #f8f8f8;
+            --header-table: #d2b48c;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg-principal);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* HEADER */
+        .white-header {
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            box-sizing: border-box;
+            border-bottom: 4px solid var(--color-trazos);
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--bg-cuadros);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .btn-plus {
+            background-color: var(--color-trazos);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+
+        .btn-plus:hover { transform: scale(1.1); }
+
+        /* TABLA */
+        .main-container {
+            width: 95%;
+            max-width: 1300px;
+            background-color: var(--bg-cuadros);
+            border: 6px solid var(--color-trazos);
+            border-radius: 40px;
+            margin: 40px auto;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .table-title {
+            text-align: center;
+            color: var(--white);
+            font-size: 2.5rem;
+            -webkit-text-stroke: 2px var(--color-trazos);
+            margin-bottom: 25px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: #fff8e1;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--color-trazos);
+        }
+
+        .data-table th {
+            background-color: var(--header-table);
+            color: var(--color-trazos);
+            padding: 15px 5px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border-bottom: 3px solid var(--color-trazos);
+            border-right: 1px solid var(--color-trazos);
+        }
+
+        .data-table td {
+            padding: 12px 9px;
+            text-align: center;
+            color: var(--color-trazos);
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--bg-cuadros);
+            border-right: 1px solid var(--bg-cuadros);
+        }
+
+        .date-tag {
+            background-color: var(--white);
+            border: 1px solid var(--color-trazos);
+            padding: 4px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        /* Estilos de evolución */
+        .status-critico { color: #d32f2f; font-weight: bold; }
+        .status-estable { color: #2e7d32; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="white-header">
+        <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
+        <h1 class="header-title">TECNOCAPRINOS - ENFERMOS</h1>
+        <a href="{% url 'registrar_enfermo' %}" class="btn-plus">+</a>
+    </div>
+
+    <div class="main-container">
+        <h2 class="table-title">Registro Clínico</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Fecha Ingreso</th>
+                    <th>Diagnóstico / Síntomas</th>
+                    <th>Tratamiento Aplicado</th>
+                    <th>Temperatura (°C)</th>
+                    <th>Frecuencia Respiratoria</th>
+                    <th>Estado de Evolución</th>
+                    <th>Veterinario / Responsable</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registro in casos_clinicos %}
+                <tr>
+                    <td><span class="date-tag">{{ registro.fecha_ingreso|date:"d/m/Y" }}</span></td>
+                    <td>{{ registro.diagnostico }}</td>
+                    <td>{{ registro.tratamiento }}</td>
+                    <td>{{ registro.temperatura }}</td>
+                    <td>{{ registro.frecuencia_respiratoria }}</td>
+                    <td class="{% if registro.evolucion == 'Crítico' %}status-critico{% elif registro.evolucion == 'Estable' %}status-estable{% endif %}">
+                        {{ registro.evolucion }}
+                    </td>
+                    <td>{{ registro.responsable }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No hay registros clínicos activos.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+     <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
+
+</body>
+</html>

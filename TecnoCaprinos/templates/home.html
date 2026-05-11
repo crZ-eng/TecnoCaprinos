@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoCaprinos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <div class="white-header">
+        <div class="logo-container">
+            <img src="{% static 'logoCompleto.jpeg' %}" alt="Logo">
+        </div>
+        <h1 class="header-title">TECNOCAPRINOS</h1>
+        <a href="{% url 'login' %}" class="btn-info">mas info</a>
+    </div>
+    <div class="main-content">
+        <div class="about-section">
+            <h2 class="section-title">¿Quienes somos?</h2>
+            <div class="text-box">
+                <p>
+                    Somos un grupo de aprendices de la tecnología en Análisis y Desarrollo de Software (ADSO) del SENA Centro de Biotecnología Agropecuaria (CBA).
+                </p>
+                <p>
+                    Nos apasiona la convergencia entre la tecnología y el campo, y estamos comprometidos con la creación de soluciones digitales que modernicen los procesos productivos de nuestra región.
+                </p>
+                <p>
+                    Como equipo, aplicamos metodologías ágiles como Scrum para garantizar que nuestras herramientas sean funcionales, escalables y centradas en las necesidades reales del entorno pecuario.
+                </p>
+            </div>
+        </div>
+        <div class="login-sidebar">
+            <img src="{% static 'img1.webp' %}" alt="Cabra" class="goat-img">
+            <div class="login-box">
+                <h3>¿Que deseas hacer?</h3>
+                <a href="{% url 'login' %}" class="btn-action">Iniciar Sesion</a>
+                <a href="{% url 'registro' %}" class="btn-action">Registrarme</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

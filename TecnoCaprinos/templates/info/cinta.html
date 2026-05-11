@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoCaprinos - En Cinta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-principal: #C9A06D;
+            --bg-cuadros: #EAD4B8;
+            --color-trazos: #7F5637;
+            --white: #f8f8f8;
+            --header-table: #d2b48c;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg-principal);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* HEADER */
+        .white-header {
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            box-sizing: border-box;
+            border-bottom: 4px solid var(--color-trazos);
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--bg-cuadros);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .btn-plus {
+            background-color: var(--color-trazos);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-plus:hover { transform: scale(1.1); }
+
+        /* CONTENEDOR DE TABLA */
+        .main-container {
+            width: 95%;
+            max-width: 1300px;
+            background-color: var(--bg-cuadros);
+            border: 6px solid var(--color-trazos);
+            border-radius: 40px;
+            margin: 40px auto;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .table-title {
+            text-align: center;
+            color: var(--white);
+            font-size: 2.5rem;
+            -webkit-text-stroke: 2px var(--color-trazos);
+            margin-bottom: 25px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: #fff8e1;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--color-trazos);
+        }
+
+        .data-table th {
+            background-color: var(--header-table);
+            color: var(--color-trazos);
+            padding: 15px 5px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            border-bottom: 3px solid var(--color-trazos);
+            border-right: 1px solid var(--color-trazos);
+        }
+
+        .data-table td {
+            padding: 12px 8px;
+            text-align: center;
+            color: var(--color-trazos);
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--bg-cuadros);
+            border-right: 1px solid var(--bg-cuadros);
+        }
+
+        .date-tag {
+            background-color: var(--white);
+            border: 1px solid var(--color-trazos);
+            padding: 4px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        /* Colores de estado */
+        .status-optimo { color: #2e7d32; font-weight: bold; }
+        .status-alerta { color: #d32f2f; font-weight: bold; }
+
+    </style>
+</head>
+<body>
+    <div class="white-header">
+        <img src="{% static 'LOGO_TECNOCAP.png' %}" alt="Logo" style="height: 60px;">
+        <h1 class="header-title">TECNOCAPRINOS - EN CINTA</h1>
+        <a href="{% url 'registrar_seguimiento_gestacion' %}" class="btn-plus">+</a>
+    </div>
+    <div class="main-container">
+        <h2 class="table-title">Seguimiento de Gestación</h2>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Día de Gestación</th>
+                    <th>Peso Madre (kg)</th>
+                    <th>Consumo Alimento (kg)</th>
+                    <th>Condición Corporal (1-5)</th>
+                    <th>Comportamiento / Signos / Obs.</th>
+                    <th>Estado de Salud</th>
+                    <th>Responsable</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registro in gestaciones %}
+                <tr>
+                    <td><span class="date-tag">{{ registro.fecha|date:"d/m/Y" }}</span></td>
+                    <td>{{ registro.dias_gestacion }}</td>
+                    <td>{{ registro.peso_madre }}</td>
+                    <td>{{ registro.consumo_alimento }}</td>
+                    <td>{{ registro.condicion_corporal }}</td>
+                    <td>{{ registro.observaciones|default:"Sin novedad" }}</td>
+                    <td class="{% if registro.estado == 'Óptimo' %}status-optimo{% else %}status-alerta{% endif %}">
+                        {{ registro.estado }}
+                    </td>
+                    <td>{{ registro.responsable }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">No hay registros de seguimiento de gestación.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
