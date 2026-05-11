@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoCaprinos - En Cinta</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --bg-principal: #C9A06D;
@@ -37,7 +39,7 @@
         }
 
         .header-title {
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             font-weight: 600;
             color: var(--bg-cuadros);
             -webkit-text-stroke: 1.5px var(--color-trazos);
@@ -60,9 +62,11 @@
             transition: 0.3s;
         }
 
-        .btn-plus:hover { transform: scale(1.1); }
+        .btn-plus:hover {
+            transform: scale(1.1);
+        }
 
-        /* CONTENEDOR DE TABLA */
+        /* CONTENEDOR */
         .main-container {
             width: 95%;
             max-width: 1300px;
@@ -80,8 +84,10 @@
             font-size: 2.5rem;
             -webkit-text-stroke: 2px var(--color-trazos);
             margin-bottom: 25px;
+            text-transform: uppercase;
         }
 
+        /* TABLA */
         .data-table {
             width: 100%;
             border-collapse: separate;
@@ -95,78 +101,135 @@
         .data-table th {
             background-color: var(--header-table);
             color: var(--color-trazos);
-            padding: 15px 5px;
-            font-size: 0.8rem;
+            padding: 15px 10px;
+            font-size: 0.9rem;
             text-transform: uppercase;
             border-bottom: 3px solid var(--color-trazos);
-            border-right: 1px solid var(--color-trazos);
         }
 
         .data-table td {
-            padding: 12px 8px;
+            padding: 12px 10px;
             text-align: center;
             color: var(--color-trazos);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             border-bottom: 1px solid var(--bg-cuadros);
-            border-right: 1px solid var(--bg-cuadros);
+            background-color: white;
         }
 
-        .date-tag {
-            background-color: var(--white);
-            border: 1px solid var(--color-trazos);
-            padding: 4px 10px;
-            border-radius: 12px;
-            display: inline-block;
+        .sin-registros {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--color-trazos);
+            font-weight: bold;
         }
 
-        /* Colores de estado */
-        .status-optimo { color: #2e7d32; font-weight: bold; }
-        .status-alerta { color: #d32f2f; font-weight: bold; }
 
+        @media (max-width: 900px) {
+
+            .white-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header-title {
+                font-size: 1.6rem;
+            }
+
+            .main-container {
+                padding: 15px;
+            }
+
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
     </style>
 </head>
+
 <body>
+
+    <!-- HEADER -->
     <div class="white-header">
-        <img src="{% static 'LOGO_TECNOCAP.png' %}" alt="Logo" style="height: 60px;">
-        <h1 class="header-title">TECNOCAPRINOS - EN CINTA</h1>
+
+        <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
+
+        <h1 class="header-title">
+            TECNOCAPRINOS - EN CINTA
+        </h1>
+
         <a href="{% url 'registrar_seguimiento_gestacion' %}" class="btn-plus">+</a>
+
     </div>
+
+    <!-- CONTENIDO -->
     <div class="main-container">
-        <h2 class="table-title">Seguimiento de Gestación</h2>
+
+        <h2 class="table-title">
+            Cabras En Cinta
+        </h2>
+
         <table class="data-table">
+
             <thead>
                 <tr>
-                    <th>Fecha</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Raza</th>
+                    <th>Peso</th>
+                    <th>Sexo</th>
+                    <th>Color</th>
+                    <th>Categoría</th>
                     <th>Día de Gestación</th>
-                    <th>Peso Madre (kg)</th>
-                    <th>Consumo Alimento (kg)</th>
-                    <th>Condición Corporal (1-5)</th>
-                    <th>Comportamiento / Signos / Obs.</th>
-                    <th>Estado de Salud</th>
-                    <th>Responsable</th>
                 </tr>
             </thead>
+
             <tbody>
-                {% for registro in gestaciones %}
+
+                {% for cabra in cabras %}
+
                 <tr>
-                    <td><span class="date-tag">{{ registro.fecha|date:"d/m/Y" }}</span></td>
-                    <td>{{ registro.dias_gestacion }}</td>
-                    <td>{{ registro.peso_madre }}</td>
-                    <td>{{ registro.consumo_alimento }}</td>
-                    <td>{{ registro.condicion_corporal }}</td>
-                    <td>{{ registro.observaciones|default:"Sin novedad" }}</td>
-                    <td class="{% if registro.estado == 'Óptimo' %}status-optimo{% else %}status-alerta{% endif %}">
-                        {{ registro.estado }}
+                    <td>{{ cabra.fecha_nacimiento }}</td>
+                    <td>{{ cabra.codigo }}</td>
+                    <td>{{ cabra.nombre }}</td>
+                    <td>{{ cabra.raza }}</td>
+                    <td>{{ cabra.peso }}</td>
+                    <td>{{ cabra.sexo }}</td>
+                    <td>{{ cabra.color }}</td>
+                    <td>{{ cabra.categoria }}</td>
+
+                    <!-- datos tecnicos "" -->
+
+                    <td>
+                        
                     </td>
-                    <td>{{ registro.responsable }}</td>
                 </tr>
+
+                
+
+                
+
                 {% empty %}
+
                 <tr>
-                    <td colspan="8">No hay registros de seguimiento de gestación.</td>
+                    <td colspan="8" class="sin-registros">
+                        No hay cabras en cinta registradas.
+                    </td>
                 </tr>
+
                 {% endfor %}
+
             </tbody>
+
         </table>
+
+        <a href="{% url 'info_animales' %}" class="btn-volver">
+            ← VOLVER
+        </a>
+
     </div>
+
 </body>
 </html>

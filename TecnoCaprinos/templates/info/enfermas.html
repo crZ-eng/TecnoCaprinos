@@ -131,42 +131,66 @@
         <a href="{% url 'registrar_enfermo' %}" class="btn-plus">+</a>
     </div>
 
+    <!-- CONTENIDO -->
     <div class="main-container">
-        <h2 class="table-title">Registro Clínico</h2>
+
+
         <table class="data-table">
+
             <thead>
                 <tr>
-                    <th>Fecha Ingreso</th>
-                    <th>Diagnóstico / Síntomas</th>
-                    <th>Tratamiento Aplicado</th>
-                    <th>Temperatura (°C)</th>
-                    <th>Frecuencia Respiratoria</th>
-                    <th>Estado de Evolución</th>
-                    <th>Veterinario / Responsable</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Raza</th>
+                    <th>Peso</th>
+                    <th>Sexo</th>
+                    <th>Color</th>
+                    <th>Categoría</th>
+                    <th>Día de Gestación</th>
                 </tr>
             </thead>
-            <tbody>
-                {% for registro in casos_clinicos %}
-                <tr>
-                    <td><span class="date-tag">{{ registro.fecha_ingreso|date:"d/m/Y" }}</span></td>
-                    <td>{{ registro.diagnostico }}</td>
-                    <td>{{ registro.tratamiento }}</td>
-                    <td>{{ registro.temperatura }}</td>
-                    <td>{{ registro.frecuencia_respiratoria }}</td>
-                    <td class="{% if registro.evolucion == 'Crítico' %}status-critico{% elif registro.evolucion == 'Estable' %}status-estable{% endif %}">
-                        {{ registro.evolucion }}
-                    </td>
-                    <td>{{ registro.responsable }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="7">No hay registros clínicos activos.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-     <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
 
+            <tbody>
+
+                {% for cabra in cabras %}
+
+                <tr>
+                    <td>{{ cabra.fecha_nacimiento }}</td>
+                    <td>{{ cabra.codigo }}</td>
+                    <td>{{ cabra.nombre }}</td>
+                    <td>{{ cabra.raza }}</td>
+                    <td>{{ cabra.peso }}</td>
+                    <td>{{ cabra.sexo }}</td>
+                    <td>{{ cabra.color }}</td>
+                    <td>{{ cabra.categoria }}</td>
+
+                    <!-- datos tecnicos "" -->
+
+                    <td>
+                        
+                    </td>
+                </tr>
+                
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="8" class="sin-registros">
+                        No hay cabras enfermas registradas.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <a href="{% url 'info_animales' %}" class="btn-volver">
+            ← VOLVER
+        </a>
+
+    </div>
 </body>
 </html>

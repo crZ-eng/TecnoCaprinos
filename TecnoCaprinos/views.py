@@ -23,14 +23,17 @@ def bienvenido(request):
 # =========================
 
 def registro_usuario(request):
+
     mensaje = None
 
     if request.method == 'POST':
+
         nombre = request.POST.get('nombre')
         email = request.POST.get('email')
         password = request.POST.get('password')
 
         try:
+
             user = auth.create_user(
                 email=email,
                 password=password
@@ -48,7 +51,9 @@ def registro_usuario(request):
         except Exception as e:
             mensaje = f"Error: {e}"
 
-    return render(request, 'registro.html', {'mensaje': mensaje})
+    return render(request, 'registro.html', {
+        'mensaje': mensaje
+    })
 
 
 # =========================
@@ -110,7 +115,13 @@ def login(request):
 
             else:
 
-                errorMessage = data.get('error', {}).get('message', 'UNKNOWN ERROR')
+                errorMessage = data.get(
+                    'error',
+                    {}
+                ).get(
+                    'message',
+                    'UNKNOWN ERROR'
+                )
 
                 errores_comunes = {
                     'INVALID_LOGIN_CREDENTIALS': 'La contraseña es incorrecta o el correo no es válido.',
@@ -140,8 +151,14 @@ def login(request):
 # =========================
 
 def cerrar_sesion(request):
+
     request.session.flush()
-    messages.info(request, 'Has cerrado sesión correctamente')
+
+    messages.info(
+        request,
+        'Has cerrado sesión correctamente'
+    )
+
     return redirect('login')
 
 
@@ -153,11 +170,13 @@ def cerrar_sesion(request):
 def dashboard(request):
 
     uid = request.session.get('uid')
+
     datosUser = {}
 
     try:
 
         doc_ref = db.collection('usuarios').document(uid)
+
         doc = doc_ref.get()
 
         if doc.exists:
@@ -175,9 +194,17 @@ def dashboard(request):
             }
 
     except Exception as e:
-        messages.error(request, f'Error al cargar los datos: {e}')
 
-    return render(request, 'dashboard.html', {'datos': datosUser})
+        messages.error(
+            request,
+            f'Error al cargar los datos: {e}'
+        )
+
+    return render(
+        request,
+        'dashboard.html',
+        {'datos': datosUser}
+    )
 
 
 # =========================
@@ -186,17 +213,29 @@ def dashboard(request):
 
 @login_required_firebase
 def info_animales(request):
-    return render(request, 'info_animales.html')
+
+    return render(
+        request,
+        'info_animales.html'
+    )
 
 
 # =========================
-# AÑADIR ANIMAL
+# FORMULARIO AÑADIR
 # =========================
 
 @login_required_firebase
 def anadir(request):
-    return render(request, 'info/anadir.html')
 
+    return render(
+        request,
+        'info/anadir.html'
+    )
+
+
+# =========================
+# AÑADIR CABRA
+# =========================
 
 @login_required_firebase
 def anadir_cabra(request):
@@ -213,11 +252,15 @@ def anadir_cabra(request):
         cod_madre = request.POST.get('cod_madre')
         cod_padre = request.POST.get('cod_padre')
 
+        # NUEVO
+        categoria = request.POST.get('categoria')
+
         uid = request.session.get('uid')
 
         try:
 
             db.collection('cabras').add({
+
                 'codigo': cod,
                 'nombre': nombre,
                 'raza': raza,
@@ -225,20 +268,35 @@ def anadir_cabra(request):
                 'fecha_nacimiento': fecha_nacimiento,
                 'sexo': sexo,
                 'color': color,
+
+                # NUEVO
+                'categoria': categoria,
+
                 'usuario_id': uid,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
+
                 'fecha_añadido': firestore.SERVER_TIMESTAMP
             })
 
-            messages.success(request, "Cabra añadida con éxito")
+            messages.success(
+                request,
+                "Cabra añadida con éxito"
+            )
 
             return redirect('listar')
 
         except Exception as e:
-            messages.error(request, f"Error al añadir la cabra: {e}")
 
-    return render(request, 'info/anadir.html')
+            messages.error(
+                request,
+                f"Error al añadir la cabra: {e}"
+            )
+
+    return render(
+        request,
+        'info/anadir.html'
+    )
 
 
 # =========================
@@ -254,21 +312,32 @@ def listar_cabras(request):
 
     try:
 
-        docs = db.collection('cabras').where('usuario_id', '==', uid).stream()
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .stream()
 
         for doc in docs:
 
             cabra = doc.to_dict()
+
             cabra['id'] = doc.id
 
             cabras.append(cabra)
 
     except Exception as e:
-        messages.error(request, f"Hubo un error al obtener sus cabras: {e}")
 
-    return render(request, 'info/listar_cabras.html', {
-        'cabras': cabras
-    })
+        messages.error(
+            request,
+            f"Hubo un error al obtener sus cabras: {e}"
+        )
+
+    return render(
+        request,
+        'info/listar_cabras.html',
+        {
+            'cabras': cabras
+        }
+    )
 
 
 # =========================
@@ -277,7 +346,36 @@ def listar_cabras(request):
 
 @login_required_firebase
 def cinta(request):
-    return render(request, 'info/cinta.html ')
+
+    uid = request.session.get('uid')
+
+    cabras = []
+
+    try:
+
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'cinta')\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+    except Exception as e:
+        print(e)
+
+    return render(
+        request,
+        'info/cinta.html',
+        {
+            'cabras': cabras
+        }
+    )
 
 
 # =========================
@@ -286,35 +384,36 @@ def cinta(request):
 
 @login_required_firebase
 def vacunas(request):
-    return render(request, 'info/vacunas.html')
 
+    uid = request.session.get('uid')
 
-# =========================
-# ENFERMAS
-# =========================
-
-@login_required_firebase
-def enfermas(request):
-
-    casos_clinicos = []
+    cabras = []
 
     try:
 
-        docs = db.collection('enfermos').stream()
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'vacunas')\
+            .stream()
 
         for doc in docs:
 
-            registro = doc.to_dict()
-            registro['id'] = doc.id
+            cabra = doc.to_dict()
 
-            casos_clinicos.append(registro)
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
 
     except Exception as e:
         print(e)
 
-    return render(request, 'info/enfermas.html', {
-        'casos_clinicos': casos_clinicos
-    })
+    return render(
+        request,
+        'info/vacunas.html',
+        {
+            'cabras': cabras
+        }
+    )
 
 
 # =========================
@@ -326,23 +425,69 @@ def produccion(request):
 
     uid = request.session.get('uid')
 
-    username = ""
-    registros = []
+    cabras = []
 
     try:
 
-        doc = db.collection('usuarios').document(uid).get()
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'produccion')\
+            .stream()
 
-        if doc.exists:
-            username = doc.to_dict().get('nombre', '')
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
 
     except Exception as e:
         print(e)
 
-    return render(request, 'info/produccion.html', {
-        'username': username,
-        'registros': registros
-    })
+    return render(
+        request,
+        'info/produccion.html',
+        {
+            'cabras': cabras
+        }
+    )
+
+
+# =========================
+# ENFERMAS
+# =========================
+
+@login_required_firebase
+def enfermas(request):
+
+    cabras = []
+
+    try:
+
+        docs = db.collection('cabras')\
+        .where('usuario_id', '==', uid)\
+        .where('categoria', '==', 'enferma')\
+        .stream()
+            
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+    except Exception as e:
+        print(e)
+
+    return render(
+        request,
+        'info/enfermas.html',
+        {
+            'cabras': cabras
+        }
+    )
 
 
 # =========================
@@ -350,18 +495,31 @@ def produccion(request):
 # =========================
 
 def registrar_enfermo(request):
-    return render(request, 'info/agregar/registrar_enfermo.html')
+
+    return render(
+        request,
+        'info/agregar/registrar_enfermo.html'
+    )
 
 
 def registrar_vacuna(request):
-    return render(request, 'info/agregar/registrar_vacuna.html')
+
+    return render(
+        request,
+        'info/agregar/registrar_vacuna.html'
+    )
 
 
 def agregar_produccion(request):
-    return render(request, 'info/agregar/agregar_produccion.html')
+
+    return render(
+        request,
+        'info/agregar/agregar_produccion.html'
+    )
 
 
 def registrar_seguimiento_gestacion(request):
+
     return render(
         request,
         'info/agregar/registrar_seguimiento_gestacion.html'
@@ -369,4 +527,8 @@ def registrar_seguimiento_gestacion(request):
 
 
 def guardar_animal(request):
-    return render(request, 'info/agregar/guardar_animal.html')
+
+    return render(
+        request,
+        'info/agregar/guardar_animal.html'
+    )
