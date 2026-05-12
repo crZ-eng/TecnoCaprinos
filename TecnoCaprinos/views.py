@@ -460,7 +460,9 @@ def produccion(request):
 
 @login_required_firebase
 def enfermas(request):
-
+    
+    uid = request.session.get('uid')
+    
     cabras = []
 
     try:
@@ -487,6 +489,46 @@ def enfermas(request):
         {
             'cabras': cabras
         }
+    )
+
+# =========================
+# producción
+# =========================
+
+
+@login_required_firebase
+def produccion (request):
+    
+    uid = request.session.get('uid')
+    
+    cabras = []
+    
+    
+    try:
+        
+        docs = db.collection('cabras')\
+        .where('usuario_id', '==', uid)\
+        .where('categoria', '==', 'produccion')\
+        .stream()
+        
+        for doc in docs:
+            
+            cabra = doc.to_dict()
+            
+            cabra['id'] = doc.id
+            
+            cabras.append(cabra)
+            
+    except Exception as e:
+        
+        print(e)
+        
+    return render(
+        request,
+        'info/produccion.html',
+        {
+            'cabras':cabras
+        } 
     )
 
 

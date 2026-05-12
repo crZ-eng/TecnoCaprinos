@@ -76,7 +76,7 @@
 
         .btn-volver {
             grid-column: span 2;
-            background-color:#ab7b41;
+            background-color: #ab7b41;
             color: white;
             border: none;
             padding: 12px;
@@ -90,7 +90,9 @@
             text-decoration: none;
         }
 
-        .btn-volver:hover { transform: scale(1.02); }
+        .btn-volver:hover {
+            transform: scale(1.02);
+        }
 
         /* CONTENIDO PRINCIPAL */
         .page-content {
@@ -225,31 +227,49 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Fecha</th>
+
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Peso</th>
+                        <th>Sexo</th>
+
+
                         <th>Ordeño Mañana (L)</th>
                         <th>Ordeño Tarde (L)</th>
                         <th>Total Diario (L)</th>
-                        <th>Grasa (%)</th>
                         <th>Observaciones</th>
                         <th>Responsable</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for registro in registros %}
+
+                    {% for cabra in cabras %}
                     <tr>
-                        <td><span class="date-tag">{{ registro.fecha|date:"d/m/Y" }}</span></td>
-                        <td>{{ registro.ordeno_manana }}</td>
-                        <td>{{ registro.ordeno_tarde }}</td>
-                        <td>{{ registro.total_diario }}</td>
-                        <td>{{ registro.grasa }}</td>
-                        <td>{{ registro.observaciones|default:"-" }}</td>
-                        <td>{{ registro.responsable }}</td>
+
+                        <td>{{ cabra.codigo }}</td>
+                        <td>{{ cabra.nombre }}</td>
+                        <td>{{ cabra.peso }}</td>
+                        <td>{{ cabra.sexo }}</td>
+
+
+                        <td>{{ cabra.ordeno_manana|default:"0" }}</td>
+                        <td>{{ cabra.ordeno_tarde|default:"0" }}</td>
+                        <td>{{ cabra.total_diario|default:"0" }}</td>
+                        <td>{{ cabra.observaciones|default:"-" }}</td>
+                        <td>{{ cabra.responsable|default:"-" }}</td>
+
                     </tr>
+
                     {% empty %}
+
                     <tr>
-                        <td colspan="7">No hay registros de producción todavía.</td>
+                        <td colspan="10">
+                            No hay registros de producción todavía.
+                        </td>
                     </tr>
+
                     {% endfor %}
+
                 </tbody>
             </table>
         </div>
