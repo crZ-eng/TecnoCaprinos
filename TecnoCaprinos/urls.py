@@ -18,6 +18,7 @@ urlpatterns = [
   
 
     # Registros
+    
     path('registrar-enfermo/', views.registrar_enfermo, name='registrar_enfermo'),
     path('registrar-vacuna/', views.registrar_vacuna, name='registrar_vacuna'),
     path('agregar-produccion/', views.agregar_produccion, name='agregar_produccion'),

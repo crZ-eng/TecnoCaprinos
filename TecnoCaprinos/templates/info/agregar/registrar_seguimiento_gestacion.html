@@ -1,13 +1,496 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>registrar_seguimiento_gestacion</h1>
 
-     <a href="{% url 'cinta' %}" class="btn-volver">volver</a>
+    <title>TecnoCaprinos - Seguimiento de Gestación</title>
+
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root{
+            --bg-principal: #C9A06D;
+            --bg-cuadros: #EAD4B8;
+            --color-trazos: #7F5637;
+            --white: #f8f8f8;
+            --header-table: #d2b48c;
+            --texto: #6d4b31;
+        }
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg-principal);
+            min-height: 100vh;
+            color: var(--texto);
+        }
+
+        /* =========================
+            HEADER
+        ========================== */
+
+        .white-header{
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 40px;
+            border-bottom: 4px solid var(--color-trazos);
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo{
+            height: 65px;
+        }
+
+        .header-title{
+            font-size: 2.3rem;
+            font-weight: 600;
+            color: var(--bg-cuadros);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
+            text-transform: uppercase;
+            text-align: center;
+            flex: 1;
+        }
+
+        .header-icon{
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-color: var(--color-trazos);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        /* =========================
+            CONTENIDO
+        ========================== */
+
+        .page-content{
+            width: 95%;
+            max-width: 1400px;
+            margin: 40px auto;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        /* =========================
+            PANEL IZQUIERDO
+        ========================== */
+
+        .left-panel{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .section-title{
+            color: var(--white);
+            font-size: 3rem;
+            margin-bottom: 25px;
+            -webkit-text-stroke: 2px var(--color-trazos);
+            text-transform: uppercase;
+        }
+
+        .image-box{
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--bg-cuadros);
+            border: 6px solid var(--color-trazos);
+            border-radius: 35px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .image-box img{
+            width: 100%;
+            border-radius: 25px;
+        }
+
+        .welcome-text{
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--color-trazos);
+            max-width: 500px;
+        }
+
+        /* =========================
+            FORMULARIO
+        ========================== */
+
+        .form-container{
+            flex: 1.2;
+            background-color: var(--bg-cuadros);
+            border: 6px solid var(--color-trazos);
+            border-radius: 40px;
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .form-title{
+            text-align: center;
+            font-size: 2.4rem;
+            margin-bottom: 30px;
+            color: var(--white);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
+            text-transform: uppercase;
+        }
+
+        .form-grid{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-width{
+            grid-column: span 2;
+        }
+
+        label{
+            color: var(--color-trazos);
+            font-weight: 600;
+            margin-bottom: 7px;
+            margin-left: 8px;
+        }
+
+        input,
+        select,
+        textarea{
+            background-color: #fffaf3;
+            border: 3px solid var(--color-trazos);
+            border-radius: 16px;
+            padding: 12px 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.95rem;
+            color: var(--texto);
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        textarea{
+            resize: none;
+            min-height: 110px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus{
+            transform: scale(1.01);
+            background-color: white;
+        }
+
+        /* =========================
+            BOTONES
+        ========================== */
+
+        .buttons-container{
+            grid-column: span 2;
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .btn-submit,
+        .btn-volver{
+            flex: 1;
+            text-align: center;
+            padding: 14px;
+            border-radius: 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Fredoka', sans-serif;
+            text-decoration: none;
+            transition: 0.25s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-submit{
+            background-color: var(--color-trazos);
+            color: white;
+        }
+
+        .btn-volver{
+            background-color: #ab7b41;
+            color: white;
+        }
+
+        .btn-submit:hover,
+        .btn-volver:hover{
+            transform: scale(1.02);
+        }
+
+        /* =========================
+            RESPONSIVE
+        ========================== */
+
+        @media(max-width: 1000px){
+
+            .page-content{
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .left-panel,
+            .form-container{
+                width: 100%;
+                max-width: 700px;
+            }
+
+        }
+
+        @media(max-width: 700px){
+
+            .white-header{
+                padding: 15px 20px;
+            }
+
+            .header-title{
+                font-size: 1.5rem;
+            }
+
+            .section-title{
+                font-size: 2.2rem;
+            }
+
+            .form-container{
+                padding: 25px;
+                border-radius: 28px;
+            }
+
+            .form-grid{
+                grid-template-columns: 1fr;
+            }
+
+            .full-width,
+            .buttons-container{
+                grid-column: span 1;
+            }
+
+            .buttons-container{
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <div class="white-header">
+
+        <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo">
+
+        <h1 class="header-title">
+            TECNOCAPRINOS - GESTACIÓN
+        </h1>
+
+        <div class="header-icon">
+            🐐
+        </div>
+
+    </div>
+
+    <!-- CONTENIDO -->
+
+    <div class="page-content">
+
+        <!-- PANEL IZQUIERDO -->
+
+        <div class="left-panel">
+
+            <h2 class="section-title">
+                Seguimiento
+            </h2>
+
+            <div class="image-box">
+
+                <img src="{% static 'img1.webp' %}" alt="Cabra">
+
+            </div>
+
+            <p class="welcome-text">
+
+                Hola <strong>{{ user.username }}</strong>, en esta sección puedes registrar
+                el seguimiento de gestación de las cabras del hato caprino,
+                llevando control sobre fechas, estado de salud, observaciones
+                y evolución del embarazo.
+
+            </p>
+
+        </div>
+
+        <!-- FORMULARIO -->
+
+        <div class="form-container">
+
+            <h3 class="form-title">
+                Registrar Seguimiento
+            </h3>
+
+            <form method="POST" class="form-grid">
+
+                {% csrf_token %}
+
+                <!-- CABRA -->
+
+                <div class="form-group">
+
+                    <label>Cabra Registrada</label>
+
+                    <select name="cabra" required>
+
+                        <option value="">Seleccione una cabra...</option>
+
+                        {% for cabra in cabras %}
+                            <option value="{{ cabra.id }}">
+                                {{ cabra.nombre }} - {{ cabra.codigo }}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <!-- FECHA -->
+
+                <div class="form-group">
+
+                    <label>Fecha del Seguimiento</label>
+
+                    <input type="date" name="fecha_seguimiento" required>
+
+                </div>
+
+                <!-- MESES -->
+
+                <div class="form-group">
+
+                    <label>Mes de Gestación</label>
+
+                    <select name="mes_gestacion" required>
+
+                        <option value="">Seleccione...</option>
+                        <option value="1">1 Mes</option>
+                        <option value="2">2 Meses</option>
+                        <option value="3">3 Meses</option>
+                        <option value="4">4 Meses</option>
+                        <option value="5">5 Meses</option>
+
+                    </select>
+
+                </div>
+
+                <!-- ESTADO -->
+
+                <div class="form-group">
+
+                    <label>Estado de la Gestación</label>
+
+                    <select name="estado" required>
+
+                        <option value="">Seleccione...</option>
+                        <option value="estable">Estable</option>
+                        <option value="riesgo">En Riesgo</option>
+                        <option value="control">Bajo Observación</option>
+                        <option value="finalizada">Finalizada</option>
+
+                    </select>
+
+                </div>
+
+                <!-- PESO -->
+
+                <div class="form-group">
+
+                    <label>Peso Actual (Kg)</label>
+
+                    <input type="number" step="0.1" name="peso_actual" placeholder="Ej: 48.5">
+
+                </div>
+
+                <!-- TEMPERATURA -->
+
+                <div class="form-group">
+
+                    <label>Temperatura (°C)</label>
+
+                    <input type="number" step="0.1" name="temperatura" placeholder="Ej: 39.2">
+
+                </div>
+
+                <!-- RESPONSABLE -->
+
+                <div class="form-group full-width">
+
+                    <label>Veterinario / Responsable</label>
+
+                    <input type="text" name="responsable" placeholder="Nombre del responsable">
+
+                </div>
+
+                <!-- OBSERVACIONES -->
+
+                <div class="form-group full-width">
+
+                    <label>Observaciones</label>
+
+                    <textarea 
+                        name="observaciones"
+                        placeholder="Escribe aquí síntomas, evolución, recomendaciones o cualquier observación importante..."
+                    ></textarea>
+
+                </div>
+
+                <!-- BOTONES -->
+
+                <div class="buttons-container">
+
+                    <button type="submit" class="btn-submit">
+                        GUARDAR SEGUIMIENTO
+                    </button>
+
+                    <a href="{% url 'cinta' %}" class="btn-volver">
+                        VOLVER
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
 </body>
 </html>
