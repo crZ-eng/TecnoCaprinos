@@ -252,20 +252,20 @@
             </p>
         </div>
         <div class="form-container">
-            <h3 class="form-title">Registrar Nueva Cabra</h3>
+            <h3 class="form-title">Edita los Datos de tu Cabra</h3>
             <form method="POST" class="form-grid">
                 {% csrf_token %}
                 <div class="form-group">
                     <label>Codigo:</label>
-                    <input type="text" name="cod" value="Cod-00" placeholder="Codigo de la Cabra" required>
+                    <input value="{{ cabra.codigo }}" type="text" name="nuevo-codigo" placeholder="Codigo de la Cabra" required>
                 </div>
                 <div class="form-group">
                     <label>Nombre:</label>
-                    <input type="text" name="nombre" placeholder="Nombre de la Cabra" required>
+                    <input value="{{ cabra.nombre }}" type="text" name="nuevo-nombr" placeholder="Nombre de la Cabra" required>
                 </div>
                 <div class="form-group">
                     <label>Fecha de Nacimiento:</label>
-                    <input type="date" name="fecha_nacimiento" required>
+                    <input value="{{ cabra.fecha_nacimiento }}" type="date" name="nueva-fecha_nacimiento" required>
                 </div>
                 <div class="form-group">
                     <label>Raza:</label>
@@ -326,11 +326,11 @@
                 </div>
                 <div class="form-group">
                     <label>Peso (en Libras):</label>
-                    <input type="number" name="peso" min="0" placeholder="Peso en Libras" required>
+                    <input type="number" name="nuevo-peso" min="0" placeholder="Peso en Libras" required>
                 </div>
                 <div class="form-group">
                     <label>Sexo:</label>
-                    <select name="sexo" required>
+                    <select name="nuevo-sexo" required>
                         <option selected>Seleccione...</option>
                         <option value="M">Macho (Cabro)</option>
                         <option value="F">Hembra (Cabra)</option>
@@ -338,7 +338,7 @@
                 </div>
                 <div class="form-group">
                     <label>Color:</label>
-                    <select name="color" required>
+                    <select name="nuevo-color" required>
                         <option selected>Seleccione...</option>
                         <option value="blanco">Blanco</option>
                         <option value="negro">Negro</option>
@@ -356,21 +356,21 @@
                 </div>
                 <div class="form-group">
                     <label>Codigo de la Madre:</label>
-                    <input type="text" value="Cod-00" name="cod_madre" placeholder="Codigo de la Cabra Madre" required>
+                    <input type="text" name="nuevo-cod_madre" placeholder="Codigo de la Cabra Madre" required>
                 </div>
                 <div class="form-group">
                     <label>Codigo del Padre:</label>
-                    <input type="text" value="Cod-00" name="cod_padre" placeholder="Codigo del Cabro Padre" required>
+                    <input type="text" name="nuevo-cod_padre" placeholder="Codigo del Cabro Padre" required>
                 </div>
                 <div class="form-group">
                     <label>Categoria:</label>
-                    <select name="categoria" id="categoria">
-                    <option selected>Seleciona una Categoria</option>
-                    <option value="cinta">En Cinta</option>
-                    <option value="enferma">Enferma</option>
-                    <option value="vacunas">Vacunas</option>
-                    <option value="produccion">Producción</option>
-                    <option value="">Ninguno</option>
+                        <select name="nueva-categoria" id="categoria">
+                        <option selected>Seleciona una Categoria</option>
+                        <option value="cinta">En Cinta</option>
+                        <option value="enferma">Enferma</option>
+                        <option value="vacunas">Vacunas</option>
+                        <option value="produccion">Producción</option>
+                        <option value="">Ninguno</option>
                     </select>
                 </div>
                 <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>

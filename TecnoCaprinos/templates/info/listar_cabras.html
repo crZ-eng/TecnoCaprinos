@@ -1,18 +1,12 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>TecnoCaprinos - Lista de Cabras</title>
-
     <link rel="icon" href="{% static 'logo.jpeg' %}">
-
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
-
     <style>
 
         :root {
@@ -308,111 +302,56 @@
         }
 
     </style>
-
 </head>
-
 <body>
-
-    <!-- HEADER -->
-
     <div class="white-header">
-
         <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo">
-
-        <h1 class="header-title">
-            TECNOCAPRINOS - CABRAS
-        </h1>
-
-        <a href="{% url 'anadir' %}" class="btn-plus">
-            +
-        </a>
-
+        <h1 class="header-title">TECNOCAPRINOS - CABRAS</h1>
+        <a href="{% url 'anadir' %}" class="btn-plus">+</a>
     </div>
-
-    <!-- CONTENEDOR -->
-
     <div class="main-container">
-
-        <!-- TOP -->
-
         <div class="top-content">
-
-            <h2 class="section-title">
-                Cabras Registradas
-            </h2>
-
+            <h2 class="section-title">Cabras Registradas</h2>
             <div class="search-bar">
-
                 <span>🔍</span>
-
                 <input type="text" placeholder="Buscar cabra...">
-
             </div>
-
         </div>
-
-        <!-- TARJETAS -->
-
         <div class="cards-grid">
-
             {% for cabra in cabras %}
-
             <div class="card">
-
                 <div class="card-header">
-
-                    <h3 class="goat-name">
-                        {{ cabra.nombre }}
-                    </h3>
-
-                    <span class="codigo-tag">
-                        {{ cabra.codigo }}
-                    </span>
-
+                    <h3 class="goat-name">{{ cabra.nombre }}</h3>
+                    <span class="codigo-tag">{{ cabra.codigo }}</span>
                 </div>
-
                 <div class="info-group">
-
                     <div class="info-item">
                         <span class="label">Raza</span>
                         <span class="value">{{ cabra.raza }}</span>
                     </div>
-
                     <div class="info-item">
                         <span class="label">Sexo</span>
                         <span class="value">{{ cabra.sexo }}</span>
                     </div>
-
                     <div class="info-item">
                         <span class="label">Fecha de Nacimiento</span>
                         <span class="value">{{ cabra.fecha_nacimiento }}</span>
                     </div>
-
+                    <div class="info-item">
+                        <a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">Editar</a>
+                        <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red;">Eliminar</a>
+                    </div>
                 </div>
-
             </div>
-
             {% empty %}
-
             <div class="sin-cabras">
                 No tienes cabras registradas.
             </div>
-
             {% endfor %}
-
         </div>
-
-        <!-- BOTÓN VOLVER -->
-
         <div class="bottom-actions">
-
-            <a href="{% url 'info_animales' %}" class="btn-volver">
-                Volver
-            </a>
-
+            <a href="{% url 'info_animales' %}" class="btn-volver">Volver</a>
         </div>
-
     </div>
-
 </body>
 </html>
