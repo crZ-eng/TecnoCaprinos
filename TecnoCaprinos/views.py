@@ -1,4 +1,6 @@
 import os
+import cloudinary.uploader
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from firebase_admin import firestore, auth
@@ -213,12 +215,7 @@ def dashboard(request):
 
 @login_required_firebase
 def info_animales(request):
-
-    return render(
-        request,
-        'info_animales.html'
-    )
-
+    return render(request, 'info_animales.html')
 
 # =========================
 # AÑADIR CABRA
@@ -226,7 +223,9 @@ def info_animales(request):
 
 @login_required_firebase
 def anadir_cabra(request):
+
     if request.method == 'POST':
+
         cod = request.POST.get('cod')
         nombre = request.POST.get('nombre')
         raza = request.POST.get('raza')
@@ -237,10 +236,38 @@ def anadir_cabra(request):
         cod_madre = request.POST.get('cod_madre')
         cod_padre = request.POST.get('cod_padre')
         categoria = request.POST.get('categoria')
+
         uid = request.session.get('uid')
 
+        # =========================
+        # OBTENER FOTO
+        # =========================
+
+        foto = request.FILES.get('foto')
+
+        foto_url = ""
+
         try:
+
+            # =========================
+            # SUBIR FOTO A CLOUDINARY
+            # =========================
+
+            if foto:
+
+                resultado = cloudinary.uploader.upload(
+                    foto,
+                    folder='cabras'
+                )
+
+                foto_url = resultado.get('secure_url')
+
+            # =========================
+            # GUARDAR EN FIREBASE
+            # =========================
+
             db.collection('cabras').add({
+
                 'codigo': cod,
                 'nombre': nombre,
                 'raza': raza,
@@ -252,20 +279,31 @@ def anadir_cabra(request):
                 'usuario_id': uid,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
+
+                # NUEVO CAMPO
+                'foto_url': foto_url,
+
                 'fecha_añadido': firestore.SERVER_TIMESTAMP
             })
 
             messages.success(
                 request,
-                "Cabra añadida con éxito"
+                "Cabra añadida con éxito 🐐"
             )
+
             return redirect('listar')
+
         except Exception as e:
+
             messages.error(
                 request,
                 f"Error al añadir la cabra: {e}"
             )
-    return render(request, 'info/anadir.html')
+
+    return render(
+        request,
+        'info/anadir.html'
+    )
 
 # =========================
 # LISTAR CABRAS

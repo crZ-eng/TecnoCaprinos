@@ -185,15 +185,15 @@
 
             <thead>
                 <tr>
-                    <th>Fecha Nacimiento</th>
                     <th>Código</th>
                     <th>Nombre</th>
                     <th>Raza</th>
                     <th>Peso</th>
                     <th>Sexo</th>
-                    <th>Color</th>
-                    <th>Categoría</th>
-                    <th>Día de Gestación</th>
+                    <th>Mes de Gestación</th>
+                    <th>Estado de gestación</th>
+                    <th>Peso actual </th>
+                    <th>Veterinario responsable</th>
                 </tr>
             </thead>
 
@@ -202,20 +202,21 @@
                 {% for cabra in cabras %}
 
                 <tr>
-                    <td>{{ cabra.fecha_nacimiento }}</td>
+        
                     <td>{{ cabra.codigo }}</td>
                     <td>{{ cabra.nombre }}</td>
                     <td>{{ cabra.raza }}</td>
                     <td>{{ cabra.peso }}</td>
                     <td>{{ cabra.sexo }}</td>
-                    <td>{{ cabra.color }}</td>
-                    <td>{{ cabra.categoria }}</td>
 
-                    <!-- datos tecnicos "" -->
+                     <!-- datos tecnicos "" -->
 
-                    <td>
-                        
-                    </td>
+                    <td>{{ cabra.mes_gestacion|default:"No especificado" }}</td>
+                    <td>{{ cabra.estado_gestacion|default:"No especificado" }}</td>
+                    <td>{{ cabra.estado_gestacion|default:"No especificado" }}</td>
+                    <td>{{ cabra.Veterinario_responsable|default:"-" }}</td>
+
+            
                 </tr>
 
                 

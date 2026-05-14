@@ -8,7 +8,6 @@
     <link rel="icon" href="{% static 'logo.jpeg' %}">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-
         :root {
             --bg-principal: #C9A06D;
             --bg-cuadros: #EAD4B8;
@@ -16,16 +15,16 @@
             --white: #f8f8f8;
             --header-table: #d2b48c;
             --texto: #6b4528;
-            --sombra: rgba(0,0,0,0.15);
+            --sombra: rgba(0, 0, 0, 0.15);
         }
 
-        *{
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body{
+        body {
             font-family: 'Fredoka', sans-serif;
             background-color: var(--bg-principal);
             color: var(--texto);
@@ -36,7 +35,7 @@
             HEADER
         ========================== */
 
-        .white-header{
+        .white-header {
             width: 100%;
             background-color: var(--white);
             display: flex;
@@ -48,7 +47,7 @@
             flex-wrap: wrap;
         }
 
-        .header-title{
+        .header-title {
             font-size: 2.3rem;
             font-weight: 600;
             color: var(--bg-cuadros);
@@ -58,16 +57,16 @@
             flex: 1;
         }
 
-        .logo{
+        .logo {
             height: 65px;
         }
 
-        .btn-plus{
+        .btn-plus {
             background-color: var(--color-trazos);
             color: white;
-            width: 55px;
+            width: 550px;
             height: 55px;
-            border-radius: 50%;
+            border-radius: 12.2px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -75,10 +74,9 @@
             font-size: 2rem;
             font-weight: bold;
             transition: 0.3s ease;
-            flex-shrink: 0;
         }
 
-        .btn-plus:hover{
+        .btn-plus:hover {
             transform: scale(1.08);
         }
 
@@ -86,7 +84,7 @@
             CONTENEDOR PRINCIPAL
         ========================== */
 
-        .main-container{
+        .main-container {
             width: 95%;
             max-width: 1500px;
             margin: 35px auto;
@@ -101,7 +99,7 @@
             TOP BAR
         ========================== */
 
-        .top-content{
+        .top-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -110,13 +108,13 @@
             flex-wrap: wrap;
         }
 
-        .section-title{
+        .section-title {
             font-size: 2.3rem;
             color: var(--white);
             -webkit-text-stroke: 2px var(--color-trazos);
         }
 
-        .search-bar{
+        .search-bar {
             background-color: #f8ecd9;
             border: 3px solid var(--color-trazos);
             border-radius: 18px;
@@ -129,7 +127,7 @@
             width: 100%;
         }
 
-        .search-bar input{
+        .search-bar input {
             border: none;
             outline: none;
             background: transparent;
@@ -139,7 +137,7 @@
             color: var(--texto);
         }
 
-        .search-bar input::placeholder{
+        .search-bar input::placeholder {
             color: #8b6546;
         }
 
@@ -147,26 +145,26 @@
             GRID TARJETAS
         ========================== */
 
-        .cards-grid{
+        .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 22px;
         }
 
-        .card{
+        .card {
             background-color: #fff8ef;
             border: 3px solid var(--color-trazos);
             border-radius: 25px;
             padding: 22px;
             transition: 0.25s ease;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
         }
 
-        .card:hover{
+        .card:hover {
             transform: translateY(-4px);
         }
 
-        .card-header{
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -174,13 +172,13 @@
             gap: 10px;
         }
 
-        .goat-name{
+        .goat-name {
             font-size: 1.4rem;
             color: var(--color-trazos);
             word-break: break-word;
         }
 
-        .codigo-tag{
+        .codigo-tag {
             background-color: var(--header-table);
             color: var(--color-trazos);
             border-radius: 12px;
@@ -190,27 +188,27 @@
             white-space: nowrap;
         }
 
-        .info-group{
+        .info-group {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .info-item{
+        .info-item {
             background-color: #f6ead8;
             border-radius: 14px;
             padding: 12px 14px;
             border: 1px solid #d8b892;
         }
 
-        .label{
+        .label {
             font-weight: 600;
             color: var(--color-trazos);
             margin-bottom: 3px;
             display: block;
         }
 
-        .value{
+        .value {
             color: #6d4b31;
             word-break: break-word;
         }
@@ -219,7 +217,7 @@
             BOTÓN VOLVER
         ========================== */
 
-        .bottom-actions{
+        .bottom-actions {
             position: sticky;
             bottom: 15px;
             display: flex;
@@ -228,7 +226,7 @@
             z-index: 10;
         }
 
-        .btn-volver{
+        .btn-volver {
             background-color: var(--color-trazos);
             color: white;
             text-decoration: none;
@@ -237,10 +235,10 @@
             font-size: 1rem;
             font-weight: 600;
             transition: 0.25s ease;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
         }
 
-        .btn-volver:hover{
+        .btn-volver:hover {
             transform: scale(1.05);
         }
 
@@ -248,7 +246,7 @@
             VACÍO
         ========================== */
 
-        .sin-cabras{
+        .sin-cabras {
             background-color: #fff8ef;
             border: 3px dashed var(--color-trazos);
             border-radius: 20px;
@@ -262,59 +260,58 @@
             RESPONSIVE
         ========================== */
 
-        @media(max-width: 768px){
+        @media(max-width: 768px) {
 
-            .white-header{
+            .white-header {
                 padding: 15px 20px;
             }
 
-            .header-title{
+            .header-title {
                 font-size: 1.5rem;
             }
 
-            .main-container{
+            .main-container {
                 padding: 20px;
                 border-radius: 28px;
             }
 
-            .top-content{
+            .top-content {
                 flex-direction: column;
                 align-items: stretch;
             }
 
-            .section-title{
+            .section-title {
                 text-align: center;
                 font-size: 2rem;
             }
 
-            .search-bar{
+            .search-bar {
                 min-width: 100%;
             }
 
-            .cards-grid{
+            .cards-grid {
                 grid-template-columns: 1fr;
             }
 
-            .bottom-actions{
+            .bottom-actions {
                 justify-content: center;
             }
 
         }
-
     </style>
 </head>
 <body>
     <div class="white-header">
         <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo">
         <h1 class="header-title">TECNOCAPRINOS - CABRAS</h1>
-        <a href="{% url 'anadir' %}" class="btn-plus">+</a>
+        <a href="{% url 'anadir' %}" class="btn-plus">Añade tus cabras</a>
     </div>
     <div class="main-container">
         <div class="top-content">
             <h2 class="section-title">Cabras Registradas</h2>
             <div class="search-bar">
                 <span>🔍</span>
-                <input type="text" placeholder="Buscar cabra...">
+                <input type="text" id="searchInput" placeholder="Buscar cabra...">
             </div>
         </div>
         <div class="cards-grid">
@@ -353,5 +350,50 @@
             <a href="{% url 'info_animales' %}" class="btn-volver">Volver</a>
         </div>
     </div>
+
+    <script>
+
+    const searchInput = document.getElementById("searchInput");
+
+    searchInput.addEventListener("keyup", function() {
+
+        const filtro = searchInput.value.toLowerCase();
+
+        const cards = document.querySelectorAll(".card");
+
+        cards.forEach(card => {
+
+            const nombre = card.querySelector(".goat-name")
+                .textContent
+                .toLowerCase();
+
+            const codigo = card.querySelector(".codigo-tag")
+                .textContent
+                .toLowerCase();
+
+            const raza = card.querySelector(".value")
+                .textContent
+                .toLowerCase();
+
+            if (
+                nombre.includes(filtro) ||
+                codigo.includes(filtro) ||
+                raza.includes(filtro)
+            ) {
+
+                card.style.display = "block";
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+</script>
 </body>
+
 </html>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TecnoCaprinos - Registro</title>
+    <title>TecnoCaprinos - Editar</title>
     <link rel="icon" href="{% static 'logo.jpeg' %}">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -37,7 +38,9 @@
             border-bottom: 4px solid var(--color-trazos);
         }
 
-        .logo-container img { height: 60px; }
+        .logo-container img {
+            height: 60px;
+        }
 
         .header-title {
             font-size: 2.5rem;
@@ -56,7 +59,10 @@
             z-index: 20;
         }
 
-        .dropdown { position: relative; display: inline-block; }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
         .dropbtn {
             background-color: var(--color-trazos);
@@ -75,7 +81,7 @@
             position: absolute;
             background-color: var(--bg-cuadros);
             min-width: 220px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
             z-index: 30;
             border: 3px solid var(--color-trazos);
             border-radius: 15px;
@@ -91,8 +97,13 @@
             font-weight: 600;
         }
 
-        .dropdown-content a:hover { background-color: #dcb894; }
-        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a:hover {
+            background-color: #dcb894;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
 
         .page-content {
             display: flex;
@@ -169,8 +180,14 @@
             gap: 15px;
         }
 
-        .form-group { display: flex; flex-direction: column; }
-        .form-group.full-width { grid-column: span 2; }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
 
         label {
             color: var(--color-trazos);
@@ -180,7 +197,9 @@
             font-size: 1rem;
         }
 
-        input, select, textarea {
+        input,
+        select,
+        textarea {
             background-color: var(--white);
             border: 3px solid var(--color-trazos);
             border-radius: 15px;
@@ -206,11 +225,13 @@
             transition: transform 0.2s;
         }
 
-        .btn-submit:hover { transform: scale(1.02); }
+        .btn-submit:hover {
+            transform: scale(1.02);
+        }
 
         .btn-volver {
             grid-column: span 2;
-            background-color:#ab7b41;
+            background-color: #ab7b41;
             color: white;
             border: none;
             padding: 12px;
@@ -225,14 +246,26 @@
             text-align: center;
         }
 
-        .btn-volver:hover { transform: scale(1.02); }
+        .btn-volver:hover {
+            transform: scale(1.02);
+        }
 
         @media (max-width: 950px) {
-            .page-content { flex-direction: column; align-items: center; gap: 30px; }
-            .left-column, .form-container { width: 100%; max-width: 500px; }
+            .page-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+
+            .left-column,
+            .form-container {
+                width: 100%;
+                max-width: 500px;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="white-header">
         <div class="logo-container">
@@ -245,10 +278,12 @@
         <div class="left-column">
             <h2 class="section-title">Bienvenido</h2>
             <div class="image-placeholder">
-                <img src="{% static 'img1.webp' %}" alt="Cabra animada" style="width: 100%; max-width: 400px; border-radius: 20px;">
+                <img src="{% static 'img1.webp' %}" alt="Cabra animada"
+                    style="width: 100%; max-width: 400px; border-radius: 20px;">
             </div>
             <p class="welcome-text">
-                Hola, <strong>{{ user.username }}</strong>En esta sección puedes agregar nuevos integrantes a tu hato caprino.
+                Hola, <strong>{{ user.username }}</strong>En esta sección puedes agregar nuevos integrantes a tu hato
+                caprino.
             </p>
         </div>
         <div class="form-container">
@@ -257,11 +292,13 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label>Codigo:</label>
-                    <input value="{{ cabra.codigo }}" type="text" name="nuevo-codigo" placeholder="Codigo de la Cabra" required>
+                    <input value="{{ cabra.codigo }}" type="text" name="nuevo-codigo" placeholder="Codigo de la Cabra"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Nombre:</label>
-                    <input value="{{ cabra.nombre }}" type="text" name="nuevo-nombr" placeholder="Nombre de la Cabra" required>
+                    <input value="{{ cabra.nombre }}" type="text" name="nuevo-nombre" placeholder="Nombre de la Cabra"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Fecha de Nacimiento:</label>
@@ -269,8 +306,9 @@
                 </div>
                 <div class="form-group">
                     <label>Raza:</label>
-                    <select name="raza" id="raza">
-                        <option selected value="No Seleccionado">Seleccione una raza</option>
+                    <select name="nueva-    raza" id="raza">
+                        <option value="No Seleccionado">Seleccione una raza</option>
+                        <option selected value="{{ cabra.raza }}">{{ cabra.raza }}</option>
                         <option value="Boer">Boer</option>
                         <option value="Saanen">Saanen</option>
                         <option value="Alpina">Alpina</option>
@@ -326,12 +364,14 @@
                 </div>
                 <div class="form-group">
                     <label>Peso (en Libras):</label>
-                    <input type="number" name="nuevo-peso" min="0" placeholder="Peso en Libras" required>
+                    <input value="{{ cabra.peso }}" type="number" name="nuevo-peso" min="0" placeholder="Peso en Libras"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Sexo:</label>
                     <select name="nuevo-sexo" required>
-                        <option selected>Seleccione...</option>
+                        <option value="No Seleccionado">Seleccione...</option>
+                        <option selected value="{{ cabra.sexo }}">{{ cabra.sexo }}</option>
                         <option value="M">Macho (Cabro)</option>
                         <option value="F">Hembra (Cabra)</option>
                     </select>
@@ -339,7 +379,8 @@
                 <div class="form-group">
                     <label>Color:</label>
                     <select name="nuevo-color" required>
-                        <option selected>Seleccione...</option>
+                        <option value="No Seleccionado">Seleccione...</option>
+                        <option selected value="{{ cabra.color }}">{{ cabra.color }}</option>
                         <option value="blanco">Blanco</option>
                         <option value="negro">Negro</option>
                         <option value="marron">Marrón</option>
@@ -356,16 +397,19 @@
                 </div>
                 <div class="form-group">
                     <label>Codigo de la Madre:</label>
-                    <input type="text" name="nuevo-cod_madre" placeholder="Codigo de la Cabra Madre" required>
+                    <input value="{{ cabra.codigo_madre }}" type="text" name="nuevo-cod_madre"
+                        placeholder="Codigo de la Cabra Madre" required>
                 </div>
                 <div class="form-group">
                     <label>Codigo del Padre:</label>
-                    <input type="text" name="nuevo-cod_padre" placeholder="Codigo del Cabro Padre" required>
+                    <input value="{{ cabra.codigo_padre }}" type="text" name="nuevo-cod_padre"
+                        placeholder="Codigo del Cabro Padre" required>
                 </div>
                 <div class="form-group">
                     <label>Categoria:</label>
-                        <select name="nueva-categoria" id="categoria">
-                        <option selected>Seleciona una Categoria</option>
+                    <select name="nueva-categoria" id="categoria">
+                        <option>Seleciona una Categoria</option>
+                        <option selected value="{{ cabra.categoria }}">{{ cabra.categoria }}</option>
                         <option value="cinta">En Cinta</option>
                         <option value="enferma">Enferma</option>
                         <option value="vacunas">Vacunas</option>
@@ -379,4 +423,5 @@
         </div>
     </div>
 </body>
+
 </html>
