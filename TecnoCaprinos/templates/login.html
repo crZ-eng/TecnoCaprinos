@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganado Digital - Iniciar Sesión</title>
+
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+    <!-- FUENTES -->
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Besley&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- LADO IZQUIERDO -->
+        <div class="login-box">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <h2>Iniciar Sesion</h2>
+
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Contraseña" required>
+
+                <div class="btn">
+                    <button type="submit">iniciar sesion</button>
+                </div>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="mensaje {{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </form>
+
+            <!-- LINKS FUERA DEL FORM -->
+            <div class="links">
+                <a href="#" class="link">¿Olvidaste tu Contraseña?</a>
+                <a href="{% url 'registro' %}" class="link">¿No tienes cuenta? registrate</a>
+            </div>
+
+        </div>
+
+        <!-- LADO DERECHO (IMAGEN) -->
+        <div class="imagen">
+            <img src="{% static 'cabrafeliz.jpg' %}" alt="cabra">
+        </div>
+
+    </div>
+
+</body>
+</html>
