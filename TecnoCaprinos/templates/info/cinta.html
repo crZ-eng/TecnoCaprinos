@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -62,11 +63,13 @@
             transition: 0.3s;
         }
 
-        .btn-plus:hover { transform: scale(1.1); }
+        .btn-plus:hover {
+            transform: scale(1.1);
+        }
 
         .btn-volver {
             grid-column: span 2;
-            background-color:#ab7b41;
+            background-color: #ab7b41;
             color: white;
             border: none;
             padding: 12px;
@@ -80,7 +83,9 @@
             text-decoration: none;
         }
 
-        .btn-volver:hover { transform: scale(1.02); }
+        .btn-volver:hover {
+            transform: scale(1.02);
+        }
 
         /* CONTENEDOR */
         .main-container {
@@ -168,7 +173,11 @@
 
     <!-- HEADER -->
     <div class="white-header">
-        <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
+
+        <a href="{% url 'info_animales' %}">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
+        </a>
+        
         <h1 class="header-title">TECNOCAPRINOS - EN CINTA</h1>
         <a href="{% url 'registrar_seguimiento_gestacion' %}" class="btn-plus">+</a>
 
@@ -202,26 +211,26 @@
                 {% for cabra in cabras %}
 
                 <tr>
-        
+
                     <td>{{ cabra.codigo }}</td>
                     <td>{{ cabra.nombre }}</td>
                     <td>{{ cabra.raza }}</td>
                     <td>{{ cabra.peso }}</td>
                     <td>{{ cabra.sexo }}</td>
 
-                     <!-- datos tecnicos "" -->
+                    <!-- datos tecnicos "" -->
 
                     <td>{{ cabra.mes_gestacion|default:"No especificado" }}</td>
                     <td>{{ cabra.estado_gestacion|default:"No especificado" }}</td>
                     <td>{{ cabra.estado_gestacion|default:"No especificado" }}</td>
                     <td>{{ cabra.Veterinario_responsable|default:"-" }}</td>
 
-            
+
                 </tr>
 
-                
 
-                
+
+
 
                 {% empty %}
 
@@ -238,8 +247,9 @@
         </table>
 
     </div>
-    
+
     <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
 
 </body>
+
 </html>

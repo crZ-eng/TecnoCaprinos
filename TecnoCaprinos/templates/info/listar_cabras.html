@@ -304,11 +304,16 @@
 
 <body>
     <div class="white-header">
-        <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo">
+
+        <a href="{% url 'info_animales' %}">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo">
+        </a>
+
         <h1 class="header-title">TECNOCAPRINOS - CABRAS</h1>
         <a href="{% url 'anadir' %}" class="btn-plus">Añade tus cabras</a>
     </div>
     <div class="main-container">
+        
         <div class="top-content">
             <h2 class="section-title">Cabras Registradas</h2>
             <div class="search-bar">
@@ -350,49 +355,51 @@
         </div>
     </div>
 
+    <!-- script barra de busqueda -->
+
     <script>
 
-    const searchInput = document.getElementById("searchInput");
+        const searchInput = document.getElementById("searchInput");
 
-    searchInput.addEventListener("keyup", function() {
+        searchInput.addEventListener("keyup", function () {
 
-        const filtro = searchInput.value.toLowerCase();
+            const filtro = searchInput.value.toLowerCase();
 
-        const cards = document.querySelectorAll(".card");
+            const cards = document.querySelectorAll(".card");
 
-        cards.forEach(card => {
+            cards.forEach(card => {
 
-            const nombre = card.querySelector(".goat-name")
-                .textContent
-                .toLowerCase();
+                const nombre = card.querySelector(".goat-name")
+                    .textContent
+                    .toLowerCase();
 
-            const codigo = card.querySelector(".codigo-tag")
-                .textContent
-                .toLowerCase();
+                const codigo = card.querySelector(".codigo-tag")
+                    .textContent
+                    .toLowerCase();
 
-            const raza = card.querySelector(".value")
-                .textContent
-                .toLowerCase();
+                const raza = card.querySelector(".value")
+                    .textContent
+                    .toLowerCase();
 
-            if (
-                nombre.includes(filtro) ||
-                codigo.includes(filtro) ||
-                raza.includes(filtro)
-            ) {
+                if (
+                    nombre.includes(filtro) ||
+                    codigo.includes(filtro) ||
+                    raza.includes(filtro)
+                ) {
 
-                card.style.display = "block";
+                    card.style.display = "block";
 
-            } else {
+                } else {
 
-                card.style.display = "none";
+                    card.style.display = "none";
 
-            }
+                }
+
+            });
 
         });
 
-    });
-
-</script>
+    </script>
 </body>
 
 </html>

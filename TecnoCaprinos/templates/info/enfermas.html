@@ -157,7 +157,10 @@
 
 <body>
     <div class="white-header">
-        <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
+        
+        <a href="{% url 'info_animales' %}">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
+        </a>
         <h1 class="header-title">TECNOCAPRINOS - ENFERMOS</h1>
         <a href="{% url 'registrar_enfermo' %}" class="btn-plus">+</a>
     </div>

@@ -15,7 +15,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-
         :root {
             --bg-principal: #C9A06D;
             --bg-cuadros: #EAD4B8;
@@ -23,7 +22,7 @@
             --white: #f8f8f8;
         }
 
-        *{
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -135,7 +134,7 @@
             padding: 40px;
             max-width: 650px;
             width: 100%;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         .form-title {
@@ -201,7 +200,7 @@
             PREVIEW IMAGEN
         ========================== */
 
-        .preview-container{
+        .preview-container {
             margin-top: 15px;
             text-align: center;
         }
@@ -218,7 +217,7 @@
             BOTONES
         ========================== */
 
-        .buttons-container{
+        .buttons-container {
             grid-column: span 2;
             display: flex;
             gap: 15px;
@@ -275,42 +274,41 @@
 
         }
 
-        @media (max-width: 700px){
+        @media (max-width: 700px) {
 
-            .white-header{
+            .white-header {
                 justify-content: center;
                 text-align: center;
                 padding: 15px 20px;
             }
 
-            .header-title{
+            .header-title {
                 font-size: 1.8rem;
             }
 
-            .section-title{
+            .section-title {
                 font-size: 2.3rem;
             }
 
-            .form-container{
+            .form-container {
                 padding: 25px;
                 border-radius: 30px;
             }
 
-            .form-grid{
+            .form-grid {
                 grid-template-columns: 1fr;
             }
 
             .full-width,
-            .buttons-container{
+            .buttons-container {
                 grid-column: span 1;
             }
 
-            .buttons-container{
+            .buttons-container {
                 flex-direction: column;
             }
 
         }
-
     </style>
 
 </head>
@@ -323,11 +321,10 @@
 
         <div class="logo-container">
 
-            <img 
-                src="{% static 'logo.jpeg' %}" 
-                alt="Logo TecnoCaprinos"
-            >
-
+            <a href="{% url 'info_animales' %}">
+                <img src="{% static 'logo.jpeg' %}" alt="Logo TecnoCaprinos">
+            </a>
+            
         </div>
 
         <h1 class="header-title">
@@ -352,10 +349,7 @@
 
             <div class="image-placeholder">
 
-                <img 
-                    src="{% static 'img1.webp' %}" 
-                    alt="Cabra animada"
-                >
+                <img src="{% static 'img1.webp' %}" alt="Cabra animada">
 
             </div>
 
@@ -379,11 +373,7 @@
                 Registrar Nueva Cabra
             </h3>
 
-            <form 
-                method="POST"
-                enctype="multipart/form-data"
-                class="form-grid"
-            >
+            <form method="POST" enctype="multipart/form-data" class="form-grid">
 
                 {% csrf_token %}
 
@@ -393,12 +383,7 @@
 
                     <label>Código:</label>
 
-                    <input 
-                        type="text"
-                        name="cod"
-                        placeholder="Código de la Cabra"
-                        required
-                    >
+                    <input type="text" name="cod" placeholder="Código de la Cabra" required>
 
                 </div>
 
@@ -408,12 +393,7 @@
 
                     <label>Nombre:</label>
 
-                    <input 
-                        type="text"
-                        name="nombre"
-                        placeholder="Nombre de la Cabra"
-                        required
-                    >
+                    <input type="text" name="nombre" placeholder="Nombre de la Cabra" required>
 
                 </div>
 
@@ -423,11 +403,7 @@
 
                     <label>Fecha de Nacimiento:</label>
 
-                    <input 
-                        type="date"
-                        name="fecha_nacimiento"
-                        required
-                    >
+                    <input type="date" name="fecha_nacimiento" required>
 
                 </div>
 
@@ -437,12 +413,7 @@
 
                     <label>Raza:</label>
 
-                    <input 
-                        type="text"
-                        name="raza"
-                        placeholder="Raza de la Cabra"
-                        required
-                    >
+                    <input type="text" name="raza" placeholder="Raza de la Cabra" required>
 
                 </div>
 
@@ -452,13 +423,7 @@
 
                     <label>Peso (Libras):</label>
 
-                    <input 
-                        type="number"
-                        name="peso"
-                        min="0"
-                        placeholder="Peso en Libras"
-                        required
-                    >
+                    <input type="number" name="peso" min="0" placeholder="Peso en Libras" required>
 
                 </div>
 
@@ -517,12 +482,7 @@
 
                     <label>Código de la Madre:</label>
 
-                    <input 
-                        type="text"
-                        name="cod_madre"
-                        placeholder="Código de la Cabra Madre"
-                        required
-                    >
+                    <input type="text" name="cod_madre" placeholder="Código de la Cabra Madre" required>
 
                 </div>
 
@@ -532,12 +492,7 @@
 
                     <label>Código del Padre:</label>
 
-                    <input 
-                        type="text"
-                        name="cod_padre"
-                        placeholder="Código del Cabro Padre"
-                        required
-                    >
+                    <input type="text" name="cod_padre" placeholder="Código del Cabro Padre" required>
 
                 </div>
 
@@ -579,22 +534,13 @@
 
                     <label>Foto de la Cabra:</label>
 
-                    <input 
-                        type="file"
-                        name="foto"
-                        accept="image/*"
-                        required
-                        id="fotoInput"
-                    >
+                    <input type="file" name="foto" accept="image/*" required id="fotoInput">
 
                     <!-- PREVIEW -->
 
                     <div class="preview-container">
 
-                        <img 
-                            id="preview"
-                            alt="Vista previa"
-                        >
+                        <img id="preview" alt="Vista previa">
 
                     </div>
 
@@ -610,10 +556,7 @@
 
                     </button>
 
-                    <a 
-                        href="{% url 'info_animales' %}"
-                        class="btn-volver"
-                    >
+                    <a href="{% url 'info_animales' %}" class="btn-volver">
 
                         VOLVER
 
@@ -635,11 +578,11 @@
 
         const preview = document.getElementById("preview");
 
-        inputFoto.addEventListener("change", function(){
+        inputFoto.addEventListener("change", function () {
 
             const archivo = this.files[0];
 
-            if(archivo){
+            if (archivo) {
 
                 preview.src = URL.createObjectURL(archivo);
 
