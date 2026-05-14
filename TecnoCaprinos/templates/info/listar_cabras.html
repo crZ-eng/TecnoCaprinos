@@ -1,21 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-        {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoCaprinos - Lista de tus Cabras</title>
-    <link rel="icon" href="{% static 'logo.png' %}">
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --cafe-fondo: #7a5230; 
+            --cafe-fondo: #7a5230;
             --beige-botones: #c5a373;
             --blanco: #ffffff;
-            --bg-principal: #C9A06D;
-            --bg-cuadros: #EAD4B8;
-            --color-trazos: #7F5637;
-            --white: #f8f8f8;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Fredoka', sans-serif;
@@ -24,87 +24,157 @@
             color: var(--blanco);
         }
 
-        .header{
+        /* HEADER ESTÁTICO */
+        .header {
             display: flex;
             background-color: white;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
+            padding: 10px 30px;
         }
 
-        .contenido{
-            color: white;
+        .header h1 { color: #c5a373; font-size: 2rem; margin: 0; }
+
+        /* CONTENEDOR DE BÚSQUEDA */
+        .search-container {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: left;
         }
 
-        .btn-crear{
+        .search-bar {
+            background-color: var(--beige-botones);
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border-radius: 25px;
             display: flex;
             align-items: center;
-            color: white;
-            text-decoration: none;
+            gap: 10px;
         }
 
-        .irDashboard{
-            padding: 0;
+        .search-bar input {
+            background: none; border: none; outline: none; width: 100%;
+            font-size: 1rem; color: #5d3a1a;
         }
 
-        .irDashboard:hover{
-            padding: 0;
-        }
-
-        .encabezado-contenido{
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 20px 0 20px;
-        }
-
-        .allTarjetas{
+        /* GRID DE TARJETAS (ESCRITORIO) */
+        .allTarjetas {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px 30px;
         }
 
-        .tarjeta{
+        .tarjeta {
             background-color: white;
             color: black;
             padding: 20px;
-            border-radius: 30px;
-            margin: 10px 10px 0 10px;
+            border-radius: 25px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .info h3, .info h4 { margin: 5px 0; font-size: 1rem; }
+        .info span { font-weight: normal; }
+
+        .btn-crear {
+            background-color: var(--beige-botones);
+            color: #5d3a1a;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        /* ==========================================
+           SOLO RESPONSIVE (Móvil)
+        ========================================== */
+        @media (max-width: 600px) {
+            /* 1. Barra de búsqueda fija SOLO en móvil */
+            .search-container {
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+                background-color: var(--cafe-fondo);
+                padding: 10px 20px;
+            }
+
+            .header h1 { font-size: 1.2rem; }
+
+            /* 2. Evitar sobrecarga: Tarjetas tipo "Lista Compacta" */
+            .allTarjetas {
+                grid-template-columns: 1fr;
+                padding: 10px 15px;
+                gap: 10px;
+            }
+
+            .tarjeta {
+                padding: 15px;
+                border-radius: 15px;
+                display: flex;
+                flex-direction: column;
+                border-left: 5px solid var(--beige-botones);
+            }
+
+            /* Reducimos el tamaño del texto para que no sature */
+            .info h3 { font-size: 1.1rem; color: var(--cafe-fondo); }
+            .info h4 { 
+                font-size: 0.85rem; 
+                display: inline-block; 
+                margin-right: 10px; 
+                color: #666;
+            }
+
+            .encabezado-contenido {
+                flex-direction: column;
+                text-align: center;
+                margin: 0 0 15px 0 !important;
+            }
+        }
+
+        /* Ajuste para tablets */
+        @media (min-width: 601px) and (max-width: 900px) {
+            .allTarjetas { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
+
     <div class="header">
-        {% load static %}
-        <img src="{% static 'logo.png' %}" alt="Logo" height="70px">
-        <h1>Bienvenido a ¡HabitFlow!</h1>
-        <a href="{% url 'dashboard' %}" class="irDashboard">
-            <svg width="60" height="60" viewBox="0 0 24 24" fill="#c5a373">
-                <circle cx="12" cy="8" r="4"/>
-                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
-            </svg>
+        <img src="{% static 'logo.jpeg' %}" alt="Logo" height="60px">
+        <h1>TECNOCAPRINOS</h1>
+        <a href="{% url 'dashboard' %}">
+            <svg width="45" height="45" viewBox="0 0 24 24" fill="#c5a373"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
         </a>
     </div>
-    <div class="contenido">
-        <div class="encabezado-contenido">
-            <h2>Cabras Registradas: </h2>
-            <a href="{% url 'anadir' %}" class="btn-crear">➕ Ingresar Nueva Cabra</a>
+
+    <div class="search-container">
+        <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" placeholder="Buscar cabra...">
         </div>
+    </div>
+
+    <div class="contenido">
+        <div class="encabezado-contenido" style="display: flex; justify-content: space-between; align-items: center; padding: 0 30px;">
+            <h2 style="font-size: 1.8rem;">Cabras Registradas</h2>
+            <a href="{% url 'anadir' %}" class="btn-crear">➕ Nueva Cabra</a>
+        </div>
+
         <div class="allTarjetas">
             {% for cabra in cabras %}
             <div class="tarjeta">
-                <div class="info">
-                    <h3>Nombre: <span style="font-weight: normal;">{{ cabra.nombre }}</span></h3>
-                </div>
-                <div class="info">
-                    <h4>Clasificacion: <span style="font-weight: normal;">{{ cabra.peso }}</span></h4>
-                </div>
-                <div class="info">
-                    <h4>Descripción: <span style="font-weight: normal;">{{ cabra.fecha_nacimiento }}</span></h4>
-                </div>
+                <div class="info"><h3>{{ cabra.nombre }}</h3></div>
+                <div class="info"><h4>Cod: <span>{{ cabra.codigo }}</span></h4></div>
+                <div class="info"><h4>Raza: <span>{{ cabra.raza }}</span></h4></div>
+                <div class="info"><h4>Sexo: <span>{{ cabra.sexo }}</span></h4></div>
+                <div class="info"><h4>Nac: <span>{{ cabra.fecha_nacimiento }}</span></h4></div>
             </div>
-            {% empty %}
-            <h3 class="sin-productos">No tienes cabras registradas.</h3>
             {% endfor %}
         </div>
+
+        <a href="{% url 'info_animales' %}" style="color: white; margin: 30px; display: block; text-decoration: none; font-weight: bold;">⬅ VOLVER</a>
     </div>
+
 </body>
 </html>
