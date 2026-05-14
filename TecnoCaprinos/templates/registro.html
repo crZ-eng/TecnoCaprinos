@@ -1,192 +1,247 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title>Registro - TecnoCaprinos</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <title>Ganado Digital - Registro</title>
 
-    <link rel="stylesheet" href="{% static 'css/registro.css' %}">
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Besley&display=swap" rel="stylesheet">
 
     <style>
-        .photo-wrapper {
-            background-image: url("{% static 'img2.webp' %}");
+        /* ===== BODY (IGUAL AL LOGIN) ===== */
+        body {
+            position: fixed; 
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #6f4a2d; /* Color café oscuro del login */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* ===== CONTENEDOR GENERAL ===== */
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            height: 500px;
+            padding-left: 80px;
+            padding-right: 0;
+            position: relative;
+        }
+
+        /* ===== BLOQUE DE REGISTRO ===== */
+        .register-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        /* ===== FORMULARIO (ESTILO LOGIN COMPACTO) ===== */
+        form {
+            background: #EAD4B8;
+            padding: 40px 30px;
+            border-radius: 35px;
+            width: 320px;
+            border: 8px solid #C9A06D;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-left: 150px; /* Consistencia con tu login */
+        }
+
+        form h2 {
+            text-align: center;
+            color: #7F5637;
+            font-family: 'Bagel Fat One', cursive;
+            font-size: 30px;
+            margin: 0;
+        }
+
+        /* ===== INPUTS ===== */
+        input {
+            width: 91%;
+            padding: 14px;
+            border-radius: 25px;
+            border: none;
+            background: #C9A06D;
+            color: #7F5637;
+            font-family: 'Besley', serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #7F5637;
+            opacity: 0.7;
+        }
+
+        /* ===== BOTÓN ===== */
+        .btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .btn button {
+            background: #7F5637;
+            color: #F2EDDF;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Bagel Fat One', cursive;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        /* ===== LINKS ===== */
+        .links {
+            margin-top: 20px;
+            margin-left: 150px;
+            text-align: center;
+        }
+
+        .link {
+            display: block;
+            color: #F2EDDF;
+            font-family: 'Besley', serif;
+            text-decoration: none;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        /* ===== IMAGEN (PC) ===== */
+        .imagen {
+            position: fixed;
+            right: -150px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        .imagen img {
+            width: 960px;
+            height: 900px;
+            object-fit: cover;
+            border-radius: 50% 0% 0% 50%;
+            border: 10px solid #EAD4B8;
+        }
+
+        /* ===========================================
+        ===== MÓVIL (SISTEMA RESPONSIVE IGUAL) =====
+           =========================================== */
+        @media (max-width: 480px) {
+            body {
+                position: relative;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding-top: 40px; /* Un poco más arriba para que quepa el form de registro */
+                overflow: hidden;
+            }
+
+            .container {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 0;
+            }
+
+            .register-box {
+                width: 280px;
+                margin-left: 0;
+            }
+
+            form {
+                width: 100%;
+                padding: 25px 20px;
+                margin-left: 0; /* Centra el form */
+                border: 6px solid #C9A06D;
+                gap: 10px;
+            }
+
+            form h2 {
+                font-size: 22px;
+            }
+
+            input {
+                width: 100%;
+                padding: 10px;
+                font-size: 13px;
+                box-sizing: border-box;
+            }
+
+            .links {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+
+            /* --- CABRA INFERIOR (SEMICÍRCULO) --- */
+            .imagen {
+                display: flex !important;
+                position: fixed;
+                bottom: -220px; /* Posición para alejar de las letras */
+                right: auto;
+                left: 50%;
+                top: auto;
+                transform: translateX(-50%);
+                z-index: 1;
+            }
+
+            .imagen img {
+                width: 400px;
+                height: 400px;
+                border-radius: 50%;
+                border: 8px solid #EAD4B8;
+            }
         }
     </style>
-=======
->>>>>>> c0c9397068ffe390a0e76dc4a562e1642e701ada
-    <title>Registro</title>
-
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap');
-
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: "Bagel Fat One", system-ui;
-        background-color: #D6C2A6;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        overflow: hidden; /* Evita scrolls innecesarios */
-    }
-
-    /* CONTENEDOR DEL FORMULARIO */
-    .form-container {
-        padding-left: 80px; /* Ajuste para que no esté pegado al borde izquierdo */
-        z-index: 10;
-    }
-
-    form {
-        width: 380px;
-        background-color: #C09A6C;
-        padding: 40px 35px;
-        border-radius: 50px; /* Bordes más redondeados */
-        border: 7px solid #7F5637;
-        text-align: center;
-    }
-
-    h2 {
-        color: #7F5637;
-        font-size: 3rem;
-        margin-top: 0;
-        margin-bottom: 25px;
-    }
-
-    /* ESTILO DE LOS INPUTS */
-    input {
-        width: 100%;
-        box-sizing: border-box; /* Crucial para que el padding no ensanche el input */
-        padding: 18px 25px;
-        margin: 10px 0;
-        border-radius: 35px;
-        border: none;
-        background-color: #EAD4B8;
-        font-family: inherit;
-        font-size: 1.2rem;
-        color: #7F5637; /* Color del texto dentro */
-    }
-
-    /* Placeholder con el mismo tono café */
-    input::placeholder {
-        color: #B28B61;
-    }
-
-    button {
-        margin-top: 25px;
-        padding: 12px 50px;
-        border-radius: 30px;
-        background: #7F5637;
-        color: #EAD4B8;
-        border: none;
-        font-family: inherit;
-        font-size: 1.3rem;
-        cursor: pointer;
-    }
-
-    .footer {
-        margin-top: 20px;
-        color: #7F5637;
-        font-size: 1.1rem;
-        text-align: left; /* Alineado al inicio del formulario */
-        padding-left: 10px;
-    }
-
-    .footer a {
-        color: #7F5637;
-        text-decoration: none;
-    }
-
-    /* SECCIÓN DE LA IMAGEN (LA CABRA) */
-    .image-section {
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 55vw; /* Ocupa un poco más de la mitad de la pantalla */
-        height: 100vh;
-        
-        /* Usa el nombre exacto que aparece en tu carpeta static */
-        background-image: url("{% static 'cabra_registro.jpg' %}");
-        background-size: cover;
-        background-position: center;
-
-        /* Forma de semicírculo */
-        border-top-left-radius: 500px; 
-        border-bottom-left-radius: 500px;
-
-        /* Borde solo en la parte curva */
-        border-left: 8px solid #7F5637;
-        border-top: 8px solid #7F5637;
-        border-bottom: 8px solid #7F5637;
-    }
-
-</style>
 </head>
+
 <body>
 
-<<<<<<< HEAD
-    <div class="page-container">
-        
-        <div class="form-section">
-            <div class="register-card">
+    <div class="container">
+
+        <div class="register-box">
+            <form method="POST">
+                {% csrf_token %}
                 <h2>Registrarse</h2>
-                
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <input type="text" name="username" placeholder="Nombre" class="input-style" required>
-                    </div>
-                    
-                    <div class="input-group">
-                        <input type="email" name="email" placeholder="Email" class="input-style" required>
-                    </div>
-                    
-                    <div class="input-group">
-                        <input type="password" name="password" placeholder="Contraseña" class="input-style" required>
-                    </div>
-                    
-                    <button type="submit" class="btn-register">Registro</button>
-                </form>
+
+                <input type="text" name="nombre" placeholder="Nombre completo" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Contraseña" required>
+
+                <div class="btn">
+                    <button type="submit">registrarse</button>
+                </div>
+
+                {% if mensaje %}
+                    <p style="color: red; text-align: center; font-size: 12px;">{{ mensaje }}</p>
+                {% endif %}
+            </form>
+
+            <div class="links">
+                <p class="link" style="color: #F2EDDF;">¿Ya tienes cuenta?</p>
+                <a href="{% url 'login' %}" class="link" style="text-decoration: underline;">Inicia sesión aquí</a>
             </div>
-            
-            <p class="login-link-text">¿Ya tienes cuenta? <a href="{% url 'login' %}">inicia sesion</a></p>
         </div>
 
-        <div class="photo-section">
-            <div class="photo-wrapper"></div>
+        <div class="imagen">
+            <img src="{% static 'cabra_registro.jpg' %}" alt="cabra">
         </div>
 
     </div>
-
-=======
->>>>>>> c0c9397068ffe390a0e76dc4a562e1642e701ada
-    <div class="form-container">
-        <form method="POST">
-            <h2>Registrarse</h2>
-            {% csrf_token %}
-
-            <input type="text" name="nombre" placeholder="Nombre">
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Contraseña" required>
-
-            <button type="submit">Registro</button>
-
-            {% if mensaje %}
-            <p>{{ mensaje }}</p>
-            {% endif %}
-        </form>
-
-        <p class="footer">
-            ¿Ya tienes cuenta? 
-            <a href="{% url 'login' %}">Inicia sesión</a>
-        </p>
-    </div>
-
-    <div class="image-section"></div>
 
 </body>
 </html>
