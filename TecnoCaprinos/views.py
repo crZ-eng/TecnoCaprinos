@@ -1,4 +1,6 @@
 import os
+import cloudinary.uploader
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from firebase_admin import firestore, auth
@@ -251,13 +253,36 @@ def anadir_cabra(request):
         color = request.POST.get('color')
         cod_madre = request.POST.get('cod_madre')
         cod_padre = request.POST.get('cod_padre')
-
-        # NUEVO
         categoria = request.POST.get('categoria')
 
         uid = request.session.get('uid')
 
+        # =========================
+        # OBTENER FOTO
+        # =========================
+
+        foto = request.FILES.get('foto')
+
+        foto_url = ""
+
         try:
+
+            # =========================
+            # SUBIR FOTO A CLOUDINARY
+            # =========================
+
+            if foto:
+
+                resultado = cloudinary.uploader.upload(
+                    foto,
+                    folder='cabras'
+                )
+
+                foto_url = resultado.get('secure_url')
+
+            # =========================
+            # GUARDAR EN FIREBASE
+            # =========================
 
             db.collection('cabras').add({
 
@@ -268,20 +293,20 @@ def anadir_cabra(request):
                 'fecha_nacimiento': fecha_nacimiento,
                 'sexo': sexo,
                 'color': color,
-
-                # NUEVO
                 'categoria': categoria,
-
                 'usuario_id': uid,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
+
+                # NUEVO CAMPO
+                'foto_url': foto_url,
 
                 'fecha_añadido': firestore.SERVER_TIMESTAMP
             })
 
             messages.success(
                 request,
-                "Cabra añadida con éxito"
+                "Cabra añadida con éxito 🐐"
             )
 
             return redirect('listar')
@@ -297,7 +322,6 @@ def anadir_cabra(request):
         request,
         'info/anadir.html'
     )
-
 
 # =========================
 # LISTAR CABRAS
