@@ -208,6 +208,25 @@
 
         .btn-submit:hover { transform: scale(1.02); }
 
+        .btn-volver {
+            grid-column: span 2;
+            background-color:#ab7b41;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            font-family: 'Fredoka', sans-serif;
+            transition: transform 0.2s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-volver:hover { transform: scale(1.02); }
+
         @media (max-width: 950px) {
             .page-content { flex-direction: column; align-items: center; gap: 30px; }
             .left-column, .form-container { width: 100%; max-width: 500px; }
@@ -264,6 +283,8 @@
                         <option value="F">Hembra (Cabra)</option>
                     </select>
                 </div>
+
+
                 <div class="form-group">
                     <label>Color:</label>
                     <select name="color" required>
@@ -290,8 +311,26 @@
                     <label>Codigo del Padre:</label>
                     <input type="text" name="cod_padre" placeholder="Codigo del Cabro Padre" required>
                 </div>
+
+                 <div class="form-group">
+                    <label>categoria:</label>
+                    <select name="categoria" id="categoria">
+
+                    <option selected>seleciona una categoria</option>
+
+                    <option value="cinta">En cinta</option>
+
+                    <option value="enferma">Enferma</option>
+
+                    <option value="vacunas">Vacunas</option>
+
+                    <option value="produccion">Producción</option>
+                    
+                    </select>
+                </div>
+
                 <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>
-                <a href="{% url 'info_animales' %}"><-- VOLVER</a>
+                <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
             </form>
         </div>
     </div>
