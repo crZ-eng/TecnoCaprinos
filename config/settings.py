@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -119,3 +120,13 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+# =========================
+# CLOUDINARY CONFIG
+# =========================
+
+cloudinary.config(
+    cloud_name='dftrhgo0k',
+    api_key='459717148223549',
+    api_secret='NT3JrtzoLNLhozTbFT2sY_JaEeU',
+    secure=True
+)
