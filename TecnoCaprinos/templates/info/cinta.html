@@ -123,6 +123,76 @@
         /* Colores de estado */
         .status-optimo { color: #2e7d32; font-weight: bold; }
         .status-alerta { color: #d32f2f; font-weight: bold; }
+        /* --- RESPONSIVE --- */
+
+        @media (max-width: 1024px) {
+            .white-header {
+                padding: 10px 20px;
+            }
+            .header-title {
+                font-size: 1.8rem;
+            }
+            .main-container {
+                padding: 15px;
+                width: 98%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 1.4rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
+            }
+            
+            .btn-plus {
+                width: 40px;
+                height: 40px;
+                font-size: 24px;
+            }
+
+            .table-title {
+                font-size: 1.8rem;
+            }
+
+         
+            .main-container {
+                overflow-x: auto;
+                border-radius: 25px;
+            }
+
+            .data-table {
+                min-width: 800px; 
+            }
+
+            .data-table th, .data-table td {
+                padding: 8px 4px;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .white-header img {
+                height: 45px;
+            }
+            .header-title {
+                font-size: 1.1rem;
+            }
+            .main-container {
+                margin: 20px auto;
+            }
+        }
+
+        
+        .main-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .main-container::-webkit-scrollbar-thumb {
+            background: var(--color-trazos);
+            border-radius: 10px;
+        }
+        .main-container::-webkit-scrollbar-track {
+            background: var(--bg-cuadros);
+        }
 
     </style>
 </head>
