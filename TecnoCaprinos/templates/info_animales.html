@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,79 +20,82 @@
             --white: #f8f8f8;
         }
 
-
+        
 
         body {
             font-family: 'Fredoka', sans-serif;
             background-color: var(--bg-principal);
             margin: 0;
             color: black;
-            overflow-x: hidden;
-            /* Evita scroll horizontal */
         }
 
-        /* HEADER RESPONSIVO */
+        /* HEADER */
         .white-header {
             background-color: var(--blanco);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px 5%;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .logo-container img {
             height: 60px;
-            width: auto;
         }
 
         .header-title {
-            font-size: clamp(1.2rem, 5vw, 2.5rem);
-            /* Tamaño fluido según pantalla */
+            font-size: 2.5rem;
             font-weight: 600;
             color: var(--bg-cuadros);
-            -webkit-text-stroke: 1px var(--color-trazos);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
             margin: 0;
-            text-align: center;
-            flex-grow: 1;
         }
 
-        .irDashboard svg {
-            width: 50px;
-            height: 50px;
-            transition: transform 0.2s;
+        /* BOTÓN PERFIL */
+        .irDashboard {
+            text-decoration: none;
         }
 
-        /* GRID RESPONSIVO */
+     
+
+        .search-bar input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #5d3a1a;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(93, 58, 26, 0.7);
+        }
+
+        /* GRID */
         .grid-categorias {
             display: grid;
-            /* Se adapta automáticamente: mínimo 150px, máximo 1 fracción */
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            padding: 40px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-            justify-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            padding: 20px 5%;
+            text-align: center;
         }
 
         .categoria-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
         }
 
         .circulo {
-            width: clamp(140px, 20vw, 180px);
-            height: clamp(140px, 20vw, 180px);
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             border: 6px solid var(--blanco);
             overflow: hidden;
             margin-bottom: 15px;
             background-color: #ddd;
             transition: transform 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         .circulo:hover {
@@ -109,20 +111,20 @@
         /* TÍTULOS */
         .categoria-item h3 {
             text-transform: uppercase;
-            font-size: clamp(0.9rem, 3vw, 1.2rem);
+            font-size: 1.4rem;
             margin: 0;
             letter-spacing: 1px;
             color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            text-align: center;
         }
 
         /* BOTÓN LISTAR */
         .btn-listar {
-            background-color: var(--beige-botones);
-            color: #5d3a1a;
-            padding: 15px 30px;
-            border-radius: 30px;
+            grid-column: span 2;
+            background-color:#ab7b41;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 20px;
             text-decoration: none;
             font-size: 1rem;
             font-weight: bold;
@@ -132,38 +134,24 @@
 
             display: block;
             margin: 50px auto 0 auto;
-        }
+    }
 
         .btn-listar:hover {
             transform: scale(1.05);
         }
 
-        /* AJUSTES PARA MÓVILES PEQUEÑOS */
-        @media (max-width: 480px) {
-            .white-header {
-                padding: 10px 3%;
-            }
-
-            .logo-container img {
-                height: 45px;
-            }
-
-            .irDashboard svg {
-                width: 40px;
-                height: 40px;
-            }
-
+        @media (max-width: 768px) {
             .grid-categorias {
                 grid-template-columns: repeat(2, 1fr);
-                /* 2 columnas en móviles */
-                gap: 15px;
-                padding: 20px 3%;
             }
 
             .circulo {
-                width: 120px;
-                height: 120px;
-                border-width: 4px;
+                width: 140px;
+                height: 140px;
+            }
+
+            .header-title {
+                font-size: 1.8rem;
             }
         }
     </style>
@@ -172,28 +160,26 @@
 <body>
 
     <!-- HEADER -->
-    <header class="white-header">
-        <div class="logo-container">
+    <div class="white-header">
 
-            <a href="{% url 'info_animales' %}">
+        <div class="logo-container">
             <img src="{% static 'logo.jpeg' %}" alt="Logo">
-            </a>
-            
         </div>
 
         <h1 class="header-title">TECNOCAPRINOS</h1>
 
-        <a href="{% url 'dashboard' %}" class="irDashboard" title="Mi Perfil">
-            <svg viewBox="0 0 24 24" fill="#c5a373">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+        <a href="{% url 'dashboard' %}" class="irDashboard">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="#c5a373">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
             </svg>
         </a>
-    </header>
+
+    </div>
 
 
     <!-- CATEGORÍAS -->
-    <main class="grid-categorias">
+    <div class="grid-categorias">
 
         <div class="categoria-item">
             <div class="circulo">
@@ -231,13 +217,12 @@
             <h3>PRODUCCIÓN</h3>
         </div>
 
-    </main>
+  
 
-    <!-- BOTÓN CABRAS REGISTRADAS -->
-    <a href="{% url 'listar' %}" class="btn-listar">
-        VER MIS CABRAS REGISTRADAS
-    </a>
-
+    </div>
+      <!-- BOTÓN CABRAS REGISTRADAS -->
+        <a href="{% url 'listar' %}" class="btn-listar">
+            VER MIS CABRAS REGISTRADAS
+        </a>
 </body>
-
 </html>
