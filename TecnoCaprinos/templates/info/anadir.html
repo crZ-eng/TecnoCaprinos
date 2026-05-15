@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     {% load static %}
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>TecnoCaprinos - Registro</title>
-
     <link rel="icon" href="{% static 'logo.jpeg' %}">
-
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
-
     <style>
         :root {
             --bg-principal: #C9A06D;
@@ -310,15 +303,9 @@
 
         }
     </style>
-
 </head>
-
 <body>
-
-    <!-- HEADER -->
-
     <div class="white-header">
-
         <div class="logo-container">
 
             <a href="{% url 'info_animales' %}">
@@ -326,49 +313,22 @@
             </a>
             
         </div>
-
-        <h1 class="header-title">
-            TECNOCAPRINOS
-        </h1>
-
+        <h1 class="header-title">TECNOCAPRINOS</h1>
         <div style="width: 60px;"></div>
-
     </div>
-
-    <!-- CONTENIDO -->
-
-    <div class="page-content">
-
-        <!-- COLUMNA IZQUIERDA -->
-
-        <div class="left-column">
-
-            <h2 class="section-title">
-                Bienvenido
-            </h2>
-
+    <div class="page-content"><div class="left-column">
+            <h2 class="section-title">Bienvenido</h2>
             <div class="image-placeholder">
 
                 <img src="{% static 'img1.webp' %}" alt="Cabra animada">
 
             </div>
-
-            <p class="welcome-text">
-
-                Hola,
+            <p class="welcome-text">Hola,
                 <strong>{{ user.username }}</strong>
-
-                En esta sección puedes agregar nuevos integrantes
-                a tu hato caprino.
-
+                En esta sección puedes agregar nuevos integrantes a tu hato caprino.
             </p>
-
         </div>
-
-        <!-- FORMULARIO -->
-
         <div class="form-container">
-
             <h3 class="form-title">
                 Registrar Nueva Cabra
             </h3>
@@ -376,9 +336,6 @@
             <form method="POST" enctype="multipart/form-data" class="form-grid">
 
                 {% csrf_token %}
-
-                <!-- CODIGO -->
-
                 <div class="form-group">
 
                     <label>Código:</label>
@@ -386,79 +343,42 @@
                     <input type="text" name="cod" placeholder="Código de la Cabra" required>
 
                 </div>
-
-                <!-- NOMBRE -->
-
                 <div class="form-group">
-
                     <label>Nombre:</label>
 
                     <input type="text" name="nombre" placeholder="Nombre de la Cabra" required>
 
                 </div>
-
-                <!-- FECHA -->
-
                 <div class="form-group">
-
                     <label>Fecha de Nacimiento:</label>
 
                     <input type="date" name="fecha_nacimiento" required>
 
                 </div>
-
-                <!-- RAZA -->
-
                 <div class="form-group">
-
                     <label>Raza:</label>
 
                     <input type="text" name="raza" placeholder="Raza de la Cabra" required>
 
                 </div>
-
-                <!-- PESO -->
-
                 <div class="form-group">
-
                     <label>Peso (Libras):</label>
 
                     <input type="number" name="peso" min="0" placeholder="Peso en Libras" required>
 
                 </div>
-
-                <!-- SEXO -->
-
                 <div class="form-group">
-
                     <label>Sexo:</label>
-
                     <select name="sexo" required>
-
-                        <option value="">Seleccione...</option>
-
-                        <option value="M">
-                            Macho (Cabro)
-                        </option>
-
-                        <option value="F">
-                            Hembra (Cabra)
-                        </option>
-
+                        <option value="No Seleccionado">Seleccione...</option>
+                        <option value="M"> Macho (Cabro) </option>
+                        <option value="F"> Hembra (Cabra)</option>
                     </select>
-
                 </div>
-
-                <!-- COLOR -->
-
                 <div class="form-group">
-
                     <label>Color:</label>
-
                     <select name="color" required>
-
-                        <option value="">Seleccione...</option>
-
+                        <option value="No Seleccionado">Seleccione...</option>
                         <option value="blanco">Blanco</option>
                         <option value="negro">Negro</option>
                         <option value="marron">Marrón</option>
@@ -471,13 +391,8 @@
                         <option value="crema">Crema</option>
                         <option value="atigrado">Atigrado</option>
                         <option value="moteado">Moteado</option>
-
                     </select>
-
                 </div>
-
-                <!-- MADRE -->
-
                 <div class="form-group">
 
                     <label>Código de la Madre:</label>
@@ -485,9 +400,6 @@
                     <input type="text" name="cod_madre" placeholder="Código de la Cabra Madre" required>
 
                 </div>
-
-                <!-- PADRE -->
-
                 <div class="form-group">
 
                     <label>Código del Padre:</label>
@@ -495,43 +407,18 @@
                     <input type="text" name="cod_padre" placeholder="Código del Cabro Padre" required>
 
                 </div>
-
-                <!-- CATEGORIA -->
-
                 <div class="form-group">
-
-                    <label>Categoría:</label>
-
-                    <select name="categoria" required>
-
-                        <option value="">
-                            Seleccione...
-                        </option>
-
-                        <option value="cinta">
-                            En cinta
-                        </option>
-
-                        <option value="enferma">
-                            Enferma
-                        </option>
-
-                        <option value="vacunas">
-                            Vacunas
-                        </option>
-
-                        <option value="produccion">
-                            Producción
-                        </option>
-
+                    <label>Categoria:</label>
+                    <select name="categoria" id="categoria">
+                    <option selected>Seleciona una Categoria</option>
+                    <option value="cinta">En Cinta</option>
+                    <option value="enferma">Enferma</option>
+                    <option value="vacunas">Vacunas</option>
+                    <option value="produccion">Producción</option>
+                    <option value="">Ninguno</option>
                     </select>
-
                 </div>
-
-                <!-- FOTO -->
-
                 <div class="form-group full-width">
-
                     <label>Foto de la Cabra:</label>
 
                     <input type="file" name="foto" accept="image/*" required id="fotoInput">
@@ -543,16 +430,9 @@
                         <img id="preview" alt="Vista previa">
 
                     </div>
-
                 </div>
-
-                <!-- BOTONES -->
-
                 <div class="buttons-container">
-
-                    <button type="submit" class="btn-submit">
-
-                        GUARDAR REGISTRO
+                    <button type="submit" class="btn-submit">GUARDAR REGISTRO
 
                     </button>
 
@@ -563,7 +443,8 @@
                     </a>
 
                 </div>
-
+                <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>
+                <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
             </form>
 
         </div>

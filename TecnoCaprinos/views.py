@@ -215,25 +215,7 @@ def dashboard(request):
 
 @login_required_firebase
 def info_animales(request):
-
-    return render(
-        request,
-        'info_animales.html'
-    )
-
-
-# =========================
-# FORMULARIO AÑADIR
-# =========================
-
-@login_required_firebase
-def anadir(request):
-
-    return render(
-        request,
-        'info/anadir.html'
-    )
-
+    return render(request, 'info_animales.html')
 
 # =========================
 # AÑADIR CABRA
@@ -363,6 +345,81 @@ def listar_cabras(request):
         }
     )
 
+# =========================
+# ELIMINAR CABRA
+# =========================
+
+@login_required_firebase # Verifica que el usuario esta loggeado
+def eliminar_cabra(request, cabra_id):
+    """
+    DELETE: Eliminar un documento especifico por id
+    """
+    try:
+        db.collection('cabras').document(cabra_id).delete()
+        messages.success(request, "🗑️ Cabra eliminada.")
+    except Exception as e:
+        messages.error(request, f"Error al eliminar: {e}")
+
+    return redirect('listar')
+
+# ==============================
+# EDITAR LOS DATOS DE UNA CABRA
+# ==============================
+
+@login_required_firebase # Verifica que el usuario esta loggeado
+def editar_cabra(request, cabra_id):
+    """
+    UPDATE: Recupera los datos de la ca especifico y actualiza los campos en firebase
+    """
+    uid = request.session.get('uid')
+    cabra_ref = db.collection('cabras').document(cabra_id)
+
+    try:
+        doc = cabra_ref.get()
+
+        if not doc.exists:
+            messages.error(request, "La cabra no existe")
+            return redirect('listar')
+        
+        cabra_data = doc.to_dict()
+
+        if cabra_data.get('usuario_id') != uid:
+            messages.error(request, "No tienes permiso para editar esta cabra")
+            return redirect('listar')
+        
+        if request.method == 'POST':
+            nuevo_cod = request.POST.get('nuevo-codigo')
+            nuevo_nombre = request.POST.get('nuevo-nombre')
+            nueva_raza = request.POST.get('nueva-raza')
+            nuevo_peso = request.POST.get('nuevo-peso')
+            nueva_fecha_nacimiento = request.POST.get('nueva-fecha_nacimiento')
+            nuevo_sexo = request.POST.get('nuevo-sexo')
+            nuevo_color = request.POST.get('nuevo-color')
+            nueva_categoria = request.POST.get('nueva-categoria')
+            nuevo_cod_madre = request.POST.get('nuevo-cod_madre')
+            nuevo_cod_padre = request.POST.get('nuevo-cod_padre')
+
+            cabra_ref.update({
+                'codigo': nuevo_cod,
+                'nombre': nuevo_nombre,
+                'raza': nueva_raza,
+                'peso': nuevo_peso,
+                'fecha_nacimiento': nueva_fecha_nacimiento,
+                'sexo': nuevo_sexo,
+                'color': nuevo_color,
+                'categoria': nueva_categoria,
+                'codigo_madre': nuevo_cod_madre,
+                'codigo_padre': nuevo_cod_padre,
+                'fecha_anadido': firestore.SERVER_TIMESTAMP
+            })
+
+            messages.success(request, "✅ Cabra actualizada correctamente.")
+            return redirect('listar')
+    except Exception as e:
+        messages.error(request, f"Error al editar la cabra: {e}")
+        return redirect('listar')
+    
+    return render(request, 'info/editar.html', {'cabra': cabra_data, 'id': cabra_id})
 
 # =========================
 # EN CINTA
