@@ -203,7 +203,9 @@
 
     <div class="white-header">
         <div class="logo-container">
-            <img src="{% static 'logo.jpeg' %}" alt="Logo">
+            <a href="{% url 'info_animales' %}">
+                <img src="{% static 'logo.jpeg' %}" alt="Logo">
+            </a>
         </div>
         <h1 class="header-title">TECNOCAPRINOS - PRODUCCIÓN</h1>
         <a href="{% url 'agregar_produccion' %}" class="btn-plus">+</a>

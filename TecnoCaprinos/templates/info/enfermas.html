@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -60,11 +61,13 @@
             transition: 0.3s ease;
         }
 
-        .btn-plus:hover { transform: scale(1.1); }
+        .btn-plus:hover {
+            transform: scale(1.1);
+        }
 
         .btn-volver {
             grid-column: span 2;
-            background-color:#ab7b41;
+            background-color: #ab7b41;
             color: white;
             border: none;
             padding: 12px;
@@ -78,7 +81,9 @@
             text-decoration: none;
         }
 
-        .btn-volver:hover { transform: scale(1.02); }
+        .btn-volver:hover {
+            transform: scale(1.02);
+        }
 
         /* TABLA */
         .main-container {
@@ -138,13 +143,24 @@
         }
 
         /* Estilos de evolución */
-        .status-critico { color: #d32f2f; font-weight: bold; }
-        .status-estable { color: #2e7d32; font-weight: bold; }
+        .status-critico {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .status-estable {
+            color: #2e7d32;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <div class="white-header">
-        <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
+        
+        <a href="{% url 'info_animales' %}">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
+        </a>
         <h1 class="header-title">TECNOCAPRINOS - ENFERMOS</h1>
         <a href="{% url 'registrar_enfermo' %}" class="btn-plus">+</a>
     </div>
@@ -157,15 +173,12 @@
 
             <thead>
                 <tr>
-                    <th>Fecha Nacimiento</th>
                     <th>Código</th>
                     <th>Nombre</th>
-                    <th>Raza</th>
-                    <th>Peso</th>
-                    <th>Sexo</th>
-                    <th>Color</th>
-                    <th>Categoría</th>
-                    <th>Día de Gestación</th>
+                    <th>Tratamiento</th>
+                    <th>Temperatura</th>
+                    <th>Estado de evolución</th>
+                    <th>Veterinario responsable</th>
                 </tr>
             </thead>
 
@@ -174,22 +187,19 @@
                 {% for cabra in cabras %}
 
                 <tr>
-                    <td>{{ cabra.fecha_nacimiento }}</td>
                     <td>{{ cabra.codigo }}</td>
                     <td>{{ cabra.nombre }}</td>
-                    <td>{{ cabra.raza }}</td>
-                    <td>{{ cabra.peso }}</td>
-                    <td>{{ cabra.sexo }}</td>
-                    <td>{{ cabra.color }}</td>
-                    <td>{{ cabra.categoria }}</td>
 
                     <!-- datos tecnicos "" -->
+                    <td>{{ cabra.tratamiento|default:"No especificado" }}</td>
+                    <td>{{ cabra.temperatura|default:"0°"}}</td>
+                    <td>{{ cabra.estado_evolucion|default:"Sin especificar" }}</td>
+                    <td>{{ cabra.veterinario_asignado|default:"-" }}</td>
 
-                    <td>
-                        
-                    </td>
+
+
                 </tr>
-                
+
 
                 {% empty %}
 
@@ -205,10 +215,11 @@
 
         </table>
 
-        <a href="{% url 'info_animales' %}" class="btn-volver">
-            ← VOLVER
-        </a>
 
     </div>
+
+    <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
+
 </body>
+
 </html>

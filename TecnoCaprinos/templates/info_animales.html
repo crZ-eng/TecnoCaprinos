@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,14 +21,15 @@
             --white: #f8f8f8;
         }
 
-        
+
 
         body {
             font-family: 'Fredoka', sans-serif;
             background-color: var(--bg-principal);
             margin: 0;
             color: black;
-            overflow-x: hidden; /* Evita scroll horizontal */
+            overflow-x: hidden;
+            /* Evita scroll horizontal */
         }
 
         /* HEADER RESPONSIVO */
@@ -37,7 +39,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px 5%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             gap: 10px;
         }
 
@@ -47,7 +49,8 @@
         }
 
         .header-title {
-            font-size: clamp(1.2rem, 5vw, 2.5rem); /* Tamaño fluido según pantalla */
+            font-size: clamp(1.2rem, 5vw, 2.5rem);
+            /* Tamaño fluido según pantalla */
             font-weight: 600;
             color: var(--bg-cuadros);
             -webkit-text-stroke: 1px var(--color-trazos);
@@ -90,7 +93,7 @@
             margin-bottom: 15px;
             background-color: #ddd;
             transition: transform 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         .circulo:hover {
@@ -110,7 +113,7 @@
             margin: 0;
             letter-spacing: 1px;
             color: white;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
             text-align: center;
         }
 
@@ -126,14 +129,13 @@
             text-align: center;
             width: fit-content;
             transition: 0.3s ease;
+
             display: block;
-            margin: 40px auto;
-            max-width: 80%; /* Para que no se salga en pantallas muy pequeñas */
+            margin: 50px auto 0 auto;
         }
 
         .btn-listar:hover {
             transform: scale(1.05);
-            background-color: #d6b68a;
         }
 
         /* AJUSTES PARA MÓVILES PEQUEÑOS */
@@ -141,7 +143,7 @@
             .white-header {
                 padding: 10px 3%;
             }
-            
+
             .logo-container img {
                 height: 45px;
             }
@@ -152,7 +154,8 @@
             }
 
             .grid-categorias {
-                grid-template-columns: repeat(2, 1fr); /* 2 columnas en móviles */
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 columnas en móviles */
                 gap: 15px;
                 padding: 20px 3%;
             }
@@ -171,15 +174,19 @@
     <!-- HEADER -->
     <header class="white-header">
         <div class="logo-container">
+
+            <a href="{% url 'info_animales' %}">
             <img src="{% static 'logo.jpeg' %}" alt="Logo">
+            </a>
+            
         </div>
 
         <h1 class="header-title">TECNOCAPRINOS</h1>
 
         <a href="{% url 'dashboard' %}" class="irDashboard" title="Mi Perfil">
             <svg viewBox="0 0 24 24" fill="#c5a373">
-                <circle cx="12" cy="8" r="4"/>
-                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
             </svg>
         </a>
     </header>
@@ -232,4 +239,5 @@
     </a>
 
 </body>
+
 </html>

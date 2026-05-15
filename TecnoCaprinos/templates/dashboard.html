@@ -11,10 +11,12 @@
     <title>TecnoCaprinos | Dashboard</title>
 
     <link rel="icon" href="{% static 'logo.jpeg' %}">
+
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        :root {
+
+        :root{
             --bg-principal: #C9A06D;
             --bg-cuadros: #EAD4B8;
             --color-trazos: #7F5637;
@@ -31,13 +33,13 @@
             --warning-text: #b26a00;
         }
 
-        * {
+        *{
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
+        body{
             font-family: 'Fredoka', sans-serif;
             background-color: var(--bg-principal);
             min-height: 100vh;
@@ -45,142 +47,158 @@
         }
 
         /* =========================
-            HEADER RESPONSIVO
+            HEADER
         ========================== */
-        .white-header {
+
+        .white-header{
             width: 100%;
             background-color: var(--white);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 5%; /* Usamos porcentaje para los lados */
+            padding: 14px 40px;
             border-bottom: 4px solid var(--color-trazos);
             gap: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
         }
 
-        .header-left {
+        .header-left{
             display: flex;
             align-items: center;
             gap: 18px;
         }
 
-        .logo {
-            height: clamp(45px, 8vw, 65px); /* Se encoge en pantallas pequeñas */
+        .logo{
+            height: 65px;
         }
 
-        .header-title {
-            font-size: clamp(1.2rem, 4vw, 2.2rem); /* Título fluido */
+        .header-title{
+            font-size: 2.2rem;
             font-weight: 600;
             color: var(--bg-cuadros);
-            -webkit-text-stroke: 1px var(--color-trazos);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
             text-transform: uppercase;
         }
 
-        .welcome-user {
-            font-size: clamp(0.85rem, 2.5vw, 1rem);
+        .welcome-user{
+            font-size: 1rem;
             color: var(--color-trazos);
             font-weight: 500;
-            text-align: right;
         }
 
         /* =========================
             CONTENIDO
         ========================== */
-        .contenido {
-            width: 100%;
-            padding: 20px 5%;
-            margin: 20px auto;
+
+        .contenido{
+            width: 95%;
+            max-width: 1300px;
+            margin: 40px auto;
             display: flex;
             justify-content: center;
             align-items: flex-start;
         }
 
-        .dashboard-card {
+        .dashboard-card{
             width: 100%;
             max-width: 750px;
             background-color: var(--bg-cuadros);
-            border: clamp(4px, 1vw, 6px) solid var(--color-trazos);
+            border: 6px solid var(--color-trazos);
             border-radius: 38px;
-            padding: clamp(20px, 5vw, 40px);
+            padding: 40px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.12);
         }
 
         /* =========================
             TITULO
         ========================== */
-        .dashboard-title {
+
+        .dashboard-title{
             text-align: center;
-            font-size: clamp(1.8rem, 6vw, 2.7rem);
+            font-size: 2.7rem;
             margin-bottom: 30px;
             color: var(--white);
-            -webkit-text-stroke: 1.2px var(--color-trazos);
+            -webkit-text-stroke: 1.8px var(--color-trazos);
             text-transform: uppercase;
         }
 
         /* =========================
             MENSAJES
         ========================== */
-        .mensaje {
+
+        .mensaje{
             padding: 14px 18px;
             border-radius: 16px;
             margin-bottom: 18px;
             font-size: 0.95rem;
             font-weight: 500;
-            text-align: center;
             border: 2px solid transparent;
         }
 
-        .success { background-color: var(--success-bg); color: var(--success-text); border-color: var(--success-text); }
-        .error { background-color: var(--error-bg); color: var(--error-text); border-color: var(--error-text); }
-        .warning { background-color: var(--warning-bg); color: var(--warning-text); border-color: var(--warning-text); }
+        .success{
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border-color: var(--success-text);
+        }
+
+        .error{
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border-color: var(--error-text);
+        }
+
+        .warning{
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            border-color: var(--warning-text);
+        }
 
         /* =========================
             INFORMACION
         ========================== */
-        .perfil-container {
+
+        .perfil-container{
             display: flex;
             flex-direction: column;
             gap: 18px;
         }
 
-        .info-box {
+        .info-box{
             background-color: #fff8ef;
             border: 3px solid var(--color-trazos);
             border-radius: 20px;
             padding: 18px 20px;
-            transition: transform 0.2s ease;
+            transition: 0.2s ease;
         }
 
-        .info-box:hover {
+        .info-box:hover{
             transform: scale(1.01);
         }
 
-        .info-title {
-            font-size: 0.85rem;
+        .info-title{
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--color-trazos);
             margin-bottom: 5px;
-            text-transform: uppercase;
         }
 
-        .info-data {
-            font-size: 1.05rem;
+        .info-data{
+            font-size: 1rem;
             color: var(--texto);
-            word-wrap: break-word; /* Evita que correos largos rompan el diseño */
         }
 
         /* =========================
             BOTONES
         ========================== */
-        .acciones {
+
+        .acciones{
             margin-top: 35px;
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
 
-        .btn {
+        .btn{
             width: 100%;
             padding: 15px;
             border-radius: 18px;
@@ -192,54 +210,59 @@
             text-decoration: none;
             text-align: center;
             transition: 0.25s ease;
-            display: inline-block;
         }
 
-        .btn-primary {
+        .btn-primary{
             background-color: var(--color-trazos);
             color: white;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover{
             background-color: #6c472d;
-            transform: translateY(-2px);
+            transform: scale(1.02);
         }
 
-        .btn-logout {
+        .btn-logout{
             background-color: #ab7b41;
             color: white;
         }
 
-        .btn-logout:hover {
+        .btn-logout:hover{
             background-color: #96662f;
-            transform: translateY(-2px);
+            transform: scale(1.02);
         }
 
         /* =========================
-            MEDIA QUERIES (Ajustes extra)
+            RESPONSIVE
         ========================== */
-        @media(max-width: 768px) {
-            .white-header {
-                flex-direction: column; /* Apila logo y usuario en pantallas chicas */
-                padding: 15px;
+
+        @media(max-width: 768px){
+
+            .white-header{
+                padding: 18px 20px;
+                justify-content: center;
                 text-align: center;
-                gap: 10px;
             }
 
-            .header-left {
+            .header-left{
                 flex-direction: column;
-                gap: 10px;
             }
 
-            .welcome-user {
-                text-align: center;
+            .header-title{
+                font-size: 1.8rem;
             }
 
-            .dashboard-card {
+            .dashboard-card{
+                padding: 28px;
                 border-radius: 28px;
             }
+
+            .dashboard-title{
+                font-size: 2rem;
+            }
+
         }
+
     </style>
 
 </head>
@@ -247,69 +270,127 @@
 <body>
 
     <!-- HEADER -->
-    <header class="white-header">
+
+    <div class="white-header">
+
         <div class="header-left">
-            <img src="{% static 'logo.jpeg' %}" alt="Logo TecnoCaprinos" class="logo">
-            <h1 class="header-title">TECNOCAPRINOS</h1>
+
+            <img 
+                src="{% static 'logo.jpeg' %}" 
+                alt="Logo TecnoCaprinos"
+                class="logo"
+            >
+
+            <h1 class="header-title">
+                TECNOCAPRINOS
+            </h1>
+
         </div>
 
         <div class="welcome-user">
-            Bienvenido/a,<br>
-            <strong>{{ datos.nombre|default:"Ganadero" }}</strong>
+
+            Bienvenido/a,
+            <strong>
+                {{ datos.nombre|default:"Ganadero" }}
+            </strong>
+
         </div>
-    </header>
+
+    </div>
 
     <!-- CONTENIDO -->
-    <main class="contenido">
+
+    <div class="contenido">
+
         <div class="dashboard-card">
 
             <!-- MENSAJES -->
+
             {% if messages %}
                 {% for message in messages %}
+
                     <div class="mensaje {{ message.tags }}">
                         {{ message }}
                     </div>
+
                 {% endfor %}
             {% endif %}
 
             <!-- TITULO -->
-            <h2 class="dashboard-title">Perfil del Ganadero</h2>
+
+            <h2 class="dashboard-title">
+                Perfil del Ganadero
+            </h2>
 
             <!-- INFORMACION -->
+
             <div class="perfil-container">
+
                 <div class="info-box">
-                    <div class="info-title">Nombre</div>
-                    <div class="info-data">{{ datos.nombre }}</div>
+
+                    <div class="info-title">
+                        Nombre
+                    </div>
+
+                    <div class="info-data">
+                        {{ datos.nombre }}
+                    </div>
+
                 </div>
 
                 <div class="info-box">
-                    <div class="info-title">Correo Electrónico</div>
-                    <div class="info-data">{{ datos.email }}</div>
+
+                    <div class="info-title">
+                        Correo Electrónico
+                    </div>
+
+                    <div class="info-data">
+                        {{ datos.email }}
+                    </div>
+
                 </div>
 
                 <div class="info-box">
-                    <div class="info-title">Miembro Desde</div>
-                    <div class="info-data">{{ datos.fecha_registro }}</div>
+
+                    <div class="info-title">
+                        Miembro Desde
+                    </div>
+
+                    <div class="info-data">
+                        {{ datos.fecha_registro }}
+                    </div>
+
                 </div>
+
             </div>
 
             <!-- BOTONES -->
+
             <div class="acciones">
+
                 <a href="{% url 'info_animales' %}" class="btn btn-primary">
+
                     🐐 Ver Mis Animales
+
                 </a>
 
-                <form action="{% url 'logout' %}" method="POST" style="width: 100%;">
+                <form action="{% url 'logout' %}" method="POST">
+
                     {% csrf_token %}
+
                     <button type="submit" class="btn btn-logout">
+
                         Cerrar Sesión
+
                     </button>
 
                 </form>
+
             </div>
 
         </div>
-    </main>
+
+    </div>
 
 </body>
 
