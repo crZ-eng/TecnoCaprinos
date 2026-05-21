@@ -312,29 +312,66 @@ def anadir_cabra(request):
 
 @login_required_firebase
 def listar_cabras(request):
+
     uid = request.session.get('uid')
+
     cabras = []
 
+    razas = set()
+
     try:
+
         docs = (
+
             db.collection('cabras')
+
             .where('usuario_id', '==', uid)
-            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)
+
+            .order_by(
+                'fecha_anadido',
+                direction=firestore.Query.DESCENDING
+            )
+
             .stream()
+
         )
 
         for doc in docs:
+
             cabra = doc.to_dict()
+
             cabra['id'] = doc.id
+
             cabras.append(cabra)
 
+            # GUARDAR RAZAS ÚNICAS
+
+            if cabra.get('raza'):
+
+                razas.add(cabra['raza'])
+
     except Exception as e:
-        messages.error(request, f"Hubo un error al obtener sus cabras: {e}")
 
-    return render(request, 'info/listar_cabras.html', {
-        'cabras': cabras
-    })
+        messages.error(
+            request,
+            f"Hubo un error al obtener sus cabras: {e}"
+        )
 
+    return render(
+
+        request,
+
+        'info/listar_cabras.html',
+
+        {
+
+            'cabras': cabras,
+
+            'razas': sorted(razas)
+
+        }
+
+    )
 # =========================
 # ELIMINAR CABRA
 # =========================
