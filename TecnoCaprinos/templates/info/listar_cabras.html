@@ -1,111 +1,415 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-        {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TecnoCaprinos - Lista de tus Cabras</title>
+    <title>TecnoCaprinos - Lista de Cabras</title>
     <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cafe-fondo: #7a5230; 
-            --beige-botones: #c5a373;
-            --blanco: #ffffff;
             --bg-principal: #C9A06D;
             --bg-cuadros: #EAD4B8;
             --color-trazos: #7F5637;
             --white: #f8f8f8;
+            --header-table: #d2b48c;
+            --texto: #6b4528;
+            --sombra: rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Fredoka', sans-serif;
-            background-color: var(--cafe-fondo);
-            margin: 0;
-            color: var(--blanco);
+            background-color: var(--bg-principal);
+            color: var(--texto);
+            min-height: 100vh;
         }
 
-        .header{
+        /* =========================
+            HEADER
+        ========================== */
+
+        .white-header {
+            width: 100%;
+            background-color: var(--white);
             display: flex;
-            background-color: white;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
+            padding: 12px 40px;
+            border-bottom: 4px solid var(--color-trazos);
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        .contenido{
+        .header-title {
+            font-size: 2.3rem;
+            font-weight: 600;
+            color: var(--bg-cuadros);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
+            text-transform: uppercase;
+            text-align: center;
+            flex: 1;
+        }
+
+        .logo {
+            height: 65px;
+        }
+
+        .btn-plus {
+            background-color: var(--color-trazos);
             color: white;
+            width: 550px;
+            height: 55px;
+            border-radius: 12.2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 2rem;
+            font-weight: bold;
+            transition: 0.3s ease;
         }
 
-        .btn-crear{
+        .btn-plus:hover {
+            transform: scale(1.08);
+        }
+
+        /* =========================
+            CONTENEDOR PRINCIPAL
+        ========================== */
+
+        .main-container {
+            width: 95%;
+            max-width: 1500px;
+            margin: 35px auto;
+            background-color: var(--bg-cuadros);
+            border: 6px solid var(--color-trazos);
+            border-radius: 40px;
+            padding: 30px;
+            box-shadow: 0 10px 20px var(--sombra);
+        }
+
+        /* =========================
+            TOP BAR
+        ========================== */
+
+        .top-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-size: 2.3rem;
+            color: var(--white);
+            -webkit-text-stroke: 2px var(--color-trazos);
+        }
+
+        .search-bar {
+            background-color: #f8ecd9;
+            border: 3px solid var(--color-trazos);
+            border-radius: 18px;
+            padding: 12px 18px;
             display: flex;
             align-items: center;
+            gap: 10px;
+            min-width: 320px;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            font-size: 1rem;
+            font-family: 'Fredoka', sans-serif;
+            color: var(--texto);
+        }
+
+        .search-bar input::placeholder {
+            color: #8b6546;
+        }
+
+        /* =========================
+            GRID TARJETAS
+        ========================== */
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background-color: #fff8ef;
+            border: 3px solid var(--color-trazos);
+            border-radius: 25px;
+            padding: 22px;
+            transition: 0.25s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            gap: 10px;
+        }
+
+        .goat-name {
+            font-size: 1.4rem;
+            color: var(--color-trazos);
+            word-break: break-word;
+        }
+
+        .codigo-tag {
+            background-color: var(--header-table);
+            color: var(--color-trazos);
+            border-radius: 12px;
+            padding: 6px 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .info-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-item {
+            background-color: #f6ead8;
+            border-radius: 14px;
+            padding: 12px 14px;
+            border: 1px solid #d8b892;
+        }
+
+        .label {
+            font-weight: 600;
+            color: var(--color-trazos);
+            margin-bottom: 3px;
+            display: block;
+        }
+
+        .value {
+            color: #6d4b31;
+            word-break: break-word;
+        }
+
+        /* =========================
+            BOTÓN VOLVER
+        ========================== */
+
+        .bottom-actions {
+            position: sticky;
+            bottom: 15px;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 35px;
+            z-index: 10;
+        }
+
+        .btn-volver {
+            background-color: var(--color-trazos);
             color: white;
             text-decoration: none;
+            padding: 14px 26px;
+            border-radius: 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: 0.25s ease;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
         }
 
-        .irDashboard{
-            padding: 0;
+        .btn-volver:hover {
+            transform: scale(1.05);
         }
 
-        .irDashboard:hover{
-            padding: 0;
+        /* =========================
+            VACÍO
+        ========================== */
+
+        .sin-cabras {
+            background-color: #fff8ef;
+            border: 3px dashed var(--color-trazos);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            color: var(--color-trazos);
+            font-size: 1.2rem;
         }
 
-        .encabezado-contenido{
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 20px 0 20px;
+        #foto-cabra{
+            height: 50px;
+            width: 50px;
+            border-radius: 100%;
         }
 
-        .allTarjetas{
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-        }
+        /* =========================
+            RESPONSIVE
+        ========================== */
 
-        .tarjeta{
-            background-color: white;
-            color: black;
-            padding: 20px;
-            border-radius: 30px;
-            margin: 10px 10px 0 10px;
+        @media(max-width: 768px) {
+
+            .white-header {
+                padding: 15px 20px;
+            }
+
+            .header-title {
+                font-size: 1.5rem;
+            }
+
+            .main-container {
+                padding: 20px;
+                border-radius: 28px;
+            }
+
+            .top-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .section-title {
+                text-align: center;
+                font-size: 2rem;
+            }
+
+            .search-bar {
+                min-width: 100%;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-actions {
+                justify-content: center;
+            }
+
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        {% load static %}
-        <img src="{% static 'logo.jpeg' %}" alt="Logo" height="70px">
-        <h1 style="color: #c5a373;">Bienvenido a TECNO CAPRINOS</h1>
-        <a href="{% url 'dashboard' %}" class="irDashboard">
-            <svg width="60" height="60" viewBox="0 0 24 24" fill="#c5a373">
-                <circle cx="12" cy="8" r="4"/>
-                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
-            </svg>
-        </a>
+    <div class="white-header">
+        <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo">
+        <h1 class="header-title">TECNOCAPRINOS - CABRAS</h1>
+        <a href="{% url 'anadir' %}" class="btn-plus">Añade tus cabras</a>
     </div>
-    <div class="contenido">
-        <div class="encabezado-contenido">
-            <h2>Cabras Registradas: </h2>
-            <a href="{% url 'anadir' %}" class="btn-crear">➕ Ingresar Nueva Cabra</a>
+    <div class="main-container">
+        <div class="top-content">
+            <h2 class="section-title">Cabras Registradas</h2>
+            <div class="search-bar">
+                <span>🔍</span>
+                <input type="text" id="searchInput" placeholder="Buscar cabra...">
+            </div>
         </div>
-        <div class="allTarjetas">
+        <div class="cards-grid">
             {% for cabra in cabras %}
-            <div class="tarjeta">
-                <div class="info">
-                    <h3>Nombre: <span style="font-weight: normal;">{{ cabra.nombre }}</span></h3>
+            <div class="card">
+                <div class="card-header">
+                    <img id="foto-cabra" src="{{ cabra.foto_url }}" alt="foto cabra">
+                    <h3 class="goat-name">Nombre: {{ cabra.nombre }}</h3>
+                    <span class="codigo-tag">{{ cabra.codigo }}</span>
                 </div>
-                <div class="info">
-                    <h4>Clasificacion: <span style="font-weight: normal;">{{ cabra.peso }}</span></h4>
-                </div>
-                <div class="info">
-                    <h4>Descripción: <span style="font-weight: normal;">{{ cabra.fecha_nacimiento }}</span></h4>
+                <div class="info-group">
+                    <div class="info-item">
+                        <span class="label">Raza</span>
+                        <span class="value">{{ cabra.raza }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Sexo</span>
+                        <span class="value">{{ cabra.sexo }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Fecha de Nacimiento</span>
+                        <span class="value">{{ cabra.fecha_nacimiento }}</span>
+                    </div>
+                    <div class="info-item">
+                        <a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">Editar</a>
+                        <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red;">Eliminar</a>
+                    </div>
                 </div>
             </div>
             {% empty %}
-            <h3 class="sin-productos">No tienes cabras registradas.</h3>
+            <div class="sin-cabras">
+                No tienes cabras registradas.
+            </div>
             {% endfor %}
         </div>
-        <a href="{% url 'info_animales' %}"><-- VOLVER</a>
+        <div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mensaje {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="bottom-actions">
+            <a href="{% url 'info_animales' %}" class="btn-volver">Volver</a>
+        </div>
     </div>
+
+    <script>
+
+    const searchInput = document.getElementById("searchInput");
+
+    searchInput.addEventListener("keyup", function() {
+
+        const filtro = searchInput.value.toLowerCase();
+
+        const cards = document.querySelectorAll(".card");
+
+        cards.forEach(card => {
+
+            const nombre = card.querySelector(".goat-name")
+                .textContent
+                .toLowerCase();
+
+            const codigo = card.querySelector(".codigo-tag")
+                .textContent
+                .toLowerCase();
+
+            const raza = card.querySelector(".value")
+                .textContent
+                .toLowerCase();
+
+            if (
+                nombre.includes(filtro) ||
+                codigo.includes(filtro) ||
+                raza.includes(filtro)
+            ) {
+
+                card.style.display = "block";
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+</script>
 </body>
+
 </html>
