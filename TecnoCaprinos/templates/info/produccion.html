@@ -196,65 +196,75 @@
                 width: 100%;
             }
         }
+
         /* --- RESPONSIVE  --- */
 
         @media (max-width: 768px) {
+
             /* Ajuste del Header */
             .white-header {
                 padding: 10px 15px;
             }
+
             .header-title {
                 font-size: 1.2rem;
                 -webkit-text-stroke: 1px var(--color-trazos);
             }
+
             .logo-container img {
                 height: 40px;
             }
+
             .btn-plus {
                 width: 40px;
                 height: 40px;
                 font-size: 24px;
             }
 
-          
+
             .page-content {
                 gap: 20px;
                 padding: 20px 10px;
             }
-            
-            .left-column, .table-container {
-                border-width: 4px; 
+
+            .left-column,
+            .table-container {
+                border-width: 4px;
                 padding: 15px;
                 border-radius: 25px;
             }
 
-            .left-column h2, .section-header h1 {
+            .left-column h2,
+            .section-header h1 {
                 font-size: 1.5rem;
             }
 
-          
+
             .table-container {
                 overflow-x: auto;
             }
 
             .data-table {
-                min-width: 700px; 
+                min-width: 700px;
             }
 
-            .data-table th, .data-table td {
+            .data-table th,
+            .data-table td {
                 padding: 8px 5px;
                 font-size: 0.8rem;
             }
         }
 
-       
+
         .table-container::-webkit-scrollbar {
             height: 8px;
         }
+
         .table-container::-webkit-scrollbar-thumb {
             background: var(--color-trazos);
             border-radius: 10px;
         }
+
         .table-container::-webkit-scrollbar-track {
             background: var(--bg-cuadros);
         }
@@ -276,12 +286,25 @@
     <div class="page-content">
 
         <div class="left-column">
-            <h2>Control Lechero</h2>
-            <img src="{% static 'img_produccion.webp' %}" alt="Producción de leche">
+
+            
+        <div style="margin-top: 40px;">
+            <h2 style="
+        text-align:center;
+        color: white;
+        -webkit-text-stroke: 1px var(--color-trazos);
+    ">
+                Gráfica de Producción
+            </h2>
+
+            <canvas id="graficaLeche"></canvas>
+        </div>
+                
             <p style="color: var(--color-trazos); font-weight: 600; margin-top: 15px;">
-                Bienvenido, {{ username }}. Monitorea el rendimiento diario.
+                Bienvenido, {{ datos.nombre }}. Monitorea el rendimiento diario.
             </p>
         </div>
+
 
         <div class="table-container">
             <div class="section-header">
@@ -350,8 +373,60 @@
     </div>
 
     <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const nombres = [
+        {% for cabra in cabras %}
+            "{{ cabra.nombre }}",
+        {% endfor %}
+    ];
+
+    const totalLeche = [
+        {% for cabra in cabras %}
+            {{ cabra.total_diario|default:0 }},
+        {% endfor %}
+    ];
+
+    const ctx = document.getElementById('graficaLeche');
+
+    new Chart(ctx, {
+
+        type: 'bar',
+
+        data: {
+
+            labels: nombres,
+
+            datasets: [{
+
+                label: 'Litros diarios',
+
+                data: totalLeche,
+
+                borderWidth: 2
+
+            }]
+        },
+
+        options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+            }
+        }
+    });
+
+</script>
 </body>
 
 </html>

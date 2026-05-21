@@ -557,43 +557,58 @@ def enfermas(request):
 # producción
 # =========================
 
-
 @login_required_firebase
-def produccion (request):
-    
+def produccion(request):
+
     uid = request.session.get('uid')
-    
+
     cabras = []
-    
-    
+
+    datosUser = {}
+
     try:
+       # OBTENER DATOS DEL USUARIO
+
+        doc_ref = db.collection('usuarios').document(uid)
+
+        doc = doc_ref.get()
+
+        if doc.exists:
+
+            datosUser = doc.to_dict()
+
+        # OBTENER CABRAS
         
         docs = db.collection('cabras')\
-        .where('usuario_id', '==', uid)\
-        .where('categoria', '==', 'produccion')\
-        .stream()
-        
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'produccion')\
+            .stream()
+
         for doc in docs:
-            
+
             cabra = doc.to_dict()
-            
+
             cabra['id'] = doc.id
-            
+
             cabras.append(cabra)
-            
+
     except Exception as e:
-        
+
         print(e)
-        
+
+        messages.error(
+            request,
+            f'Error al cargar datos: {e}'
+        )
+
     return render(
         request,
         'info/produccion.html',
         {
-            'cabras':cabras
-        } 
+            'cabras': cabras,
+            'datos': datosUser
+        }
     )
-
-
 # =========================
 # FORMULARIOS
 # =========================
