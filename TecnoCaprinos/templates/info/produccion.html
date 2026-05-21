@@ -71,20 +71,19 @@
 
         .btn-plus:hover {
             transform: scale(1.1);
-            background-color: var(--primario-oscuro);
         }
 
         .btn-volver {
-            grid-column: span 2;
             background-color: #ab7b41;
             color: white;
             border: none;
-            padding: 12px;
+            padding: 12px 20px;
             border-radius: 20px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 20px;
+            margin-bottom: 30px;
             font-family: 'Fredoka', sans-serif;
             transition: transform 0.2s;
             text-decoration: none;
@@ -120,12 +119,6 @@
             -webkit-text-stroke: 1.5px var(--color-trazos);
             text-transform: uppercase;
             font-size: 1.8rem;
-        }
-
-        .left-column img {
-            width: 100%;
-            border-radius: 20px;
-            border: 3px solid var(--color-trazos);
         }
 
         /* COLUMNA DERECHA */
@@ -164,7 +157,6 @@
             font-size: 0.85rem;
             text-transform: uppercase;
             border-bottom: 3px solid var(--color-trazos);
-            border-right: 1px solid var(--color-trazos);
         }
 
         .data-table td {
@@ -174,15 +166,19 @@
             font-weight: 500;
             font-size: 0.9rem;
             border-bottom: 1px solid var(--bg-cuadros);
-            border-right: 1px solid var(--bg-cuadros);
         }
 
-        .date-tag {
-            background-color: var(--white);
-            border: 1px solid var(--color-trazos);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+        .acciones a {
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .editar-btn {
+            color: rgb(0, 191, 0);
+        }
+
+        .eliminar-btn {
+            color: red;
         }
 
         @media (max-width: 1100px) {
@@ -197,11 +193,8 @@
             }
         }
 
-        /* --- RESPONSIVE  --- */
-
         @media (max-width: 768px) {
 
-            /* Ajuste del Header */
             .white-header {
                 padding: 10px 15px;
             }
@@ -221,7 +214,6 @@
                 font-size: 24px;
             }
 
-
             .page-content {
                 gap: 20px;
                 padding: 20px 10px;
@@ -239,7 +231,6 @@
                 font-size: 1.5rem;
             }
 
-
             .table-container {
                 overflow-x: auto;
             }
@@ -254,84 +245,97 @@
                 font-size: 0.8rem;
             }
         }
-
-
-        .table-container::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .table-container::-webkit-scrollbar-thumb {
-            background: var(--color-trazos);
-            border-radius: 10px;
-        }
-
-        .table-container::-webkit-scrollbar-track {
-            background: var(--bg-cuadros);
-        }
     </style>
 </head>
 
 <body>
 
+    <!-- HEADER -->
+
     <div class="white-header">
+
         <div class="logo-container">
             <a href="{% url 'info_animales' %}">
                 <img src="{% static 'logo.jpeg' %}" alt="Logo">
             </a>
         </div>
-        <h1 class="header-title">TECNOCAPRINOS - PRODUCCIÓN</h1>
-        <a href="{% url 'agregar_produccion' %}" class="btn-plus">+</a>
+
+        <h1 class="header-title">
+            TECNOCAPRINOS - PRODUCCIÓN
+        </h1>
+
+        <a href="{% url 'agregar_produccion' %}" class="btn-plus">
+            +
+        </a>
+
     </div>
+
+    <!-- CONTENIDO -->
 
     <div class="page-content">
 
+        <!-- IZQUIERDA -->
+
         <div class="left-column">
 
-            
-        <div style="margin-top: 40px;">
-            <h2 style="
-        text-align:center;
-        color: white;
-        -webkit-text-stroke: 1px var(--color-trazos);
-    ">
-                Gráfica de Producción
-            </h2>
+            <div style="margin-top: 20px;">
 
-            <canvas id="graficaLeche"></canvas>
-        </div>
-                
-            <p style="color: var(--color-trazos); font-weight: 600; margin-top: 15px;">
-                Bienvenido, {{ datos.nombre }}. Monitorea el rendimiento diario.
+                <h2 style="
+                    text-align:center;
+                    color: white;
+                    -webkit-text-stroke: 1px var(--color-trazos);
+                ">
+                    Gráfica de Producción
+                </h2>
+
+                <canvas id="graficaLeche"></canvas>
+
+            </div>
+
+            <p style="
+                color: var(--color-trazos);
+                font-weight: 600;
+                margin-top: 20px;
+            ">
+                Bienvenido, {{ datos.nombre }}.
+                Monitorea el rendimiento diario.
             </p>
+
         </div>
 
+        <!-- TABLA -->
 
         <div class="table-container">
+
             <div class="section-header">
                 <h1>Registros Diarios</h1>
             </div>
 
             <table class="data-table">
+
                 <thead>
+
                     <tr>
 
                         <th>Código</th>
                         <th>Nombre</th>
                         <th>Peso</th>
                         <th>Sexo</th>
-
-
                         <th>Ordeño Mañana (L)</th>
                         <th>Ordeño Tarde (L)</th>
                         <th>Total Diario (L)</th>
                         <th>Observaciones</th>
                         <th>Responsable</th>
                         <th>Acciones</th>
+
                     </tr>
+
                 </thead>
+
                 <tbody>
 
                     {% for cabra in cabras %}
+
                     <tr>
 
                         <td>{{ cabra.codigo }}</td>
@@ -339,19 +343,28 @@
                         <td>{{ cabra.peso }}</td>
                         <td>{{ cabra.sexo }}</td>
 
-
                         <td>{{ cabra.ordeno_manana|default:"0" }}</td>
+
                         <td>{{ cabra.ordeno_tarde|default:"0" }}</td>
+
                         <td>{{ cabra.total_diario|default:"0" }}</td>
+
                         <td>{{ cabra.observaciones|default:"-" }}</td>
+
                         <td>{{ cabra.responsable|default:"-" }}</td>
-                        <td><a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">
+
+                        <td class="acciones">
+
+                            <a href="{% url 'guardar_produccion' cabra.id %}" class="editar-btn">
                                 Editar
                             </a>
-                        
-                            <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red;">
+
+                            <br><br>
+
+                            <a href="{% url 'eliminar_cabra' cabra.id %}" class="eliminar-btn">
                                 Eliminar
                             </a>
+
                         </td>
 
                     </tr>
@@ -359,74 +372,85 @@
                     {% empty %}
 
                     <tr>
+
                         <td colspan="10">
                             No hay registros de producción todavía.
                         </td>
+
                     </tr>
 
                     {% endfor %}
 
                 </tbody>
+
             </table>
+
         </div>
 
     </div>
 
-    <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
+    <!-- BOTÓN VOLVER -->
+
+    <a href="{% url 'info_animales' %}" class="btn-volver">
+        Volver
+    </a>
+
+    <!-- CHART JS -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
+    <script>
 
-    const nombres = [
-        {% for cabra in cabras %}
-            "{{ cabra.nombre }}",
-        {% endfor %}
-    ];
+        const nombres = [
+            {% for cabra in cabras %}
+                "{{ cabra.nombre }}",
+            {% endfor %}
+        ];
 
-    const totalLeche = [
-        {% for cabra in cabras %}
-            {{ cabra.total_diario|default:0 }},
-        {% endfor %}
-    ];
+        const totalLeche = [
+            {% for cabra in cabras %}
+                {{ cabra.total_diario|default:"0" }},
+            {% endfor %}
+        ];
 
-    const ctx = document.getElementById('graficaLeche');
+        const ctx = document.getElementById('graficaLeche');
 
-    new Chart(ctx, {
+        new Chart(ctx, {
 
-        type: 'bar',
+            type: 'bar',
 
-        data: {
+            data: {
 
-            labels: nombres,
+                labels: nombres,
 
-            datasets: [{
+                datasets: [{
 
-                label: 'Litros diarios',
+                    label: 'Litros diarios',
 
-                data: totalLeche,
+                    data: totalLeche,
 
-                borderWidth: 2
+                    borderWidth: 2
 
-            }]
-        },
+                }]
+            },
 
-        options: {
+            options: {
 
-            responsive: true,
+                responsive: true,
 
-            scales: {
+                scales: {
 
-                y: {
+                    y: {
 
-                    beginAtZero: true
+                        beginAtZero: true
 
+                    }
                 }
             }
-        }
-    });
+        });
 
-</script>
+    </script>
+
 </body>
 
 </html>
