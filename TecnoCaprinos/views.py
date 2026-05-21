@@ -427,6 +427,7 @@ def cinta(request):
         docs = db.collection('cabras')\
             .where('usuario_id', '==', uid)\
             .where('categoria', '==', 'cinta')\
+            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
             .stream()
 
         for doc in docs:
@@ -465,6 +466,7 @@ def vacunas(request):
         docs = db.collection('cabras')\
             .where('usuario_id', '==', uid)\
             .where('categoria', '==', 'vacunas')\
+            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
             .stream()
 
         for doc in docs:
@@ -503,6 +505,7 @@ def produccion(request):
         docs = db.collection('cabras')\
             .where('usuario_id', '==', uid)\
             .where('categoria', '==', 'produccion')\
+            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
             .stream()
 
         for doc in docs:
@@ -541,6 +544,7 @@ def enfermas(request):
         docs = db.collection('cabras')\
         .where('usuario_id', '==', uid)\
         .where('categoria', '==', 'enferma')\
+        .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
         .stream()
             
         for doc in docs:
@@ -580,6 +584,7 @@ def produccion (request):
         docs = db.collection('cabras')\
         .where('usuario_id', '==', uid)\
         .where('categoria', '==', 'produccion')\
+        .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
         .stream()
         
         for doc in docs:
@@ -636,12 +641,4 @@ def registrar_seguimiento_gestacion(request):
     return render(
         request,
         'info/agregar/registrar_seguimiento_gestacion.html'
-    )
-
-
-def guardar_animal(request):
-
-    return render(
-        request,
-        'info/agregar/guardar_animal.html'
     )
