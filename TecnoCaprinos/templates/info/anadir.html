@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -304,6 +305,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="white-header">
         <div class="logo-container">
@@ -312,7 +314,8 @@
         <h1 class="header-title">TECNOCAPRINOS</h1>
         <div style="width: 60px;"></div>
     </div>
-    <div class="page-content"><div class="left-column">
+    <div class="page-content">
+        <div class="left-column">
             <h2 class="section-title">Bienvenido</h2>
             <div class="image-placeholder">
                 <img src="{% static 'img1.webp' %}" alt="Cabra animada">
@@ -323,10 +326,8 @@
             </p>
         </div>
         <div class="form-container">
-            <h3 class="form-title">
-                Registrar Nueva Cabra
-            </h3>
-            <form method="POST" class="form-grid">
+            <h3 class="form-title">Registrar Nueva Cabra</h3>
+            <form method="POST" enctype="multipart/form-data" class="form-grid">
                 {% csrf_token %}
                 <div class="form-group">
                     <label>Codigo:</label>
@@ -399,7 +400,7 @@
                 </div>
                 <div class="form-group">
                     <label>Peso (Libras):</label>
-                    <input  type="number" name="peso" min="0" placeholder="Peso en Libras" required>
+                    <input type="number" name="peso" min="0" placeholder="Peso en Libras" required>
                 </div>
                 <div class="form-group">
                     <label>Sexo:</label>
@@ -438,13 +439,12 @@
                 <div class="form-group">
                     <label>Categoria:</label>
                     <select name="categoria" id="categoria">
-                    <option selected>Seleciona una Categoria</option>
-                    <option value="cinta">En Cinta</option>
-                    <option value="enferma">Enferma</option>
-<!-- cambio tema vacunas a medicada  -->
-                    <option value="vacunas">Medicada</option>
-                    <option value="produccion">Producción</option>
-                    <option value="">Ninguno</option>
+                        <option selected>Seleciona una Categoria</option>
+                        <option value="cinta">En Cinta</option>
+                        <option value="enferma">Enferma</option>
+                        <option value="vacunas">Vacunas</option>
+                        <option value="produccion">Producción</option>
+                        <option value="">Ninguno</option>
                     </select>
                 </div>
                 <div class="form-group full-width">
@@ -455,18 +455,9 @@
                     </div>
                 </div>
                 <div class="buttons-container">
-                    <button type="submit" class="btn-submit">GUARDAR REGISTRO
-
-                    </button>
-
-                    <a href="{% url 'info_animales' %}" class="btn-volver">
-
-                        VOLVER
-
-                    </a>
-
+                    <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>
+                    <a href="{% url 'listar' %}" class="btn-volver">VOLVER</a>
                 </div>
-              
             </form>
 
         </div>
