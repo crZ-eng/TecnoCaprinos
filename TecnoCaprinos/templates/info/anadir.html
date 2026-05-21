@@ -323,7 +323,7 @@
 
         <div class="logo-container">
 
-            <a href="{% url 'listar' %}">
+            <a href="{% url 'info_animales' %}">
                 <img
                     src="{% static 'logo.jpeg' %}"
                     alt="Logo TecnoCaprinos"
@@ -382,6 +382,7 @@
                         name="cod"
                         placeholder="Código de la Cabra"
                         required
+                        value="Cod-00"
                     >
 
                 </div>
@@ -557,6 +558,7 @@
                         name="cod_madre"
                         placeholder="Código de la Cabra Madre"
                         required
+                        value="Cod-00"
                     >
 
                 </div>
@@ -575,6 +577,7 @@
                         name="cod_padre"
                         placeholder="Código del Cabro Padre"
                         required
+                        value="Cod-00"
                     >
 
                 </div>
@@ -627,7 +630,7 @@
 
                 <div class="buttons-container">
                     <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>
-                    <a href="{% url 'listar' %}" class="btn-volver">VOLVER</a>
+                    <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
                 </div>
             </form>
 

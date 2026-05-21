@@ -216,7 +216,65 @@ def dashboard(request):
 
 @login_required_firebase
 def info_animales(request):
-    return render(request, 'info_animales.html')
+    uid = request.session.get('uid')
+
+    cabras = []
+
+    razas = set()
+
+    try:
+
+        docs = (
+
+            db.collection('cabras')
+
+            .where('usuario_id', '==', uid)
+
+            .order_by(
+                'fecha_anadido',
+                direction=firestore.Query.DESCENDING
+            )
+
+            .stream()
+
+        )
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+            # GUARDAR RAZAS ÚNICAS
+
+            if cabra.get('raza'):
+
+                razas.add(cabra['raza'])
+
+    except Exception as e:
+
+        messages.error(
+            request,
+            f"Hubo un error al obtener sus cabras: {e}"
+        )
+
+    return render(
+
+        request,
+
+        'info_animales.html',
+
+        {
+
+            'cabras': cabras,
+
+            'razas': sorted(razas)
+
+        }
+
+    )
 
 # =========================
 # AÑADIR CABRA
@@ -292,7 +350,7 @@ def anadir_cabra(request):
                 "Cabra añadida con éxito 🐐"
             )
             print(foto_url)
-            return redirect('listar')
+            return redirect('info_animales')
 
         except Exception as e:
 
@@ -306,72 +364,6 @@ def anadir_cabra(request):
         'info/anadir.html'
     )
 
-# =========================
-# LISTAR CABRAS
-# =========================
-
-@login_required_firebase
-def listar_cabras(request):
-
-    uid = request.session.get('uid')
-
-    cabras = []
-
-    razas = set()
-
-    try:
-
-        docs = (
-
-            db.collection('cabras')
-
-            .where('usuario_id', '==', uid)
-
-            .order_by(
-                'fecha_anadido',
-                direction=firestore.Query.DESCENDING
-            )
-
-            .stream()
-
-        )
-
-        for doc in docs:
-
-            cabra = doc.to_dict()
-
-            cabra['id'] = doc.id
-
-            cabras.append(cabra)
-
-            # GUARDAR RAZAS ÚNICAS
-
-            if cabra.get('raza'):
-
-                razas.add(cabra['raza'])
-
-    except Exception as e:
-
-        messages.error(
-            request,
-            f"Hubo un error al obtener sus cabras: {e}"
-        )
-
-    return render(
-
-        request,
-
-        'info/listar_cabras.html',
-
-        {
-
-            'cabras': cabras,
-
-            'razas': sorted(razas)
-
-        }
-
-    )
 # =========================
 # ELIMINAR CABRA
 # =========================
@@ -387,7 +379,7 @@ def eliminar_cabra(request, cabra_id):
     except Exception as e:
         messages.error(request, f"Error al eliminar: {e}")
 
-    return redirect('listar')
+    return redirect('info_animales')
 
 # ==============================
 # EDITAR LOS DATOS DE UNA CABRA
@@ -406,13 +398,13 @@ def editar_cabra(request, cabra_id):
 
         if not doc.exists:
             messages.error(request, "La cabra no existe")
-            return redirect('listar')
+            return redirect('info_animales')
         
         cabra_data = doc.to_dict()
 
         if cabra_data.get('usuario_id') != uid:
             messages.error(request, "No tienes permiso para editar esta cabra")
-            return redirect('listar')
+            return redirect('info_animales')
         
         if request.method == 'POST':
             nuevo_cod = request.POST.get('nuevo-codigo')
@@ -441,10 +433,10 @@ def editar_cabra(request, cabra_id):
             })
 
             messages.success(request, "✅ Cabra actualizada correctamente.")
-            return redirect('listar')
+            return redirect('info_animales')
     except Exception as e:
         messages.error(request, f"Error al editar la cabra: {e}")
-        return redirect('listar')
+        return redirect('info_animales')
     
     return render(request, 'info/editar.html', {'cabra': cabra_data, 'id': cabra_id})
 
@@ -464,7 +456,6 @@ def cinta(request):
         docs = db.collection('cabras')\
             .where('usuario_id', '==', uid)\
             .where('categoria', '==', 'cinta')\
-            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
             .stream()
 
         for doc in docs:
@@ -503,7 +494,6 @@ def vacunas(request):
         docs = db.collection('cabras')\
             .where('usuario_id', '==', uid)\
             .where('categoria', '==', 'vacunas')\
-            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
             .stream()
 
         for doc in docs:
@@ -527,45 +517,6 @@ def vacunas(request):
 
 
 # =========================
-# PRODUCCIÓN
-# =========================
-
-@login_required_firebase
-def produccion(request):
-
-    uid = request.session.get('uid')
-
-    cabras = []
-
-    try:
-
-        docs = db.collection('cabras')\
-            .where('usuario_id', '==', uid)\
-            .where('categoria', '==', 'produccion')\
-            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
-            .stream()
-
-        for doc in docs:
-
-            cabra = doc.to_dict()
-
-            cabra['id'] = doc.id
-
-            cabras.append(cabra)
-
-    except Exception as e:
-        print(e)
-
-    return render(
-        request,
-        'info/produccion.html',
-        {
-            'cabras': cabras
-        }
-    )
-
-
-# =========================
 # ENFERMAS
 # =========================
 
@@ -581,7 +532,6 @@ def enfermas(request):
         docs = db.collection('cabras')\
         .where('usuario_id', '==', uid)\
         .where('categoria', '==', 'enferma')\
-        .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
         .stream()
             
         for doc in docs:
@@ -621,7 +571,6 @@ def produccion (request):
         docs = db.collection('cabras')\
         .where('usuario_id', '==', uid)\
         .where('categoria', '==', 'produccion')\
-        .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
         .stream()
         
         for doc in docs:

@@ -303,6 +303,7 @@
                         <th>Total Diario (L)</th>
                         <th>Observaciones</th>
                         <th>Responsable</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -321,6 +322,14 @@
                         <td>{{ cabra.total_diario|default:"0" }}</td>
                         <td>{{ cabra.observaciones|default:"-" }}</td>
                         <td>{{ cabra.responsable|default:"-" }}</td>
+                        <td><a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">
+                                Editar
+                            </a>
+                        
+                            <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red;">
+                                Eliminar
+                            </a>
+                        </td>
 
                     </tr>
 
@@ -341,7 +350,7 @@
     </div>
 
     <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 
