@@ -322,14 +322,7 @@
     <div class="white-header">
 
         <div class="logo-container">
-
-            <a href="{% url 'listar' %}">
-                <img
-                    src="{% static 'logo.jpeg' %}"
-                    alt="Logo TecnoCaprinos"
-                >
-            </a>
-
+            <img src="{% static 'logo.jpeg' %}" alt="Logo TecnoCaprinos">
         </div>
 
         <h1 class="header-title">
@@ -343,12 +336,7 @@
         <div class="left-column">
             <h2 class="section-title">Bienvenido</h2>
             <div class="image-placeholder">
-
-                <img
-                    src="{% static 'img1.webp' %}"
-                    alt="Cabra animada"
-                >
-
+                <img src="{% static 'img1.webp' %}" alt="Cabra animada">
             </div>
 
             <p class="welcome-text">
@@ -373,64 +361,21 @@
                 <!-- CODIGO -->
 
                 <div class="form-group">
-
-                    <label for="cod">Código:</label>
-
-                    <input
-                        type="text"
-                        id="cod"
-                        name="cod"
-                        placeholder="Código de la Cabra"
-                        required
-                    >
-
+                    <label>Codigo:</label>
+                    <input type="text" name="cod" value="Cod-00" placeholder="Codigo de la Cabra" required>
                 </div>
-
-                <!-- NOMBRE -->
-
                 <div class="form-group">
-
-                    <label for="nombre">Nombre:</label>
-
-                    <input
-                        type="text"
-                        id="nombre"
-                        name="nombre"
-                        placeholder="Nombre de la Cabra"
-                        required
-                    >
-
+                    <label>Nombre:</label>
+                    <input type="text" name="nombre" placeholder="Nombre de la Cabra" required>
                 </div>
-
-                <!-- FECHA -->
-
                 <div class="form-group">
-
-                    <label for="fecha_nacimiento">
-                        Fecha de Nacimiento:
-                    </label>
-
-                    <input
-                        type="date"
-                        id="fecha_nacimiento"
-                        name="fecha_nacimiento"
-                        required
-                    >
-
+                    <label>Fecha de Nacimiento:</label>
+                    <input type="date" name="fecha_nacimiento" required>
                 </div>
-
-                <!-- RAZA -->
-
                 <div class="form-group">
-
-                    <label for="raza">Raza:</label>
-
-                    <select name="raza" id="raza" required>
-
-                        <option value="">
-                            Seleccione una raza
-                        </option>
-
+                    <label>Raza:</label>
+                    <select name="raza" id="raza">
+                        <option selected value="No Seleccionado">Seleccione una raza</option>
                         <option value="Boer">Boer</option>
                         <option value="Saanen">Saanen</option>
                         <option value="Alpina">Alpina</option>
@@ -493,23 +438,11 @@
                 <!-- SEXO -->
 
                 <div class="form-group">
-
-                    <label for="sexo">Sexo:</label>
-
-                    <select name="sexo" id="sexo" required>
-
-                        <option value="">
-                            Seleccione...
-                        </option>
-
-                        <option value="M">
-                            Macho (Cabro)
-                        </option>
-
-                        <option value="F">
-                            Hembra (Cabra)
-                        </option>
-
+                    <label>Sexo:</label>
+                    <select name="sexo" required>
+                        <option value="No Seleccionado">Seleccione...</option>
+                        <option value="M"> Macho (Cabro) </option>
+                        <option value="F"> Hembra (Cabra)</option>
                     </select>
 
                 </div>
@@ -546,37 +479,15 @@
                 <!-- MADRE -->
 
                 <div class="form-group">
-
-                    <label for="cod_madre">
-                        Código de la Madre:
-                    </label>
-
-                    <input
-                        type="text"
-                        id="cod_madre"
-                        name="cod_madre"
-                        placeholder="Código de la Cabra Madre"
-                        required
-                    >
-
+                    <label>Codigo de la Madre:</label>
+                    <input type="text" value="Cod-00" name="cod_madre" placeholder="Codigo de la Cabra Madre" required>
                 </div>
 
                 <!-- PADRE -->
 
                 <div class="form-group">
-
-                    <label for="cod_padre">
-                        Código del Padre:
-                    </label>
-
-                    <input
-                        type="text"
-                        id="cod_padre"
-                        name="cod_padre"
-                        placeholder="Código del Cabro Padre"
-                        required
-                    >
-
+                    <label>Codigo del Padre:</label>
+                    <input type="text" value="Cod-00" name="cod_padre" placeholder="Codigo del Cabro Padre" required>
                 </div>
 
                 <!-- CATEGORIA -->
@@ -597,28 +508,10 @@
                 <!-- FOTO -->
 
                 <div class="form-group full-width">
-
-                    <label for="fotoInput">
-                        Foto de la Cabra:
-                    </label>
-
-                    <input
-                        type="file"
-                        name="foto"
-                        id="fotoInput"
-                        accept="image/*"
-                        required
-                    >
-
-                    <!-- PREVIEW -->
-
+                    <label>Foto de la Cabra:</label>
+                    <input type="file" name="foto" accept="image/*" required id="fotoInput">
                     <div class="preview-container">
-
-                        <img
-                            id="preview"
-                            alt="Vista previa"
-                        >
-
+                        <img id="preview" alt="Vista previa">
                     </div>
 
                 </div>

@@ -464,7 +464,6 @@ def cinta(request):
         docs = db.collection('cabras')\
             .where('usuario_id', '==', uid)\
             .where('categoria', '==', 'cinta')\
-            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
             .stream()
 
         for doc in docs:
@@ -503,7 +502,6 @@ def vacunas(request):
         docs = db.collection('cabras')\
             .where('usuario_id', '==', uid)\
             .where('categoria', '==', 'vacunas')\
-            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
             .stream()
 
         for doc in docs:
@@ -527,45 +525,6 @@ def vacunas(request):
 
 
 # =========================
-# PRODUCCIÓN
-# =========================
-
-@login_required_firebase
-def produccion(request):
-
-    uid = request.session.get('uid')
-
-    cabras = []
-
-    try:
-
-        docs = db.collection('cabras')\
-            .where('usuario_id', '==', uid)\
-            .where('categoria', '==', 'produccion')\
-            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
-            .stream()
-
-        for doc in docs:
-
-            cabra = doc.to_dict()
-
-            cabra['id'] = doc.id
-
-            cabras.append(cabra)
-
-    except Exception as e:
-        print(e)
-
-    return render(
-        request,
-        'info/produccion.html',
-        {
-            'cabras': cabras
-        }
-    )
-
-
-# =========================
 # ENFERMAS
 # =========================
 
@@ -581,7 +540,6 @@ def enfermas(request):
         docs = db.collection('cabras')\
         .where('usuario_id', '==', uid)\
         .where('categoria', '==', 'enferma')\
-        .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
         .stream()
             
         for doc in docs:
@@ -621,7 +579,6 @@ def produccion (request):
         docs = db.collection('cabras')\
         .where('usuario_id', '==', uid)\
         .where('categoria', '==', 'produccion')\
-        .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
         .stream()
         
         for doc in docs:
