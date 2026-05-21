@@ -23,7 +23,6 @@ urlpatterns = [
 
     #btn añadir cabra
     path('info-animales/anadir', views.anadir_cabra, name= 'anadir'),
-    path('info-animales/listar', views.listar_cabras, name= 'listar'),
     
     #CRUD
     path('info-animales/listar/eliminar/<str:cabra_id>/', views.eliminar_cabra, name='eliminar_cabra'),
