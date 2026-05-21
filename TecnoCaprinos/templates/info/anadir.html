@@ -326,10 +326,8 @@
             </p>
         </div>
         <div class="form-container">
-            <h3 class="form-title">
-                Registrar Nueva Cabra
-            </h3>
-            <form method="POST" class="form-grid">
+            <h3 class="form-title">Registrar Nueva Cabra</h3>
+            <form method="POST" enctype="multipart/form-data" class="form-grid">
                 {% csrf_token %}
                 <div class="form-group">
                     <label>Codigo:</label>

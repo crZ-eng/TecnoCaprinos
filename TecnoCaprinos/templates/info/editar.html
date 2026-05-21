@@ -250,6 +250,10 @@
             transform: scale(1.02);
         }
 
+        #foto-cabra {
+            width: 300px;
+        }
+
         @media (max-width: 950px) {
             .page-content {
                 flex-direction: column;
@@ -278,13 +282,8 @@
         <div class="left-column">
             <h2 class="section-title">Bienvenido</h2>
             <div class="image-placeholder">
-                <img src="{% static 'img1.webp' %}" alt="Cabra animada"
-                    style="width: 100%; max-width: 400px; border-radius: 20px;">
+                <img src="{{ cabra.foto_url }}" id="foto-cabra" alt="foto-cabra" style="width: 100%; max-width: 400px; border-radius: 20px;">
             </div>
-            <p class="welcome-text">
-                Hola, <strong>{{ user.username }}</strong>En esta sección puedes agregar nuevos integrantes a tu hato
-                caprino.
-            </p>
         </div>
         <div class="form-container">
             <h3 class="form-title">Edita los Datos de tu Cabra</h3>
