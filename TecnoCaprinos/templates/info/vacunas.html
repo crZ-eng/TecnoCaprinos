@@ -105,29 +105,6 @@
             width: 95%;
         }
 
-        /* COLUMNA IZQUIERDA */
-        .left-column {
-            flex: 0.8;
-            background-color: var(--bg-cuadros);
-            border: 6px solid var(--color-trazos);
-            border-radius: 30px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .left-column h2 {
-            color: var(--white);
-            -webkit-text-stroke: 1.5px var(--color-trazos);
-            text-transform: uppercase;
-            font-size: 1.8rem;
-        }
-
-        .left-column img {
-            width: 100%;
-            border-radius: 20px;
-            border: 3px solid var(--color-trazos);
-        }
-
         /* COLUMNA DERECHA */
         .table-container {
             flex: 2.2;
@@ -193,8 +170,6 @@
                 flex-direction: column;
                 align-items: center;
             }
-
-            .left-column,
             .table-container {
                 width: 100%;
             }
@@ -225,13 +200,13 @@
                 width: 98%;
                 gap: 15px;
             }
-            .left-column, .table-container {
+            .table-container {
                 border-width: 4px; 
                 padding: 15px;
                 border-radius: 25px;
             }
 
-            .left-column h2, .section-header h1 {
+            .section-header h1 {
                 font-size: 1.4rem;
             }
 
@@ -280,14 +255,6 @@
     </div>
 
     <div class="page-content">
-
-        <div class="left-column">
-            <h2>Control Sanitario</h2>
-            <img src="{% static 'img_vacuna.webp' %}" alt="Vacunación">
-            <p style="color: var(--color-trazos); font-weight: 600; margin-top: 15px;">
-                Hola {{ user.username }}, mantén al día el registro de biológicos para garantizar la salud de tu hato.
-            </p>
-        </div>
 
         <div class="table-container">
             <div class="section-header">
