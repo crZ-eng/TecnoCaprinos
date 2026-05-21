@@ -256,6 +256,12 @@
             font-size: 1.2rem;
         }
 
+        #foto-cabra{
+            height: 50px;
+            width: 50px;
+            border-radius: 100%;
+        }
+
         /* =========================
             RESPONSIVE
         ========================== */
@@ -323,7 +329,8 @@
             {% for cabra in cabras %}
             <div class="card">
                 <div class="card-header">
-                    <h3 class="goat-name">{{ cabra.nombre }}</h3>
+                    <img id="foto-cabra" src="{{ cabra.foto_url }}" alt="foto cabra">
+                    <h3 class="goat-name">Nombre: {{ cabra.nombre }}</h3>
                     <span class="codigo-tag">{{ cabra.codigo }}</span>
                 </div>
                 <div class="info-group">
@@ -350,6 +357,15 @@
                 No tienes cabras registradas.
             </div>
             {% endfor %}
+        </div>
+        <div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mensaje {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="bottom-actions">
             <a href="{% url 'info_animales' %}" class="btn-volver">Volver</a>
