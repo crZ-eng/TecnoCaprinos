@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -301,7 +300,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="white-header">
 
@@ -341,7 +339,10 @@
                         <span class="label">Fecha de Nacimiento</span>
                         <span class="value">{{ cabra.fecha_nacimiento }}</span>
                     </div>
-
+                    <div class="info-item">
+                        <a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">Editar</a>
+                        <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red;">Eliminar</a>
+                    </div>
                 </div>
             </div>
             {% empty %}

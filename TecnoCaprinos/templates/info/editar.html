@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TecnoCaprinos - Registro</title>
+    <title>TecnoCaprinos - Editar</title>
     <link rel="icon" href="{% static 'logo.jpeg' %}">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        /* (Mantenemos tus estilos originales intactos) */
         :root {
             --bg-principal: #C9A06D;
             --bg-cuadros: #EAD4B8;
@@ -15,24 +17,15 @@
             --white: #f8f8f8;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
+            margin: 0;
             font-family: 'Fredoka', sans-serif;
             background-color: var(--bg-principal);
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
-
-        /* =========================
-            HEADER
-        ========================== */
 
         .white-header {
             width: 100%;
@@ -40,27 +33,77 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 50px;
+            padding: 10px 50px;
+            box-sizing: border-box;
             border-bottom: 4px solid var(--color-trazos);
-            flex-wrap: wrap;
-            gap: 15px;
         }
 
         .logo-container img {
-            height: 65px;
+            height: 60px;
         }
 
         .header-title {
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             font-weight: 600;
             color: var(--bg-cuadros);
             -webkit-text-stroke: 1.5px var(--color-trazos);
+            margin: 0;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: var(--color-trazos);
+            display: flex;
+            justify-content: center;
+            padding: 5px 0;
+            z-index: 20;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            background-color: var(--color-trazos);
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
             text-transform: uppercase;
         }
 
-        /* =========================
-            CONTENIDO
-        ========================== */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--bg-cuadros);
+            min-width: 220px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 30;
+            border: 3px solid var(--color-trazos);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .dropdown-content a {
+            color: var(--color-trazos);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-weight: 600;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #dcb894;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
 
         .page-content {
             display: flex;
@@ -68,13 +111,11 @@
             align-items: flex-start;
             gap: 50px;
             padding: 50px 20px;
-            max-width: 1300px;
-            width: 95%;
+            max-width: 1200px;
+            width: 90%;
+            margin: auto;
+            box-sizing: border-box;
         }
-
-        /* =========================
-            COLUMNA IZQUIERDA
-        ========================== */
 
         .left-column {
             flex: 1;
@@ -87,53 +128,47 @@
         .section-title {
             color: var(--white);
             font-size: 3rem;
-            margin-bottom: 25px;
-            -webkit-text-stroke: 2px var(--color-trazos);
+            margin-top: 0;
+            margin-bottom: 20px;
+            -webkit-text-stroke: 2.5px var(--color-trazos);
             text-transform: uppercase;
         }
 
         .image-placeholder {
             width: 100%;
             max-width: 450px;
-            background-color: var(--bg-cuadros);
+            height: auto;
             border: 6px solid var(--color-trazos);
-            border-radius: 35px;
+            border-radius: 30px;
             padding: 20px;
-            margin-bottom: 25px;
-        }
-
-        .image-placeholder img {
-            width: 100%;
-            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
         .welcome-text {
             color: var(--color-trazos);
-            font-size: 1.1rem;
-            line-height: 1.7;
-            max-width: 500px;
             font-weight: 600;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
-        /* =========================
-            FORMULARIO
-        ========================== */
-
         .form-container {
-            flex: 1.1;
+            flex: 1;
             background-color: var(--bg-cuadros);
             border: 6px solid var(--color-trazos);
             border-radius: 40px;
             padding: 40px;
-            max-width: 650px;
-            width: 100%;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            box-sizing: border-box;
+            max-width: 600px;
         }
 
         .form-title {
             color: var(--white);
-            font-size: 2.3rem;
+            font-size: 2.2rem;
             text-align: center;
+            margin-top: 0;
             margin-bottom: 30px;
             -webkit-text-stroke: 1.5px var(--color-trazos);
             text-transform: uppercase;
@@ -142,7 +177,7 @@
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 18px;
+            gap: 15px;
         }
 
         .form-group {
@@ -150,14 +185,14 @@
             flex-direction: column;
         }
 
-        .full-width {
+        .form-group.full-width {
             grid-column: span 2;
         }
 
         label {
             color: var(--color-trazos);
             font-weight: 600;
-            margin-bottom: 7px;
+            margin-bottom: 6px;
             margin-left: 8px;
             font-size: 1rem;
         }
@@ -165,145 +200,72 @@
         input,
         select,
         textarea {
-            background-color: #fffaf3;
+            background-color: var(--white);
             border: 3px solid var(--color-trazos);
-            border-radius: 16px;
-            padding: 12px 15px;
+            border-radius: 15px;
+            padding: 10px 15px;
             font-family: 'Fredoka', sans-serif;
             font-size: 0.95rem;
             color: var(--color-trazos);
             outline: none;
-            transition: 0.2s ease;
-        }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            transform: scale(1.01);
-            background-color: white;
-        }
-
-        input[type="file"] {
-            padding: 10px;
-            background-color: white;
-            cursor: pointer;
-        }
-
-        /* =========================
-            PREVIEW IMAGEN
-        ========================== */
-
-        .preview-container {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        #preview {
-            width: 100%;
-            max-width: 250px;
-            border-radius: 20px;
-            border: 4px solid var(--color-trazos);
-            display: none;
-        }
-
-        /* =========================
-            BOTONES
-        ========================== */
-
-        .buttons-container {
-            grid-column: span 2;
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .btn-submit,
-        .btn-volver {
-
-            flex: 1;
-            padding: 14px;
-            border-radius: 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            font-family: 'Fredoka', sans-serif;
-            cursor: pointer;
-            transition: 0.25s ease;
-            text-align: center;
-            text-decoration: none;
-            border: none;
         }
 
         .btn-submit {
+            grid-column: span 2;
             background-color: var(--color-trazos);
             color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            font-family: 'Fredoka', sans-serif;
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.02);
         }
 
         .btn-volver {
+            grid-column: span 2;
             background-color: #ab7b41;
             color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            font-family: 'Fredoka', sans-serif;
+            transition: transform 0.2s;
+            text-decoration: none;
+            text-align: center;
         }
 
-        .btn-submit:hover,
         .btn-volver:hover {
             transform: scale(1.02);
         }
 
-        /* =========================
-            RESPONSIVE
-        ========================== */
-
         @media (max-width: 950px) {
-
             .page-content {
                 flex-direction: column;
                 align-items: center;
+                gap: 30px;
             }
 
             .left-column,
             .form-container {
                 width: 100%;
-                max-width: 700px;
+                max-width: 500px;
             }
-
-        }
-
-        @media (max-width: 700px) {
-
-            .white-header {
-                justify-content: center;
-                text-align: center;
-                padding: 15px 20px;
-            }
-
-            .header-title {
-                font-size: 1.8rem;
-            }
-
-            .section-title {
-                font-size: 2.3rem;
-            }
-
-            .form-container {
-                padding: 25px;
-                border-radius: 30px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .full-width,
-            .buttons-container {
-                grid-column: span 1;
-            }
-
-            .buttons-container {
-                flex-direction: column;
-            }
-
         }
     </style>
 </head>
+
 <body>
     <div class="white-header">
         <div class="logo-container">
@@ -312,38 +274,41 @@
         <h1 class="header-title">TECNOCAPRINOS</h1>
         <div style="width: 60px;"></div>
     </div>
-    <div class="page-content"><div class="left-column">
+    <div class="page-content">
+        <div class="left-column">
             <h2 class="section-title">Bienvenido</h2>
             <div class="image-placeholder">
-                <img src="{% static 'img1.webp' %}" alt="Cabra animada">
+                <img src="{% static 'img1.webp' %}" alt="Cabra animada"
+                    style="width: 100%; max-width: 400px; border-radius: 20px;">
             </div>
-            <p class="welcome-text">Hola,
-                <strong>{{ user.username }}</strong>
-                En esta sección puedes agregar nuevos integrantes a tu hato caprino.
+            <p class="welcome-text">
+                Hola, <strong>{{ user.username }}</strong>En esta sección puedes agregar nuevos integrantes a tu hato
+                caprino.
             </p>
         </div>
         <div class="form-container">
-            <h3 class="form-title">
-                Registrar Nueva Cabra
-            </h3>
+            <h3 class="form-title">Edita los Datos de tu Cabra</h3>
             <form method="POST" class="form-grid">
                 {% csrf_token %}
                 <div class="form-group">
                     <label>Codigo:</label>
-                    <input type="text" name="cod" value="Cod-00" placeholder="Codigo de la Cabra" required>
+                    <input value="{{ cabra.codigo }}" type="text" name="nuevo-codigo" placeholder="Codigo de la Cabra"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Nombre:</label>
-                    <input type="text" name="nombre" placeholder="Nombre de la Cabra" required>
+                    <input value="{{ cabra.nombre }}" type="text" name="nuevo-nombre" placeholder="Nombre de la Cabra"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Fecha de Nacimiento:</label>
-                    <input type="date" name="fecha_nacimiento" required>
+                    <input value="{{ cabra.fecha_nacimiento }}" type="date" name="nueva-fecha_nacimiento" required>
                 </div>
                 <div class="form-group">
                     <label>Raza:</label>
-                    <select name="raza" id="raza">
-                        <option selected value="No Seleccionado">Seleccione una raza</option>
+                    <select name="nueva-    raza" id="raza">
+                        <option value="No Seleccionado">Seleccione una raza</option>
+                        <option selected value="{{ cabra.raza }}">{{ cabra.raza }}</option>
                         <option value="Boer">Boer</option>
                         <option value="Saanen">Saanen</option>
                         <option value="Alpina">Alpina</option>
@@ -398,21 +363,24 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Peso (Libras):</label>
-                    <input  type="number" name="peso" min="0" placeholder="Peso en Libras" required>
+                    <label>Peso (en Libras):</label>
+                    <input value="{{ cabra.peso }}" type="number" name="nuevo-peso" min="0" placeholder="Peso en Libras"
+                        required>
                 </div>
                 <div class="form-group">
                     <label>Sexo:</label>
-                    <select name="sexo" required>
+                    <select name="nuevo-sexo" required>
                         <option value="No Seleccionado">Seleccione...</option>
-                        <option value="M"> Macho (Cabro) </option>
-                        <option value="F"> Hembra (Cabra)</option>
+                        <option selected value="{{ cabra.sexo }}">{{ cabra.sexo }}</option>
+                        <option value="M">Macho (Cabro)</option>
+                        <option value="F">Hembra (Cabra)</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Color:</label>
-                    <select name="color" required>
+                    <select name="nuevo-color" required>
                         <option value="No Seleccionado">Seleccione...</option>
+                        <option selected value="{{ cabra.color }}">{{ cabra.color }}</option>
                         <option value="blanco">Blanco</option>
                         <option value="negro">Negro</option>
                         <option value="marron">Marrón</option>
@@ -429,74 +397,31 @@
                 </div>
                 <div class="form-group">
                     <label>Codigo de la Madre:</label>
-                    <input type="text" value="Cod-00" name="cod_madre" placeholder="Codigo de la Cabra Madre" required>
+                    <input value="{{ cabra.codigo_madre }}" type="text" name="nuevo-cod_madre"
+                        placeholder="Codigo de la Cabra Madre" required>
                 </div>
                 <div class="form-group">
                     <label>Codigo del Padre:</label>
-                    <input type="text" value="Cod-00" name="cod_padre" placeholder="Codigo del Cabro Padre" required>
+                    <input value="{{ cabra.codigo_padre }}" type="text" name="nuevo-cod_padre"
+                        placeholder="Codigo del Cabro Padre" required>
                 </div>
                 <div class="form-group">
                     <label>Categoria:</label>
-                    <select name="categoria" id="categoria">
-                    <option selected>Seleciona una Categoria</option>
-                    <option value="cinta">En Cinta</option>
-                    <option value="enferma">Enferma</option>
-<!-- cambio tema vacunas a medicada  -->
-                    <option value="vacunas">Medicada</option>
-                    <option value="produccion">Producción</option>
-                    <option value="">Ninguno</option>
+                    <select name="nueva-categoria" id="categoria">
+                        <option>Seleciona una Categoria</option>
+                        <option selected value="{{ cabra.categoria }}">{{ cabra.categoria }}</option>
+                        <option value="cinta">En Cinta</option>
+                        <option value="enferma">Enferma</option>
+                        <option value="vacunas">Vacunas</option>
+                        <option value="produccion">Producción</option>
+                        <option value="">Ninguno</option>
                     </select>
                 </div>
-                <div class="form-group full-width">
-                    <label>Foto de la Cabra:</label>
-                    <input type="file" name="foto" accept="image/*" required id="fotoInput">
-                    <div class="preview-container">
-                        <img id="preview" alt="Vista previa">
-                    </div>
-                </div>
-                <div class="buttons-container">
-                    <button type="submit" class="btn-submit">GUARDAR REGISTRO
-
-                    </button>
-
-                    <a href="{% url 'info_animales' %}" class="btn-volver">
-
-                        VOLVER
-
-                    </a>
-
-                </div>
-              
+                <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>
+                <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
             </form>
-
         </div>
-
     </div>
-
-    <!-- SCRIPT PREVIEW -->
-
-    <script>
-
-        const inputFoto = document.getElementById("fotoInput");
-
-        const preview = document.getElementById("preview");
-
-        inputFoto.addEventListener("change", function () {
-
-            const archivo = this.files[0];
-
-            if (archivo) {
-
-                preview.src = URL.createObjectURL(archivo);
-
-                preview.style.display = "block";
-
-            }
-
-        });
-
-    </script>
-
 </body>
 
 </html>
