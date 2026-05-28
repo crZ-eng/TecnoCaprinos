@@ -66,23 +66,26 @@
         }
 
         .btn-volver {
-            grid-column: span 2;
             background-color: #ab7b41;
             color: white;
             border: none;
-            padding: 12px;
+            padding: 12px 40px;
             border-radius: 20px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             margin-top: 15px;
+            margin-bottom: 40px;
             font-family: 'Fredoka', sans-serif;
             transition: transform 0.2s;
             text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
         }
 
         .btn-volver:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
         }
 
         /* TABLA */
@@ -119,7 +122,7 @@
             background-color: var(--header-table);
             color: var(--color-trazos);
             padding: 15px 5px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             border-bottom: 3px solid var(--color-trazos);
             border-right: 1px solid var(--color-trazos);
@@ -129,9 +132,18 @@
             padding: 12px 9px;
             text-align: center;
             color: var(--color-trazos);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             border-bottom: 1px solid var(--bg-cuadros);
             border-right: 1px solid var(--bg-cuadros);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table th:last-child, 
+        .data-table td:last-child {
+            border-right: none;
         }
 
         .date-tag {
@@ -139,16 +151,15 @@
             border: 1px solid var(--color-trazos);
             padding: 4px 10px;
             border-radius: 12px;
+            font-size: 0.85rem;
             display: inline-block;
         }
 
         /* Estilos de evolución */
         .status-critico { color: #d32f2f; font-weight: bold; }
-        .status-estable { color: #2e7d32; font-weight: bold; }
+        .status-stable { color: #2e7d32; font-weight: bold; }
 
-
-        /* --- RESPONSIVE  --- */
-
+        /* --- RESPONSIVE GENERAL --- */
         @media (max-width: 1024px) {
             .white-header {
                 padding: 10px 20px;
@@ -158,11 +169,16 @@
             }
             .main-container {
                 width: 98%;
-                padding: 15px;
+                padding: 20px;
             }
         }
 
+        /* --- DISEÑO DE FICHAS EN MÓVIL --- */
         @media (max-width: 768px) {
+            .white-header {
+                padding: 10px 15px;
+            }
+
             .header-title {
                 font-size: 1.2rem;
                 -webkit-text-stroke: 1px var(--color-trazos);
@@ -173,40 +189,110 @@
                 height: 40px;
                 font-size: 22px;
             }
-
-           
+            
             .main-container {
-                overflow-x: auto;
                 border-width: 4px; 
+                border-radius: 25px;
+                padding: 15px;
+            }
+
+            /* Transformación completa de la tabla a Fichas */
+            .data-table, 
+            .data-table thead, 
+            .data-table tbody, 
+            .data-table th, 
+            .data-table td, 
+            .data-table tr {
+                display: block; 
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .data-table thead {
+                display: none; /* Esconde los encabezados superiores */
             }
 
             .data-table {
-                min-width: 850px;
+                background-color: transparent;
+                border: none;
             }
 
-            .table-title {
-                font-size: 1.8rem;
+            .data-table tr {
+                margin-bottom: 25px; 
+                border: 3px solid var(--color-trazos);
+                border-radius: 20px; 
+                background-color: #fff8e1;
+                overflow: hidden; 
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+                padding: 5px 0;
             }
-        }
 
-      
-        .main-container::-webkit-scrollbar {
-            height: 8px;
-        }
-        .main-container::-webkit-scrollbar-thumb {
-            background: var(--color-trazos);
-            border-radius: 10px;
-        }
-        .main-container::-webkit-scrollbar-track {
-            background: var(--bg-cuadros);
+            .data-table tr:last-child {
+                margin-bottom: 0;
+            }
+
+            .data-table td {
+                text-align: right;
+                padding: 12px 20px; 
+                font-size: 0.95rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(127, 86, 55, 0.15); 
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .data-table td:last-child {
+                border-bottom: none;
+            }
+
+            /* Inyección de los nombres de los datos a la izquierda */
+            .data-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                color: var(--color-trazos);
+                text-align: left;
+                margin-right: 15px;
+                letter-spacing: 0.5px;
+            }
             
+            .btn-volver {
+                width: 80%;
+                max-width: 300px;
+                margin: 15px auto 40px auto;
+            }
+        }
+
+        /* Pantallas muy compactas */
+        @media (max-width: 480px) {
+            .white-header {
+                padding: 8px 12px;
+                gap: 10px;
+            }
+
+            .header-title {
+                font-size: 0.9rem;
+                text-align: center;
+                flex: 1;
+            }
+
+            .white-header a img {
+                height: 40px !important;
+            }
+
+            .btn-plus {
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="white-header">
-        
         <a href="{% url 'info_animales' %}">
             <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
         </a>
@@ -214,12 +300,8 @@
         <a href="{% url 'registrar_enfermo' %}" class="btn-plus">+</a>
     </div>
 
-    <!-- CONTENIDO -->
     <div class="main-container">
-
-
         <table class="data-table">
-
             <thead>
                 <tr>
                     <th>Código</th>
@@ -230,45 +312,28 @@
                     <th>Veterinario responsable</th>
                 </tr>
             </thead>
-
             <tbody>
-
                 {% for cabra in cabras %}
-
                 <tr>
-                    <td>{{ cabra.codigo }}</td>
-                    <td>{{ cabra.nombre }}</td>
-
-                    <!-- datos tecnicos "" -->
-                    <td>{{ cabra.tratamiento|default:"No especificado" }}</td>
-                    <td>{{ cabra.temperatura|default:"0°"}}</td>
-                    <td>{{ cabra.estado_evolucion|default:"Sin especificar" }}</td>
-                    <td>{{ cabra.veterinario_asignado|default:"-" }}</td>
-
-
-
+                    <td data-label="Código">{{ cabra.codigo }}</td>
+                    <td data-label="Nombre">{{ cabra.nombre }}</td>
+                    <td data-label="Tratamiento">{{ cabra.tratamiento|default:"No especificado" }}</td>
+                    <td data-label="Temperatura">{{ cabra.temperatura|default:"0°"}}</td>
+                    <td data-label="Estado de evolución">{{ cabra.estado_evolucion|default:"Sin especificar" }}</td>
+                    <td data-label="Veterinario responsable">{{ cabra.veterinario_asignado|default:"-" }}</td>
                 </tr>
-
-
                 {% empty %}
-
                 <tr>
-                    <td colspan="8" class="sin-registros">
+                    <td colspan="6" class="sin-registros" style="text-align: center; padding: 20px; color: var(--color-trazos); font-weight: 600;">
                         No hay cabras enfermas registradas.
                     </td>
                 </tr>
-
                 {% endfor %}
-
             </tbody>
-
         </table>
-
-
     </div>
 
-    <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
-
+    <a href="{% url 'info_animales' %}" class="btn-volver">Volver</a>
 </body>
 
 </html>
