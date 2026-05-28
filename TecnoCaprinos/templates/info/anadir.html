@@ -184,6 +184,7 @@
             color: var(--color-trazos);
             outline: none;
             transition: 0.2s ease;
+            width: 100%; /* Asegura que se adapten al ancho disponible en móviles */
         }
 
         input:focus,
@@ -261,8 +262,23 @@
             RESPONSIVE
         ========================== */
 
-        @media (max-width: 950px) {
+        @media (max-width: 1024px) {
+            .white-header {
+                padding: 12px 30px;
+            }
+            .header-title {
+                font-size: 2rem;
+            }
+            .page-content {
+                gap: 30px;
+                padding: 30px 15px;
+            }
+            .section-title {
+                font-size: 2.6rem;
+            }
+        }
 
+        @media (max-width: 950px) {
             .page-content {
                 flex-direction: column;
                 align-items: center;
@@ -273,32 +289,56 @@
                 width: 100%;
                 max-width: 700px;
             }
-
+            
+            /* Ocultamos el espaciador vacío del header cuando el diseño cambia */
+            .white-header div[style*="width: 60px;"] {
+                display: none;
+            }
         }
 
         @media (max-width: 700px) {
-
             .white-header {
                 justify-content: center;
                 text-align: center;
                 padding: 15px 20px;
+                flex-direction: column;
+                gap: 10px;
             }
 
             .header-title {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
+            }
+
+            .logo-container img {
+                height: 55px;
             }
 
             .section-title {
-                font-size: 2.3rem;
+                font-size: 2.2rem;
+                -webkit-text-stroke: 1.5px var(--color-trazos);
+            }
+
+            .image-placeholder {
+                max-width: 350px;
+                border-width: 4px;
+                border-radius: 25px;
             }
 
             .form-container {
-                padding: 25px;
+                padding: 25px 20px;
                 border-radius: 30px;
+                border-width: 4px;
+            }
+
+            .form-title {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
+                gap: 14px;
             }
 
             .full-width,
@@ -308,16 +348,35 @@
 
             .buttons-container {
                 flex-direction: column;
+                gap: 10px;
             }
+            
+            .btn-submit,
+            .btn-volver {
+                padding: 12px;
+                width: 100%;
+            }
+        }
 
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 1.3rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .form-title {
+                font-size: 1.5rem;
+            }
+            label {
+                font-size: 0.9rem;
+            }
         }
     </style>
 
 </head>
 
 <body>
-
-    <!-- HEADER -->
 
     <div class="white-header">
 
@@ -363,14 +422,10 @@
 
         </div>
 
-        <!-- FORMULARIO -->
-
         <div class="form-container">
             <h3 class="form-title">Registrar Nueva Cabra</h3>
             <form method="POST" enctype="multipart/form-data" class="form-grid">
                 {% csrf_token %}
-
-                <!-- CODIGO -->
 
                 <div class="form-group">
 
@@ -387,8 +442,6 @@
 
                 </div>
 
-                <!-- NOMBRE -->
-
                 <div class="form-group">
 
                     <label for="nombre">Nombre:</label>
@@ -402,8 +455,6 @@
                     >
 
                 </div>
-
-                <!-- FECHA -->
 
                 <div class="form-group">
 
@@ -419,8 +470,6 @@
                     >
 
                 </div>
-
-                <!-- RAZA -->
 
                 <div class="form-group">
 
@@ -484,14 +533,10 @@
 
                 </div>
 
-                <!-- PESO -->
-
                 <div class="form-group">
                     <label>Peso (Libras):</label>
                     <input type="number" name="peso" min="0" placeholder="Peso en Libras" required>
                 </div>
-
-                <!-- SEXO -->
 
                 <div class="form-group">
 
@@ -514,8 +559,6 @@
                     </select>
 
                 </div>
-
-                <!-- COLOR -->
 
                 <div class="form-group">
 
@@ -544,8 +587,6 @@
 
                 </div>
 
-                <!-- MADRE -->
-
                 <div class="form-group">
 
                     <label for="cod_madre">
@@ -562,8 +603,6 @@
                     >
 
                 </div>
-
-                <!-- PADRE -->
 
                 <div class="form-group">
 
@@ -582,8 +621,6 @@
 
                 </div>
 
-                <!-- CATEGORIA -->
-
                 <div class="form-group">
                     <label>Categoria:</label>
                     <select name="categoria" id="categoria">
@@ -596,8 +633,6 @@
                     </select>
 
                 </div>
-
-                <!-- FOTO -->
 
                 <div class="form-group full-width">
 
@@ -613,8 +648,6 @@
                         required
                     >
 
-                    <!-- PREVIEW -->
-
                     <div class="preview-container">
 
                         <img
@@ -626,8 +659,6 @@
 
                 </div>
 
-                <!-- BOTONES -->
-
                 <div class="buttons-container">
                     <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>
                     <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
@@ -637,8 +668,6 @@
         </div>
 
     </div>
-
-    <!-- SCRIPT PREVIEW -->
 
     <script>
 
