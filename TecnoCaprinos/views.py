@@ -1,12 +1,13 @@
 import os
+import cloudinary
 import cloudinary.uploader
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from firebase_admin import firestore, auth
 from config.firebaseConnection import initialize_firebase
 from functools import wraps
 import requests
+from firebase_admin import firestore
 
 # Inicializar Firebase
 db = initialize_firebase()
@@ -215,25 +216,7 @@ def dashboard(request):
 
 @login_required_firebase
 def info_animales(request):
-
-    return render(
-        request,
-        'info_animales.html'
-    )
-
-
-# =========================
-# FORMULARIO AÑADIR
-# =========================
-
-@login_required_firebase
-def anadir(request):
-
-    return render(
-        request,
-        'info/anadir.html'
-    )
-
+    return render(request, 'info_animales.html')
 
 # =========================
 # AÑADIR CABRA
@@ -301,14 +284,14 @@ def anadir_cabra(request):
                 # NUEVO CAMPO
                 'foto_url': foto_url,
 
-                'fecha_añadido': firestore.SERVER_TIMESTAMP
+                'fecha_anadido': firestore.SERVER_TIMESTAMP
             })
 
             messages.success(
                 request,
                 "Cabra añadida con éxito 🐐"
             )
-
+            print(foto_url)
             return redirect('listar')
 
         except Exception as e:
@@ -334,11 +317,24 @@ def listar_cabras(request):
 
     cabras = []
 
+    razas = set()
+
     try:
 
-        docs = db.collection('cabras')\
-            .where('usuario_id', '==', uid)\
+        docs = (
+
+            db.collection('cabras')
+
+            .where('usuario_id', '==', uid)
+
+            .order_by(
+                'fecha_anadido',
+                direction=firestore.Query.DESCENDING
+            )
+
             .stream()
+
+        )
 
         for doc in docs:
 
@@ -348,6 +344,12 @@ def listar_cabras(request):
 
             cabras.append(cabra)
 
+            # GUARDAR RAZAS ÚNICAS
+
+            if cabra.get('raza'):
+
+                razas.add(cabra['raza'])
+
     except Exception as e:
 
         messages.error(
@@ -356,13 +358,95 @@ def listar_cabras(request):
         )
 
     return render(
-        request,
-        'info/listar_cabras.html',
-        {
-            'cabras': cabras
-        }
-    )
 
+        request,
+
+        'info/listar_cabras.html',
+
+        {
+
+            'cabras': cabras,
+
+            'razas': sorted(razas)
+
+        }
+
+    )
+# =========================
+# ELIMINAR CABRA
+# =========================
+
+@login_required_firebase # Verifica que el usuario esta loggeado
+def eliminar_cabra(request, cabra_id):
+    """
+    DELETE: Eliminar un documento especifico por id
+    """
+    try:
+        db.collection('cabras').document(cabra_id).delete()
+        messages.success(request, "🗑️ Cabra eliminada.")
+    except Exception as e:
+        messages.error(request, f"Error al eliminar: {e}")
+
+    return redirect('listar')
+
+# ==============================
+# EDITAR LOS DATOS DE UNA CABRA
+# ==============================
+
+@login_required_firebase # Verifica que el usuario esta loggeado
+def editar_cabra(request, cabra_id):
+    """
+    UPDATE: Recupera los datos de la ca especifico y actualiza los campos en firebase
+    """
+    uid = request.session.get('uid')
+    cabra_ref = db.collection('cabras').document(cabra_id)
+
+    try:
+        doc = cabra_ref.get()
+
+        if not doc.exists:
+            messages.error(request, "La cabra no existe")
+            return redirect('listar')
+        
+        cabra_data = doc.to_dict()
+
+        if cabra_data.get('usuario_id') != uid:
+            messages.error(request, "No tienes permiso para editar esta cabra")
+            return redirect('listar')
+        
+        if request.method == 'POST':
+            nuevo_cod = request.POST.get('nuevo-codigo')
+            nuevo_nombre = request.POST.get('nuevo-nombre')
+            nueva_raza = request.POST.get('nueva-raza')
+            nuevo_peso = request.POST.get('nuevo-peso')
+            nueva_fecha_nacimiento = request.POST.get('nueva-fecha_nacimiento')
+            nuevo_sexo = request.POST.get('nuevo-sexo')
+            nuevo_color = request.POST.get('nuevo-color')
+            nueva_categoria = request.POST.get('nueva-categoria')
+            nuevo_cod_madre = request.POST.get('nuevo-cod_madre')
+            nuevo_cod_padre = request.POST.get('nuevo-cod_padre')
+
+            cabra_ref.update({
+                'codigo': nuevo_cod,
+                'nombre': nuevo_nombre,
+                'raza': nueva_raza,
+                'peso': nuevo_peso,
+                'fecha_nacimiento': nueva_fecha_nacimiento,
+                'sexo': nuevo_sexo,
+                'color': nuevo_color,
+                'categoria': nueva_categoria,
+                'codigo_madre': nuevo_cod_madre,
+                'codigo_padre': nuevo_cod_padre,
+                'fecha_anadido': firestore.SERVER_TIMESTAMP
+            })
+
+            messages.success(request, "✅ Cabra actualizada correctamente.")
+            return redirect('listar')
+    except Exception as e:
+        messages.error(request, f"Error al editar la cabra: {e}")
+        return redirect('listar')
+    
+    return render(request, 'info/editar.html', {'cabra': cabra_data, 'id': cabra_id})
 
 # =========================
 # EN CINTA
@@ -380,6 +464,7 @@ def cinta(request):
         docs = db.collection('cabras')\
             .where('usuario_id', '==', uid)\
             .where('categoria', '==', 'cinta')\
+            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
             .stream()
 
         for doc in docs:
@@ -418,6 +503,7 @@ def vacunas(request):
         docs = db.collection('cabras')\
             .where('usuario_id', '==', uid)\
             .where('categoria', '==', 'vacunas')\
+            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
             .stream()
 
         for doc in docs:
@@ -456,6 +542,7 @@ def produccion(request):
         docs = db.collection('cabras')\
             .where('usuario_id', '==', uid)\
             .where('categoria', '==', 'produccion')\
+            .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
             .stream()
 
         for doc in docs:
@@ -494,6 +581,7 @@ def enfermas(request):
         docs = db.collection('cabras')\
         .where('usuario_id', '==', uid)\
         .where('categoria', '==', 'enferma')\
+        .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
         .stream()
             
         for doc in docs:
@@ -533,6 +621,7 @@ def produccion (request):
         docs = db.collection('cabras')\
         .where('usuario_id', '==', uid)\
         .where('categoria', '==', 'produccion')\
+        .order_by('fecha_anadido', direction=firestore.Query.DESCENDING)\
         .stream()
         
         for doc in docs:
@@ -589,12 +678,4 @@ def registrar_seguimiento_gestacion(request):
     return render(
         request,
         'info/agregar/registrar_seguimiento_gestacion.html'
-    )
-
-
-def guardar_animal(request):
-
-    return render(
-        request,
-        'info/agregar/guardar_animal.html'
     )

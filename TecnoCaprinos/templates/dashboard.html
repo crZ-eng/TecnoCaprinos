@@ -1,21 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html lang="en">
 <head>
-
     {% load static %}
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>TecnoCaprinos | Dashboard</title>
-
     <link rel="icon" href="{% static 'logo.jpeg' %}">
-
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
-
     <style>
-
         :root{
             --bg-principal: #C9A06D;
             --bg-cuadros: #EAD4B8;
@@ -268,56 +260,33 @@
 </head>
 
 <body>
-
-    <!-- HEADER -->
-
     <div class="white-header">
-
         <div class="header-left">
-
             <img 
                 src="{% static 'logo.jpeg' %}" 
                 alt="Logo TecnoCaprinos"
                 class="logo"
             >
-
             <h1 class="header-title">
                 TECNOCAPRINOS
             </h1>
-
         </div>
-
         <div class="welcome-user">
-
             Bienvenido/a,
             <strong>
                 {{ datos.nombre|default:"Ganadero" }}
             </strong>
-
         </div>
-
     </div>
-
-    <!-- CONTENIDO -->
-
     <div class="contenido">
-
         <div class="dashboard-card">
-
-            <!-- MENSAJES -->
-
             {% if messages %}
                 {% for message in messages %}
-
                     <div class="mensaje {{ message.tags }}">
                         {{ message }}
                     </div>
-
                 {% endfor %}
             {% endif %}
-
-            <!-- TITULO -->
-
             <h2 class="dashboard-title">
                 Perfil del Ganadero
             </h2>
