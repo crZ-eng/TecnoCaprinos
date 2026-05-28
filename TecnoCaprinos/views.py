@@ -652,46 +652,90 @@ def registrar_seguimiento_gestacion(request):
 
     # EDITAR PRODUCCION
 
+
 @login_required_firebase
 def guardar_produccion(request, cabra_id):
-        cabra_ref = db.collection('cabras').document(cabra_id)
+    cabra_ref = db.collection('cabras').document(cabra_id)
 
-        doc = cabra_ref.get()
+    doc = cabra_ref.get()
+
+    if not doc.exists:
+        messages.error(request, "registro no encontrado")
+        return redirect('produccion')
+
+    cabra = doc.to_dict()
+
+    if request.method == 'POST':
+        ordeno_manana = request.POST.get('ordeno_manana')
+        ordeno_tarde = request.POST.get('ordeno_tarde')
+        total_diario = request.POST.get('total_diario')
+        grasa = request.POST.get('grasa')
+        responsable = request.POST.get('responsable')
+        observaciones = request.POST.get('observaciones')
+
+        cabra_ref.update({
+
+            'ordeno_manana': ordeno_manana,
+            'ordeno_tarde': ordeno_tarde,
+            'total_diario': total_diario,
+            'grasa': grasa,
+            'responsable': responsable,
+            'observaciones': observaciones
+
+        })
+
+        messages.success(request, "Datos actualizados correctamente")
+
+        return redirect('produccion')
+
+    return render(
+        request,
+        'info/agregar/agregar_produccion.html',
+        {
+            'cabra': cabra,
+            'id': cabra_id
+        }
+    )
+
+# =========================
+# vista para detalles de cada cabra por separado al oprimir sobre.
+# =========================
+
+
+@login_required_firebase
+def detalle_animal(request, cabra_id):
+
+    try:
+
+        doc = db.collection('cabras').document(cabra_id).get()
 
         if not doc.exists:
-            messages.error(request, "registro no encontrado")
-            return redirect('produccion')
 
-        cabra = doc.to_dict()
+            messages.error(request, "La cabra no existe")
 
-        if request.method == 'POST':
-            ordeno_manana = request.POST.get('ordeno_manana')
-            ordeno_tarde = request.POST.get('ordeno_tarde')
-            total_diario = request.POST.get('total_diario')
-            grasa = request.POST.get('grasa')
-            responsable = request.POST.get('responsable')
-            observaciones = request.POST.get('observaciones')
-            
-            cabra_ref.update({
-                
-                'ordeno_manana': ordeno_manana,
-                'ordeno_tarde': ordeno_tarde,
-                'total_diario': total_diario,
-                'grasa': grasa,
-                'responsable': responsable,
-                'observaciones': observaciones
-                
-            })
-            
-            messages.success(request, "Datos actualizados correctamente")
-            
-            return redirect('produccion')
-        
+            return redirect('info_animales')
+
+        animal = doc.to_dict()
+
+        animal['id'] = doc.id
+
         return render(
+
             request,
-            'info/agregar/agregar_produccion.html',
+
+            'detallesCabras/detalle_animal.html',
+
             {
-                'cabra': cabra,
-                'id': cabra_id
+                'animal': animal
             }
+
         )
+
+    except Exception as e:
+
+        messages.error(
+            request,
+            f'Error al cargar animal: {e}'
+        )
+
+        return redirect('info_animales')

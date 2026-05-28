@@ -29,6 +29,13 @@ urlpatterns = [
     path('info-animales/listar/editar/<str:cabra_id>/', views.editar_cabra, name='editar_cabra'),
     
     # producción
-    path('guardar-produccion/<str:cabra_id>/',views.guardar_produccion,name='guardar_produccion'
+    path('guardar-produccion/<str:cabra_id>/',views.guardar_produccion,name='guardar_produccion'),
+    
+    #  detalle animales
+    path('animal/<int:id>/', views.detalle_animal, name='detalle_animal'),
+    path(
+    'animal/<str:cabra_id>/',
+    views.detalle_animal,
+    name='detalle_animal'
 ),
 ]

@@ -47,32 +47,12 @@
         .header-title {
             font-size: 2.5rem;
             font-weight: 600;
+            align-tracks: center;
             color: var(--bg-cuadros);
             -webkit-text-stroke: 1.5px var(--color-trazos);
             margin: 0;
             text-transform: uppercase;
         }
-
-        .btn-plus {
-            background-color: var(--color-trazos);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: 0.3s;
-        }
-
-        .btn-plus:hover {
-            transform: scale(1.1);
-        }
-
         .btn-volver {
             background-color: #ab7b41;
             color: white;
@@ -264,9 +244,6 @@
             TECNOCAPRINOS - PRODUCCIÓN
         </h1>
 
-        <a href="{% url 'agregar_produccion' %}" class="btn-plus">
-            +
-        </a>
 
     </div>
 
