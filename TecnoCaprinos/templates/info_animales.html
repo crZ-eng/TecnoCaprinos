@@ -422,6 +422,10 @@
             border-radius: 100%;
         }
 
+        .redirect_datos{
+            text-decoration: none;
+        }
+
         /* =========================
             RESPONSIVE
         ========================== */
@@ -562,90 +566,86 @@
                 </select>
     
             </div>
-    
+            
             <div class="cards-grid">
-    
+            
                 {% for cabra in cabras %}
-    
-                <div class="card" data-raza="{{ cabra.raza|lower }}">
-    
-                    <div class="card-header">
-    
-                        <img id="foto-cabra" src="{{ cabra.foto_url }}" alt="foto cabra">
-    
-                        <h3 class="goat-name">
-                            Nombre: {{ cabra.nombre }}
-                        </h3>
-    
-                        <span class="codigo-tag">
-                            {{ cabra.codigo }}
-                        </span>
-    
-                    </div>
-    
-                    <div class="info-group">
-    
-                        <div class="info-item">
-                            <span class="label">Raza</span>
-                            <span class="value">{{ cabra.raza }}</span>
-                        </div>
-    
-                        <div class="info-item">
-                            <span class="label">Sexo</span>
-                            <span class="value">{{ cabra.sexo }}</span>
-                        </div>
-    
-                        <div class="info-item">
-                            <span class="label">
-                                Fecha de Nacimiento
+            
+                <a href="{% url 'info_completa_cabra' cabra.id %}" class="redirect_datos">
+            
+                    <div class="card" data-raza="{{ cabra.raza|lower }}">
+            
+                        <div class="card-header">
+            
+                            <img id="foto-cabra" src="{{ cabra.foto_url }}" alt="foto cabra">
+            
+                            <h3 class="goat-name">
+                                Nombre: {{ cabra.nombre }}
+                            </h3>
+            
+                            <span class="codigo-tag">
+                                {{ cabra.codigo }}
                             </span>
-    
-                            <span class="value">
-                                {{ cabra.fecha_nacimiento }}
-                            </span>
+            
                         </div>
-    
-                        <div class="info-item">
-    
-                            <a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">
-                                Editar
-                            </a>
-    
-                            <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red;">
-                                Eliminar
-                            </a>
-    
+            
+                        <div class="info-group">
+            
+                            <div class="info-item">
+                                <span class="label">Raza</span>
+                                <span class="value">{{ cabra.raza }}</span>
+                            </div>
+            
+                            <div class="info-item">
+                                <span class="label">Sexo</span>
+                                <span class="value">{{ cabra.sexo }}</span>
+                            </div>
+            
+                            <div class="info-item">
+                                <span class="label">
+                                    Fecha de Nacimiento
+                                </span>
+            
+                                <span class="value">
+                                    {{ cabra.fecha_nacimiento }}
+                                </span>
+                            </div>
+
+                            <div class="info-item">
+                                <span class="label">Tabla</span>
+                                <span class="value">{{ cabra.categoria }}</span>
+                            </div>
+            
                         </div>
-    
+            
                     </div>
-    
-                </div>
-    
+                </a>
+            
                 {% empty %}
-    
+            
                 <div class="sin-cabras">
                     No tienes cabras registradas.
                 </div>
-    
+            
                 {% endfor %}
-    
+            
             </div>
-    
-            <div>
-    
-                {% if messages %}
-    
-                {% for message in messages %}
-    
-                <div class="mensaje {{ message.tags }}">
-                    {{ message }}
+            
+                <div>
+            
+                    {% if messages %}
+            
+                    {% for message in messages %}
+            
+                    <div class="mensaje {{ message.tags }}">
+                        {{ message }}
+                    </div>
+            
+                    {% endfor %}
+            
+                    {% endif %}
+            
                 </div>
-    
-                {% endfor %}
-    
-                {% endif %}
-    
-            </div>
     
         </div>
     
