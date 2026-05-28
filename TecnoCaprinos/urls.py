@@ -37,5 +37,6 @@ urlpatterns = [
     'animal/<str:cabra_id>/',
     views.detalle_animal,
     name='detalle_animal'
-),
+), 
+
 ]

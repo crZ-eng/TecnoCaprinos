@@ -182,6 +182,7 @@
         input,
         select,
         textarea{
+            width: 100%;
             background-color: #fffaf3;
             border: 3px solid var(--color-trazos);
             border-radius: 16px;
@@ -305,8 +306,6 @@
 
 <body>
 
-    <!-- HEADER -->
-
     <div class="white-header">
 
         <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo">
@@ -321,11 +320,7 @@
 
     </div>
 
-    <!-- CONTENIDO -->
-
     <div class="page-content">
-
-        <!-- PANEL IZQUIERDO -->
 
         <div class="left-panel">
 
@@ -350,8 +345,6 @@
 
         </div>
 
-        <!-- FORMULARIO -->
-
         <div class="form-container">
 
             <h3 class="form-title">
@@ -361,8 +354,6 @@
             <form method="POST" class="form-grid">
 
                 {% csrf_token %}
-
-                <!-- CABRA -->
 
                 <div class="form-group">
 
@@ -382,8 +373,6 @@
 
                 </div>
 
-                <!-- FECHA -->
-
                 <div class="form-group">
 
                     <label>Fecha del Seguimiento</label>
@@ -391,8 +380,6 @@
                     <input type="date" name="fecha_seguimiento" required>
 
                 </div>
-
-                <!-- MESES -->
 
                 <div class="form-group">
 
@@ -411,8 +398,6 @@
 
                 </div>
 
-                <!-- ESTADO -->
-
                 <div class="form-group">
 
                     <label>Estado de la Gestación</label>
@@ -429,8 +414,6 @@
 
                 </div>
 
-                <!-- PESO -->
-
                 <div class="form-group">
 
                     <label>Peso Actual (Kg)</label>
@@ -438,8 +421,6 @@
                     <input type="number" step="0.1" name="peso_actual" placeholder="Ej: 48.5">
 
                 </div>
-
-                <!-- TEMPERATURA -->
 
                 <div class="form-group">
 
@@ -449,8 +430,6 @@
 
                 </div>
 
-                <!-- RESPONSABLE -->
-
                 <div class="form-group full-width">
 
                     <label>Veterinario / Responsable</label>
@@ -458,8 +437,6 @@
                     <input type="text" name="responsable" placeholder="Nombre del responsable">
 
                 </div>
-
-                <!-- OBSERVACIONES -->
 
                 <div class="form-group full-width">
 
@@ -471,8 +448,6 @@
                     ></textarea>
 
                 </div>
-
-                <!-- BOTONES -->
 
                 <div class="buttons-container">
 

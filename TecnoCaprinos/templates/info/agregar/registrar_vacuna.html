@@ -14,8 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-
-        :root{
+        :root {
             --bg-principal: #C9A06D;
             --bg-cuadros: #EAD4B8;
             --color-trazos: #7F5637;
@@ -24,40 +23,43 @@
             --texto: #6d4b31;
         }
 
-        *{
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body{
+        body {
             font-family: 'Fredoka', sans-serif;
             background-color: var(--bg-principal);
             min-height: 100vh;
             color: var(--texto);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         /* =========================
             HEADER
         ========================== */
 
-        .white-header{
+        .white-header {
             width: 100%;
             background-color: var(--white);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 40px;
+            padding: 12px 50px;
             border-bottom: 4px solid var(--color-trazos);
-            gap: 20px;
             flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .logo{
+        .logo {
             height: 65px;
         }
 
-        .header-title{
+        .header-title {
             font-size: 2.3rem;
             font-weight: 600;
             color: var(--bg-cuadros);
@@ -67,7 +69,7 @@
             flex: 1;
         }
 
-        .header-icon{
+        .header-icon {
             width: 55px;
             height: 55px;
             border-radius: 50%;
@@ -83,20 +85,21 @@
             CONTENIDO
         ========================== */
 
-        .page-content{
-            width: 95%;
-            max-width: 1450px;
-            margin: 40px auto;
+        .page-content {
             display: flex;
-            gap: 40px;
+            justify-content: center;
             align-items: flex-start;
+            gap: 50px;
+            padding: 50px 20px;
+            max-width: 1450px;
+            width: 95%;
         }
 
         /* =========================
             PANEL IZQUIERDO
         ========================== */
 
-        .left-panel{
+        .left-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -104,7 +107,7 @@
             text-align: center;
         }
 
-        .section-title{
+        .section-title {
             color: var(--white);
             font-size: 3rem;
             margin-bottom: 25px;
@@ -112,7 +115,7 @@
             text-transform: uppercase;
         }
 
-        .image-box{
+        .image-box {
             width: 100%;
             max-width: 450px;
             background-color: var(--bg-cuadros);
@@ -122,32 +125,35 @@
             margin-bottom: 25px;
         }
 
-        .image-box img{
+        .image-box img {
             width: 100%;
             border-radius: 25px;
         }
 
-        .welcome-text{
+        .welcome-text {
             font-size: 1.1rem;
             line-height: 1.7;
             color: var(--color-trazos);
             max-width: 500px;
+            font-weight: 600;
         }
 
         /* =========================
             FORMULARIO
         ========================== */
 
-        .form-container{
+        .form-container {
             flex: 1.2;
             background-color: var(--bg-cuadros);
             border: 6px solid var(--color-trazos);
             border-radius: 40px;
             padding: 40px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            max-width: 750px;
+            width: 100%;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .form-title{
+        .form-title {
             text-align: center;
             font-size: 2.4rem;
             margin-bottom: 30px;
@@ -156,31 +162,32 @@
             text-transform: uppercase;
         }
 
-        .form-grid{
+        .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 18px;
         }
 
-        .form-group{
+        .form-group {
             display: flex;
             flex-direction: column;
         }
 
-        .full-width{
+        .full-width {
             grid-column: span 2;
         }
 
-        label{
+        label {
             color: var(--color-trazos);
             font-weight: 600;
             margin-bottom: 7px;
             margin-left: 8px;
+            font-size: 1rem;
         }
 
         input,
         select,
-        textarea{
+        textarea {
             background-color: #fffaf3;
             border: 3px solid var(--color-trazos);
             border-radius: 16px;
@@ -190,16 +197,17 @@
             color: var(--texto);
             outline: none;
             transition: 0.2s ease;
+            width: 100%;
         }
 
-        textarea{
+        textarea {
             resize: none;
             min-height: 110px;
         }
 
         input:focus,
         select:focus,
-        textarea:focus{
+        textarea:focus {
             transform: scale(1.01);
             background-color: white;
         }
@@ -208,7 +216,7 @@
             BOTONES
         ========================== */
 
-        .buttons-container{
+        .buttons-container {
             grid-column: span 2;
             display: flex;
             gap: 15px;
@@ -216,7 +224,7 @@
         }
 
         .btn-submit,
-        .btn-volver{
+        .btn-volver {
             flex: 1;
             text-align: center;
             padding: 14px;
@@ -230,18 +238,18 @@
             border: none;
         }
 
-        .btn-submit{
+        .btn-submit {
             background-color: var(--color-trazos);
             color: white;
         }
 
-        .btn-volver{
+        .btn-volver {
             background-color: #ab7b41;
             color: white;
         }
 
         .btn-submit:hover,
-        .btn-volver:hover{
+        .btn-volver:hover {
             transform: scale(1.02);
         }
 
@@ -249,55 +257,115 @@
             RESPONSIVE
         ========================== */
 
-        @media(max-width: 1000px){
+        @media (max-width: 1024px) {
+            .white-header {
+                padding: 12px 30px;
+            }
+            .header-title {
+                font-size: 2rem;
+            }
+            .page-content {
+                gap: 30px;
+                padding: 30px 15px;
+            }
+            .section-title {
+                font-size: 2.6rem;
+            }
+        }
 
-            .page-content{
+        @media (max-width: 950px) {
+            .page-content {
                 flex-direction: column;
                 align-items: center;
             }
 
             .left-panel,
-            .form-container{
+            .form-container {
                 width: 100%;
                 max-width: 700px;
             }
 
+            .header-icon {
+                display: none; /* Oculta el icono decorativo para dar espacio en pantallas medianas */
+            }
         }
 
-        @media(max-width: 700px){
-
-            .white-header{
+        @media (max-width: 700px) {
+            .white-header {
+                justify-content: center;
+                text-align: center;
                 padding: 15px 20px;
+                flex-direction: column;
+                gap: 10px;
             }
 
-            .header-title{
-                font-size: 1.5rem;
+            .header-title {
+                font-size: 1.6rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
             }
 
-            .section-title{
+            .logo {
+                height: 55px;
+            }
+
+            .section-title {
                 font-size: 2.2rem;
+                -webkit-text-stroke: 1.5px var(--color-trazos);
             }
 
-            .form-container{
-                padding: 25px;
-                border-radius: 28px;
+            .image-box {
+                max-width: 350px;
+                border-width: 4px;
+                border-radius: 25px;
             }
 
-            .form-grid{
+            .form-container {
+                padding: 25px 20px;
+                border-radius: 30px;
+                border-width: 4px;
+            }
+
+            .form-title {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+
+            .form-grid {
                 grid-template-columns: 1fr;
+                gap: 14px;
             }
 
             .full-width,
-            .buttons-container{
+            .buttons-container {
                 grid-column: span 1;
             }
 
-            .buttons-container{
+            .buttons-container {
                 flex-direction: column;
+                gap: 10px;
             }
 
+            .btn-submit,
+            .btn-volver {
+                padding: 12px;
+                width: 100%;
+            }
         }
 
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 1.3rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .form-title {
+                font-size: 1.5rem;
+            }
+            label {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 
 </head>
@@ -308,7 +376,9 @@
 
     <div class="white-header">
 
-        <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo">
+        <a href="{% url 'vacunas' %}">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo">
+        </a>
 
         <h1 class="header-title">
             TECNOCAPRINOS - VACUNAS
