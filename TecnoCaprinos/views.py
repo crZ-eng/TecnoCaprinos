@@ -593,6 +593,26 @@ def produccion (request):
         } 
     )
 
+def info_completa_cabra(request, cabra_id):
+    try:
+        doc = db.collection('cabras').document(cabra_id).get()
+
+        cabra = doc.to_dict()
+
+        cabra['id'] = doc.id
+
+    except Exception as e:
+        print(e)
+        cabra = None
+
+    return render(
+        request,
+        'info_completa_cabras.html',
+        {
+            'cabra': cabra
+        }
+    )
+
 
 # =========================
 # FORMULARIOS
