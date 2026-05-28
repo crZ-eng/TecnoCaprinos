@@ -55,37 +55,35 @@
 
         .btn-pdf {
 
-        background: linear-gradient(
-            135deg,
-            #7F5637,
-            #ab7b41
-        );
+            background: linear-gradient(135deg,
+                    #7F5637,
+                    #ab7b41);
 
-        color: white;
+            color: white;
 
-        padding: 12px 22px;
+            padding: 12px 22px;
 
-        border-radius: 18px;
+            border-radius: 18px;
 
-        text-decoration: none;
+            text-decoration: none;
 
-        font-size: 1rem;
+            font-size: 1rem;
 
-        font-weight: 600;
+            font-weight: 600;
 
-        font-family: 'Fredoka', sans-serif;
+            font-family: 'Fredoka', sans-serif;
 
-        display: flex;
+            display: flex;
 
-        align-items: center;
+            align-items: center;
 
-        gap: 10px;
+            gap: 10px;
 
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 
-        transition: all 0.3s ease;
+            transition: all 0.3s ease;
 
-        border: 2px solid transparent;
+            border: 2px solid transparent;
 
         }
 
@@ -93,17 +91,16 @@
 
         .btn-pdf:hover {
 
-        transform: translateY(-2px) scale(1.03);
+            transform: translateY(-2px) scale(1.03);
 
-        background: linear-gradient(
-            135deg,
-            #6d4a30,
-            #966834
-        );
+            background: linear-gradient(135deg,
+                    #6d4a30,
+                    #966834);
 
-        border-color: #C9A06D;
+            border-color: #C9A06D;
 
         }
+
         .btn-volver {
             grid-column: span 2;
             background-color: #ab7b41;
@@ -317,19 +314,19 @@
 
         <div class="left-column">
 
-            
-        <div style="margin-top: 40px;">
-            <h2 style="
+
+            <div style="margin-top: 40px;">
+                <h2 style="
         text-align:center;
         color: white;
         -webkit-text-stroke: 1px var(--color-trazos);
     ">
-                Gráfica de Producción
-            </h2>
+                    Gráfica de Producción
+                </h2>
 
-            <canvas id="graficaLeche"></canvas>
-        </div>
-                
+                <canvas id="graficaLeche"></canvas>
+            </div>
+
             <p style="color: var(--color-trazos); font-weight: 600; margin-top: 15px;">
                 Bienvenido, {{ datos.nombre }}. Monitorea el rendimiento diario.
             </p>
@@ -378,7 +375,7 @@
                         <td><a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">
                                 Editar
                             </a>
-                        
+
                             <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red;">
                                 Eliminar
                             </a>
@@ -406,57 +403,57 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
+    <script>
 
-    const nombres = [
-        {% for cabra in cabras %}
-            "{{ cabra.nombre }}",
-        {% endfor %}
-    ];
+        const nombres = [
+            {% for cabra in cabras %}
+                "{{ cabra.nombre }}",
+            {% endfor %}
+        ];
 
-    const totalLeche = [
-        {% for cabra in cabras %}
-            {{ cabra.total_diario|default:0 }},
-        {% endfor %}
-    ];
+        const totalLeche = [
+            {% for cabra in cabras %}
+                {{ cabra.total_diario|default:"0" }},
+            {% endfor %}
+        ];
 
-    const ctx = document.getElementById('graficaLeche');
+        const ctx = document.getElementById('graficaLeche');
 
-    new Chart(ctx, {
+        new Chart(ctx, {
 
-        type: 'bar',
+            type: 'bar',
 
-        data: {
+            data: {
 
-            labels: nombres,
+                labels: nombres,
 
-            datasets: [{
+                datasets: [{
 
-                label: 'Litros diarios',
+                    label: 'Litros diarios',
 
-                data: totalLeche,
+                    data: totalLeche,
 
-                borderWidth: 2
+                    borderWidth: 2
 
-            }]
-        },
+                }]
+            },
 
-        options: {
+            options: {
 
-            responsive: true,
+                responsive: true,
 
-            scales: {
+                scales: {
 
-                y: {
+                    y: {
 
-                    beginAtZero: true
+                        beginAtZero: true
 
+                    }
                 }
             }
-        }
-    });
+        });
 
-</script>
+    </script>
 </body>
 
 </html>
