@@ -12,7 +12,9 @@ urlpatterns = [
     path('info-animales/', views.info_animales, name='info_animales'),
     path('info-animales/cinta', views.cinta, name='cinta'),
     path('info-animales/vacunas', views.vacunas, name='vacunas'),
+    path('info-animales/pdf-vacunas/', views.pdf_vacunas, name='pdf_vacunas'),
     path('info-animales/produccion', views.produccion, name='produccion'),
+    path('pdf-produccion/', views.pdf_produccion, name='pdf_produccion'),
     path('info-animales/enfermas', views.enfermas, name='enfermas'),
 
     # Registros
