@@ -19,8 +19,6 @@
             --white: #f8f8f8;
         }
 
-
-
         body {
             font-family: 'Fredoka', sans-serif;
             background-color: var(--bg-principal);
@@ -128,7 +126,6 @@
             text-align: center;
             width: fit-content;
             transition: 0.3s ease;
-
             display: block;
             margin: 50px auto 0 auto;
         }
@@ -151,7 +148,6 @@
                 font-size: 1.8rem;
             }
         }
-
 
         :root {
             --bg-principal: #C9A06D;
@@ -177,7 +173,7 @@
         }
 
         /* =========================
-            HEADER
+            HEADER SEGUNDO BLOQUE
         ========================== */
 
         .white-header {
@@ -206,20 +202,20 @@
             height: 65px;
         }
 
-.btn-plus {
-    background-color: var(--color-trazos);
-    color: white;
-    width: 550px;
-    height: 55px;
-    border-radius: 12.2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    font-size: 2rem;
-    font-weight: bold;
-    transition: 0.3s ease;
-}
+        .btn-plus {
+            background-color: var(--color-trazos);
+            color: white;
+            width: 550px;
+            height: 55px;
+            border-radius: 12.2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 2rem;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
 
         .btn-plus:hover {
             transform: scale(1.08);
@@ -378,14 +374,15 @@
             BOTÓN VOLVER
         ========================== */
 
-.bottom-actions {
-    position: sticky;
-    top: 15px;
-    display: flex;
-    justify-content: center;
-    margin-top: 35px;
-    z-index: 1000;
-}
+        .bottom-actions {
+            position: sticky;
+            top: 15px;
+            display: flex;
+            justify-content: center;
+            margin-top: 35px;
+            z-index: 1000;
+        }
+
         .btn-volver {
             background-color: var(--color-trazos);
             color: white;
@@ -423,19 +420,31 @@
         }
 
         /* =========================
-            RESPONSIVE
+            RESPONSIVE GENERAL
         ========================== */
 
         @media(max-width: 768px) {
 
+            /* AJUSTE ESPECÍFICO DEL CABEZAL EN MOVIL */
             .white-header {
                 padding: 15px 20px;
+                flex-wrap: nowrap; /* Evita que los elementos se bajen */
+                justify-content: space-between;
             }
 
-            .header-title {
-                font-size: 1.5rem;
+            .white-header .header-title {
+                display: none; /* Esconde completamente la palabra TECNOCAPRINOS */
             }
 
+            .logo-container {
+                flex: none; /* Mantiene el logo en su tamaño original a la izquierda */
+            }
+
+            .irDashboard {
+                flex: none; /* Mantiene el perfil a la derecha */
+            }
+
+            /* RESTO DEL RESPONSIVE */
             .main-container {
                 padding: 20px;
                 border-radius: 28px;
@@ -462,19 +471,17 @@
             .bottom-actions {
                 justify-content: center;
             }
-
-        }   
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
     <div class="white-header">
-
         <div class="logo-container">
             <img src="{% static 'logo.jpeg' %}" alt="Logo">
         </div>
+        
         <h1 class="header-title">TECNOCAPRINOS</h1>
 
         <a href="{% url 'dashboard' %}" class="irDashboard">
@@ -483,12 +490,9 @@
                 <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
             </svg>
         </a>
-
     </div>
 
-    <!-- CATEGORÍAS -->
     <div class="grid-categorias">
-
         <div class="categoria-item">
             <div class="circulo">
                 <a href="{% url 'cinta' %}">
@@ -521,191 +525,107 @@
             </div>
             <h3>PRODUCCIÓN</h3>
         </div>
-
     </div>
+
     <div class="bottom-actions">
         <a href="{% url 'anadir' %}" class="btn-plus">Añade tus cabras</a>
     </div>
+
     <div>
         <div class="main-container">
-    
             <div class="top-content">
-    
-                <h2 class="section-title">
-                    Cabras Registradas
-                </h2>
-    
+                <h2 class="section-title">Cabras Registradas</h2>
+                
                 <div class="search-bar">
-    
                     <span>🔍</span>
-    
                     <input type="text" id="searchInput" placeholder="Buscar cabra...">
-    
                 </div>
-    
-                <!-- FILTRO POR RAZA -->
-    
+
                 <select id="filtroRaza" class="filter-select">
-    
-                    <option value="">
-                        Todas las razas
-                    </option>
-    
+                    <option value="">Todas las razas</option>
                     {% for raza in razas %}
-    
-                    <option value="{{ raza }}">
-                        {{ raza }}
-                    </option>
-    
+                    <option value="{{ raza }}">{{ raza }}</option>
                     {% endfor %}
-    
                 </select>
-    
             </div>
-    
+
             <div class="cards-grid">
-    
                 {% for cabra in cabras %}
-    
                 <div class="card" data-raza="{{ cabra.raza|lower }}">
-    
                     <div class="card-header">
-    
                         <img id="foto-cabra" src="{{ cabra.foto_url }}" alt="foto cabra">
-    
-                        <h3 class="goat-name">
-                            Nombre: {{ cabra.nombre }}
-                        </h3>
-    
-                        <span class="codigo-tag">
-                            {{ cabra.codigo }}
-                        </span>
-    
+                        <h3 class="goat-name">Nombre: {{ cabra.nombre }}</h3>
+                        <span class="codigo-tag">{{ cabra.codigo }}</span>
                     </div>
-    
+
                     <div class="info-group">
-    
                         <div class="info-item">
                             <span class="label">Raza</span>
                             <span class="value">{{ cabra.raza }}</span>
                         </div>
-    
+
                         <div class="info-item">
                             <span class="label">Sexo</span>
                             <span class="value">{{ cabra.sexo }}</span>
                         </div>
-    
+
                         <div class="info-item">
-                            <span class="label">
-                                Fecha de Nacimiento
-                            </span>
-    
-                            <span class="value">
-                                {{ cabra.fecha_nacimiento }}
-                            </span>
+                            <span class="label">Fecha de Nacimiento</span>
+                            <span class="value">{{ cabra.fecha_nacimiento }}</span>
                         </div>
-    
+
                         <div class="info-item">
-    
-                            <a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">
-                                Editar
-                            </a>
-    
-                            <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red;">
-                                Eliminar
-                            </a>
-    
+                            <a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0); font-weight: 600; text-decoration: none; margin-right: 15px;">Editar</a>
+                            <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red; font-weight: 600; text-decoration: none;">Eliminar</a>
                         </div>
-    
                     </div>
-    
                 </div>
-    
                 {% empty %}
-    
                 <div class="sin-cabras">
                     No tienes cabras registradas.
                 </div>
-    
                 {% endfor %}
-    
             </div>
-    
+
             <div>
-    
                 {% if messages %}
-    
                 {% for message in messages %}
-    
                 <div class="mensaje {{ message.tags }}">
                     {{ message }}
                 </div>
-    
                 {% endfor %}
-    
                 {% endif %}
-    
             </div>
-    
         </div>
-    
-        <!-- SCRIPT BUSQUEDA + FILTRO -->
-    
+
         <script>
-
             const searchInput = document.getElementById("searchInput");
-
             const filtroRaza = document.getElementById("filtroRaza");
-
             const cards = document.querySelectorAll(".card");
 
             function filtrarCabras() {
-
                 const textoBusqueda = searchInput.value.toLowerCase();
-
                 const razaSeleccionada = filtroRaza.value.toLowerCase();
 
                 cards.forEach(card => {
-
                     const contenido = card.textContent.toLowerCase();
-
                     const raza = card.dataset.raza;
 
-                    const coincideBusqueda =
-                        contenido.includes(textoBusqueda);
+                    const coincideBusqueda = contenido.includes(textoBusqueda);
+                    const coincideRaza = razaSeleccionada === "" || raza === razaSeleccionada;
 
-                    const coincideRaza =
-                        razaSeleccionada === "" ||
-                        raza === razaSeleccionada;
-
-                    if (
-                        coincideBusqueda &&
-                        coincideRaza
-                    ) {
-
+                    if (coincideBusqueda && coincideRaza) {
                         card.style.display = "block";
-
                     } else {
-
                         card.style.display = "none";
-
                     }
-
                 });
-
             }
 
-            searchInput.addEventListener(
-                "keyup",
-                filtrarCabras
-            );
-
-            filtroRaza.addEventListener(
-                "change",
-                filtrarCabras
-            );
-
+            searchInput.addEventListener("keyup", filtrarCabras);
+            filtroRaza.addEventListener("change", filtrarCabras);
         </script>
     </div>
 </body>
+
 </html>
