@@ -313,7 +313,8 @@
 
                     {% for cabra in cabras %}
 
-                    <tr>
+                    <tr onclick="window.location='{% url 'detalle_animal' cabra.id %}'"
+    style="cursor:pointer;">
 
                         <td>{{ cabra.codigo }}</td>
                         <td>{{ cabra.nombre }}</td>
