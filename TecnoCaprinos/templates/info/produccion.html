@@ -30,6 +30,7 @@
         }
 
         /* HEADER */
+
         .white-header {
             width: 100%;
             background-color: var(--white);
@@ -54,8 +55,6 @@
             margin: 0;
             text-transform: uppercase;
         }
-<<<<<<< HEAD
-=======
 
         .btn-plus {
             background-color: var(--color-trazos);
@@ -79,6 +78,7 @@
         }
 
         /* CONTENEDOR BOTÓN VOLVER */
+
         .footer-container {
             display: flex;
             justify-content: center;
@@ -86,25 +86,15 @@
             padding: 20px 0 40px 0;
         }
 
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
         .btn-volver {
             background-color: #ab7b41;
             color: white;
             border: none;
-<<<<<<< HEAD
-            padding: 12px 20px;
-=======
             padding: 12px 40px;
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
             border-radius: 20px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-<<<<<<< HEAD
-            margin-top: 20px;
-            margin-bottom: 30px;
-=======
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
             font-family: 'Fredoka', sans-serif;
             transition: transform 0.2s, background-color 0.2s;
             text-decoration: none;
@@ -118,6 +108,7 @@
         }
 
         /* CONTENIDO PRINCIPAL */
+
         .page-content {
             display: flex;
             justify-content: center;
@@ -129,7 +120,8 @@
             box-sizing: border-box;
         }
 
-        /* COLUMNA IZQUIERDA (GRÁFICA FIJA) */
+        /* COLUMNA IZQUIERDA */
+
         .left-column {
             flex: 0.8;
             background-color: var(--bg-cuadros);
@@ -138,12 +130,10 @@
             padding: 20px;
             text-align: center;
             box-sizing: border-box;
-            
-            /* Propiedades para fijar la caja al hacer scroll */
             position: -webkit-sticky;
             position: sticky;
             top: 25px;
-            align-self: flex-start; /* Evita que herede la altura gigante de la tabla */
+            align-self: flex-start;
             z-index: 10;
         }
 
@@ -152,13 +142,11 @@
             -webkit-text-stroke: 1.5px var(--color-trazos);
             text-transform: uppercase;
             font-size: 1.8rem;
-<<<<<<< HEAD
-=======
             margin-top: 0;
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
         }
 
         /* COLUMNA DERECHA */
+
         .table-container {
             flex: 2.2;
             background-color: var(--bg-cuadros);
@@ -205,7 +193,15 @@
             border-bottom: 1px solid var(--bg-cuadros);
         }
 
-<<<<<<< HEAD
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table th:last-child,
+        .data-table td:last-child {
+            border-right: none;
+        }
+
         .acciones a {
             text-decoration: none;
             font-weight: bold;
@@ -217,19 +213,23 @@
 
         .eliminar-btn {
             color: red;
-=======
-        .data-table tr:last-child td {
-            border-bottom: none;
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
         }
 
-        .data-table th:last-child, 
-        .data-table td:last-child {
-            border-right: none;
+        /* FILA CLICKEABLE */
+
+        .fila-cabra {
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
 
-        /* --- RESPONSIVE --- */
+        .fila-cabra:hover {
+            background-color: #f5e6c8;
+        }
+
+        /* RESPONSIVE */
+
         @media (max-width: 1100px) {
+
             .page-content {
                 flex-direction: column;
                 align-items: center;
@@ -240,17 +240,13 @@
                 width: 100%;
             }
 
-            /* Se desactiva el sticky en móviles para que fluya hacia abajo correctamente */
             .left-column {
                 position: static;
             }
         }
 
         @media (max-width: 768px) {
-<<<<<<< HEAD
 
-=======
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
             .white-header {
                 padding: 10px 15px;
             }
@@ -287,39 +283,33 @@
                 font-size: 1.5rem;
             }
 
-<<<<<<< HEAD
-            .table-container {
-                overflow-x: auto;
-=======
-            /* TABLA EN VERTICAL CON DISEÑO DE TARJETAS LIMPIO */
-            .data-table, 
-            .data-table thead, 
-            .data-table tbody, 
-            .data-table th, 
-            .data-table td, 
+            .data-table,
+            .data-table thead,
+            .data-table tbody,
+            .data-table th,
+            .data-table td,
             .data-table tr {
-                display: block; 
+                display: block;
                 width: 100%;
                 box-sizing: border-box;
             }
 
             .data-table thead {
-                display: none; 
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
+                display: none;
             }
 
             .data-table {
-                background-color: transparent; 
-                border: none; 
+                background-color: transparent;
+                border: none;
             }
 
             .data-table tr {
-                margin-bottom: 25px; 
+                margin-bottom: 25px;
                 border: 3px solid var(--color-trazos);
-                border-radius: 20px; 
+                border-radius: 20px;
                 background-color: #fff8e1;
-                overflow: hidden; 
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+                overflow: hidden;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
                 padding: 5px 0;
             }
 
@@ -329,16 +319,14 @@
 
             .data-table td {
                 text-align: right;
-                padding: 12px 20px; 
+                padding: 12px 20px;
                 font-size: 0.95rem;
                 border-right: none;
-                border-bottom: 1px solid rgba(127, 86, 55, 0.15); 
+                border-bottom: 1px solid rgba(127, 86, 55, 0.15);
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
             }
-<<<<<<< HEAD
-=======
 
             .data-table td:last-child {
                 border-bottom: none;
@@ -357,9 +345,8 @@
 
             .data-table td[data-label="Acciones"] {
                 justify-content: flex-end;
-                gap: 20px; 
+                gap: 20px;
             }
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
         }
     </style>
 </head>
@@ -380,7 +367,6 @@
             TECNOCAPRINOS - PRODUCCIÓN
         </h1>
 
-
     </div>
 
     <!-- CONTENIDO -->
@@ -390,44 +376,25 @@
         <!-- IZQUIERDA -->
 
         <div class="left-column">
-<<<<<<< HEAD
 
-            <div style="margin-top: 20px;">
+            <h2>Gráfica de Producción</h2>
 
-                <h2 style="
-                    text-align:center;
-                    color: white;
-                    -webkit-text-stroke: 1px var(--color-trazos);
-                ">
-                    Gráfica de Producción
-                </h2>
-
-                <canvas id="graficaLeche"></canvas>
-
-            </div>
+            <canvas id="graficaLeche"></canvas>
 
             <p style="
                 color: var(--color-trazos);
                 font-weight: 600;
                 margin-top: 20px;
+                margin-bottom: 0;
             ">
                 Bienvenido, {{ datos.nombre }}.
                 Monitorea el rendimiento diario.
-=======
-            <h2>Gráfica de Produccion</h2>
-            <canvas id="graficaLeche"></canvas>
-            <p style="color: var(--color-trazos); font-weight: 600; margin-top: 20px; margin-bottom: 0;">
-                Bienvenido, {{ datos.nombre }}. Monitorea el rendimiento diario.
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
             </p>
 
         </div>
 
-<<<<<<< HEAD
         <!-- TABLA -->
 
-=======
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
         <div class="table-container">
 
             <div class="section-header">
@@ -449,75 +416,81 @@
                         <th>Observaciones</th>
                         <th>Responsable</th>
                         <th>Acciones</th>
-
                     </tr>
 
                 </thead>
 
                 <tbody>
+
                     {% for cabra in cabras %}
-<<<<<<< HEAD
 
-                    <tr onclick="window.location='{% url 'detalle_animal' cabra.id %}'"
-    style="cursor:pointer;">
+                    <tr
+                        class="fila-cabra"
+                        onclick="window.location='{% url 'detalle_animal' cabra.id %}'"
+                    >
 
-                        <td>{{ cabra.codigo }}</td>
-                        <td>{{ cabra.nombre }}</td>
-                        <td>{{ cabra.peso }}</td>
-                        <td>{{ cabra.sexo }}</td>
+                        <td data-label="Código">{{ cabra.codigo }}</td>
 
-                        <td>{{ cabra.ordeno_manana|default:"0" }}</td>
+                        <td data-label="Nombre">{{ cabra.nombre }}</td>
 
-                        <td>{{ cabra.ordeno_tarde|default:"0" }}</td>
+                        <td data-label="Peso">{{ cabra.peso }}</td>
 
-                        <td>{{ cabra.total_diario|default:"0" }}</td>
+                        <td data-label="Sexo">{{ cabra.sexo }}</td>
 
-                        <td>{{ cabra.observaciones|default:"-" }}</td>
+                        <td data-label="Ordeño Mañana">
+                            {{ cabra.ordeno_manana|default:"0" }}
+                        </td>
 
-                        <td>{{ cabra.responsable|default:"-" }}</td>
+                        <td data-label="Ordeño Tarde">
+                            {{ cabra.ordeno_tarde|default:"0" }}
+                        </td>
 
-                        <td class="acciones">
+                        <td data-label="Total Diario">
+                            {{ cabra.total_diario|default:"0" }}
+                        </td>
 
-                            <a href="{% url 'guardar_produccion' cabra.id %}" class="editar-btn">
+                        <td data-label="Observaciones">
+                            {{ cabra.observaciones|default:"-" }}
+                        </td>
+
+                        <td data-label="Responsable">
+                            {{ cabra.responsable|default:"-" }}
+                        </td>
+
+                        <td data-label="Acciones" class="acciones">
+
+                            <a
+                                href="{% url 'guardar_produccion' cabra.id %}"
+                                class="editar-btn"
+                                onclick="event.stopPropagation();"
+                            >
                                 Editar
                             </a>
 
-                            <br><br>
-
-                            <a href="{% url 'eliminar_cabra' cabra.id %}" class="eliminar-btn">
+                            <a
+                                href="{% url 'eliminar_cabra' cabra.id %}"
+                                class="eliminar-btn"
+                                onclick="event.stopPropagation();"
+                            >
                                 Eliminar
                             </a>
 
-=======
-                    <tr>
-                        <td data-label="Código">{{ cabra.codigo }}</td>
-                        <td data-label="Nombre">{{ cabra.nombre }}</td>
-                        <td data-label="Peso">{{ cabra.peso }}</td>
-                        <td data-label="Sexo">{{ cabra.sexo }}</td>
-                        <td data-label="Ordeño Mañana">{{ cabra.ordeno_manana|default:"0" }}</td>
-                        <td data-label="Ordeño Tarde">{{ cabra.ordeno_tarde|default:"0" }}</td>
-                        <td data-label="Total Diario">{{ cabra.total_diario|default:"0" }}</td>
-                        <td data-label="Observaciones">{{ cabra.observaciones|default:"-" }}</td>
-                        <td data-label="Responsable">{{ cabra.responsable|default:"-" }}</td>
-                        <td data-label="Acciones">
-                            <a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0); text-decoration: none; margin-right: 5px; font-weight: bold;">Editar</a>
-                            <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red; text-decoration: none; font-weight: bold;">Eliminar</a>
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
                         </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-<<<<<<< HEAD
 
-                        <td colspan="10">
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="10" style="text-align: center;">
                             No hay registros de producción todavía.
                         </td>
 
-=======
-                        <td colspan="10" style="text-align: center;">No hay registros de producción todavía.</td>
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
                     </tr>
+
                     {% endfor %}
+
                 </tbody>
 
             </table>
@@ -526,126 +499,118 @@
 
     </div>
 
-<<<<<<< HEAD
     <!-- BOTÓN VOLVER -->
 
-    <a href="{% url 'info_animales' %}" class="btn-volver">
-        Volver
-    </a>
+    <div class="footer-container">
+
+        <a href="{% url 'info_animales' %}" class="btn-volver">
+            Volver
+        </a>
+
+    </div>
 
     <!-- CHART JS -->
-=======
-    <div class="footer-container">
-        <a href="{% url 'info_animales' %}" class="btn-volver">Volver</a>
-    </div>
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
+
         const nombres = [];
+
         const totalLeche = [];
 
-<<<<<<< HEAD
-    <script>
-
-        const nombres = [
-            {% for cabra in cabras %}
-                "{{ cabra.nombre }}",
-            {% endfor %}
-        ];
-
-        const totalLeche = [
-            {% for cabra in cabras %}
-                {{ cabra.total_diario|default:"0" }},
-            {% endfor %}
-        ];
-
-        const ctx = document.getElementById('graficaLeche');
-
-        new Chart(ctx, {
-
-            type: 'bar',
-
-            data: {
-
-                labels: nombres,
-
-                datasets: [{
-
-                    label: 'Litros diarios',
-
-                    data: totalLeche,
-
-                    borderWidth: 2
-
-                }]
-            },
-
-            options: {
-
-                responsive: true,
-
-                scales: {
-
-                    y: {
-
-                        beginAtZero: true
-
-                    }
-                }
-            }
-        });
-
-    </script>
-
-=======
         {% for cabra in cabras %}
+
             nombres.push("{{ cabra.nombre|escapejs }}");
-            totalLeche.push(parseFloat("{{ cabra.total_diario|default:0 }}".replace(',', '.')) || 0);
+
+            totalLeche.push(
+                parseFloat("{{ cabra.total_diario|default:0 }}".replace(',', '.')) || 0
+            );
+
         {% endfor %}
 
         const ctx = document.getElementById('graficaLeche');
 
         if (ctx) {
+
             new Chart(ctx, {
+
                 type: 'bar',
+
                 data: {
+
                     labels: nombres,
+
                     datasets: [{
+
                         label: 'Litros diarios',
-                        data: totalLeche
+
+                        data: totalLeche,
+
+                        borderWidth: 2
+
                     }]
+
                 },
+
                 options: {
+
                     responsive: true,
+
                     plugins: {
+
                         legend: {
+
                             labels: {
+
                                 font: {
+
                                     family: 'Fredoka',
                                     size: 14
+
                                 }
                             }
                         }
                     },
+
                     scales: {
+
                         x: {
+
                             ticks: {
-                                font: { family: 'Fredoka' }
+
+                                font: {
+                                    family: 'Fredoka'
+                                }
+
                             }
+
                         },
+
                         y: {
+
                             beginAtZero: true,
+
                             ticks: {
-                                font: { family: 'Fredoka' }
+
+                                font: {
+                                    family: 'Fredoka'
+                                }
+
                             }
+
                         }
+
                     }
+
                 }
+
             });
+
         }
+
     </script>
->>>>>>> 83194f695b724b9abae6b616a19c0a44df755c79
+
 </body>
 
 </html>
