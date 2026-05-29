@@ -478,12 +478,9 @@
         }
     </style>
 </head>
-
 <body>
-
     <!-- HEADER -->
     <div class="white-header">
-
         <div class="logo-container">
             <img src="{% static 'logo.jpeg' %}" alt="Logo">
         </div>
@@ -540,28 +537,30 @@
     </div>
     <div>
         <div class="main-container">
-    
             <div class="top-content">
-    
-                <h2 class="section-title">
-                    Cabras Registradas
-                </h2>
-    
+                <div>
+                    {% if messages %}
+            
+                    {% for message in messages %}
+            
+                    <div class="mensaje {{ message.tags }}">
+                        {{ message }}
+                    </div>
+            
+                    {% endfor %}
+            
+                    {% endif %}
+                </div>
+                <h2 class="section-title">Cabras Registradas</h2>
                 <div class="search-bar">
-    
                     <span>🔍</span>
-    
                     <input type="text" id="searchInput" placeholder="Buscar cabra...">
-    
                 </div>
     
                 <!-- FILTRO POR RAZA -->
     
                 <select id="filtroRaza" class="filter-select">
-    
-                    <option value="">
-                        Todas las razas
-                    </option>
+                    <option value="">Todas las razas</option>
     
                     {% for raza in razas %}
     
@@ -618,11 +617,6 @@
                                     {{ cabra.fecha_nacimiento }}
                                 </span>
                             </div>
-
-                            <div class="info-item">
-                                <span class="label">Tabla</span>
-                                <span class="value">{{ cabra.categoria }}</span>
-                            </div>
             
                         </div>
             
@@ -638,23 +632,6 @@
                 {% endfor %}
             
             </div>
-            
-                <div>
-            
-                    {% if messages %}
-            
-                    {% for message in messages %}
-            
-                    <div class="mensaje {{ message.tags }}">
-                        {{ message }}
-                    </div>
-            
-                    {% endfor %}
-            
-                    {% endif %}
-            
-                </div>
-    
         </div>
     
         <!-- SCRIPT BUSQUEDA + FILTRO -->

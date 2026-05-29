@@ -18,10 +18,10 @@ urlpatterns = [
     path('info-animales/enfermas', views.enfermas, name='enfermas'),
 
     # Registros
-    path('registrar-enfermo/', views.registrar_enfermo, name='registrar_enfermo'),
-    path('registrar-vacuna/', views.registrar_vacuna, name='registrar_vacuna'),
-    path('agregar-produccion/', views.agregar_produccion, name='agregar_produccion'),
-    path('registrar-seguimiento-gestacion/',views.registrar_seguimiento_gestacion,name='registrar_seguimiento_gestacion'),
+    path('registrar-enfermo/<str:cabra_id>/', views.registrar_enfermo, name='registrar_enfermo'),
+    path('registrar-vacuna/<str:cabra_id>', views.registrar_vacuna, name='registrar_vacuna'),
+    path('agregar-produccion/<str:cabra_id>', views.agregar_produccion, name='agregar_produccion'),
+    path('registrar-seguimiento-gestacion/<str:cabra_id>',views.registrar_seguimiento_gestacion,name='registrar_seguimiento_gestacion'),
 
     #btn añadir cabra
     path('info-animales/anadir', views.anadir_cabra, name= 'anadir'),
@@ -39,6 +39,6 @@ urlpatterns = [
     
     #  detalle animales
     path('animal/<int:id>/', views.detalle_animal, name='detalle_animal'),
-    path('animal/<str:cabra_id>/',views.detalle_animal,name='detalle_animal'), 
+    path('animal/<str:cabra_id>/',views.detalle_animal,name='detalle_animal'),
 
 ]

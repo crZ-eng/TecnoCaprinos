@@ -477,18 +477,6 @@
                     <input value="{{ cabra.codigo_padre }}" type="text" name="nuevo-cod_padre"
                         placeholder="Codigo del Cabro Padre" required>
                 </div>
-                <div class="form-group">
-                    <label>Categoria:</label>
-                    <select name="nueva-categoria" id="categoria">
-                        <option>Seleciona una Categoria</option>
-                        <option selected value="{{ cabra.categoria }}">{{ cabra.categoria }}</option>
-                        <option value="cinta">En Cinta</option>
-                        <option value="enferma">Enferma</option>
-                        <option value="vacunas">Vacunas</option>
-                        <option value="produccion">Producción</option>
-                        <option value="">Ninguno</option>
-                    </select>
-                </div>
                 <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>
                 <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
             </form>
