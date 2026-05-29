@@ -102,7 +102,7 @@ def login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        apiKey = os.getenv('FIREBASE_WEB_API_KEY')
+        apiKey = "AIzaSyDnHUov15lQlXJ0W_PnXFPZbVq1CcP60FI"
 
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}"
 
