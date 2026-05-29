@@ -86,6 +86,57 @@
             padding: 20px 0 40px 0;
         }
 
+        .btn-pdf {
+
+        background: linear-gradient(
+            135deg,
+            #7F5637,
+            #ab7b41
+        );
+
+        color: white;
+
+        padding: 12px 22px;
+
+        border-radius: 18px;
+
+        text-decoration: none;
+
+        font-size: 1rem;
+
+        font-weight: 600;
+
+        font-family: 'Fredoka', sans-serif;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+
+        transition: all 0.3s ease;
+
+        border: 2px solid transparent;
+
+        }
+
+        /* Hover */
+
+        .btn-pdf:hover {
+
+        transform: translateY(-2px) scale(1.03);
+
+        background: linear-gradient(
+            135deg,
+            #6d4a30,
+            #966834
+        );
+
+        border-color: #C9A06D;
+
+        }
         .btn-volver {
             background-color: #ab7b41;
             color: white;
@@ -260,10 +311,10 @@
                 height: 40px;
             }
 
-            .btn-plus {
-                width: 40px;
-                height: 40px;
-                font-size: 24px;
+            .btn-pdf {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+                gap: 6px;
             }
 
             .page-content {
@@ -366,6 +417,9 @@
         <h1 class="header-title">
             TECNOCAPRINOS - PRODUCCIÓN
         </h1>
+
+        <h1 class="header-title">TECNOCAPRINOS - PRODUCCIÓN</h1>
+        <a href="{% url 'pdf_produccion' %}" class="btn-pdf">Descargar PDF</a>
 
     </div>
 

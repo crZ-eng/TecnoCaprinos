@@ -3,11 +3,22 @@ import cloudinary
 import cloudinary.uploader
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import HttpResponse
 from firebase_admin import firestore, auth
 from config.firebaseConnection import initialize_firebase
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Table,
+    TableStyle,
+    Paragraph,
+    Spacer
+)
 from functools import wraps
 import requests
 from firebase_admin import firestore
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.pagesizes import landscape, letter
 
 # Inicializar Firebase
 db = initialize_firebase()
@@ -761,3 +772,791 @@ def detalle_animal(request, cabra_id):
         )
 
         return redirect('info_animales')
+    
+    # parte duvan pdf
+    
+    
+@login_required_firebase
+def pdf_vacunas(request):
+
+    uid = request.session.get('uid')
+
+    cabras = []
+
+    try:
+
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'vacunas')\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+    except Exception as e:
+
+        print(e)
+
+    # =========================
+    # RESPUESTA PDF
+    # =========================
+
+    response = HttpResponse(
+        content_type='application/pdf'
+    )
+
+    response['Content-Disposition'] = (
+        'attachment; filename="reporte_vacunas.pdf"'
+    )
+
+    # =========================
+    # IMPORT HORIZONTAL
+    # =========================
+
+    from reportlab.lib.pagesizes import landscape, letter
+
+    # =========================
+    # DOCUMENTO HORIZONTAL
+    # =========================
+
+    doc = SimpleDocTemplate(
+
+        response,
+
+        pagesize=landscape(letter),
+
+        rightMargin=20,
+        leftMargin=20,
+        topMargin=25,
+        bottomMargin=20
+
+    )
+
+    elementos = []
+
+    estilos = getSampleStyleSheet()
+
+    # =========================
+    # TITULO PRINCIPAL
+    # =========================
+
+    titulo = Paragraph(
+        """
+        <para align="center">
+
+        <font size="24" color="#7F5637">
+        <b>TECNOCAPRINOS</b>
+        </font>
+
+        <br/><br/>
+
+        <font size="14" color="#C9A06D">
+        REPORTE GENERAL DE VACUNAS
+        </font>
+
+        </para>
+        """,
+        estilos['Title']
+    )
+
+    elementos.append(titulo)
+
+    elementos.append(Spacer(1, 20))
+
+    # =========================
+    # FECHA
+    # =========================
+
+    from datetime import datetime
+
+    fecha = datetime.now().strftime("%d/%m/%Y %H:%M")
+
+    info = Paragraph(
+        f"""
+        <font size="10" color="#3E2A1F">
+        <b>Fecha de generación:</b> {fecha}
+        </font>
+        """,
+        estilos['Normal']
+    )
+
+    elementos.append(info)
+
+    elementos.append(Spacer(1, 18))
+
+    # =========================
+    # DATOS TABLA
+    # =========================
+
+    datos = [
+
+        [
+            'Código',
+            'Nombre',
+            'Raza',
+            'Peso',
+            'Sexo',
+            'Medicamento',
+            'Vía Administración'
+        ]
+
+    ]
+
+    # =========================
+    # FILAS CABRAS
+    # =========================
+
+    for cabra in cabras:
+
+        datos.append([
+
+            Paragraph(
+                str(cabra.get('codigo', 'No registrado')),
+                estilos['BodyText']
+            ),
+
+            Paragraph(
+                str(cabra.get('nombre', 'No registrado')),
+                estilos['BodyText']
+            ),
+
+            Paragraph(
+                str(cabra.get('raza', 'No registrado')),
+                estilos['BodyText']
+            ),
+
+            Paragraph(
+                str(cabra.get('peso', 'No registrado')),
+                estilos['BodyText']
+            ),
+
+            Paragraph(
+                str(cabra.get('sexo', 'No registrado')),
+                estilos['BodyText']
+            ),
+
+            Paragraph(
+                str(cabra.get('dosis', 'No asignado')),
+                estilos['BodyText']
+            ),
+
+            Paragraph(
+                str(cabra.get('Via_admin', 'No asignado')),
+                estilos['BodyText']
+            )
+
+        ])
+
+    # =========================
+    # TABLA PRINCIPAL
+    # =========================
+    tabla = Table(
+
+        datos,
+        
+        splitByRow=True,
+
+        colWidths=[
+            80,   # Código
+            120,  # Nombre
+            110,  # Raza
+            70,   # Peso
+            70,   # Sexo
+            150,  # Medicamento
+            150   # Vía administración
+        ],
+
+        repeatRows=1
+
+    )
+
+    # =========================
+    # ESTILOS TABLA
+    # =========================
+
+    tabla.setStyle(TableStyle([
+
+        # =========================
+        # HEADER
+        # =========================
+
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
+
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+
+        ('FONTSIZE', (0, 0), (-1, 0), 11),
+
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+
+        # AJUSTAR TEXTO
+        ('WORDWRAP', (0, 0), (-1, -1), 'CJK'),
+
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+
+        ('TOPPADDING', (0, 0), (-1, 0), 12),
+
+        # =========================
+        # CUERPO TABLA
+        # =========================
+
+        ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#FFFDF9')),
+
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.HexColor('#3E2A1F')),
+
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+
+        ('FONTSIZE', (0, 1), (-1, -1), 9),
+
+        # =========================
+        # FILAS ALTERNADAS
+        # =========================
+
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
+
+            colors.HexColor('#FFFDF9'),
+            colors.HexColor('#F5E6D3')
+
+        ]),
+
+        # =========================
+        # BORDES
+        # =========================
+
+        ('GRID', (0, 0), (-1, -1), 1.2, colors.HexColor('#7F5637')),
+
+        ('BOX', (0, 0), (-1, -1), 2, colors.HexColor('#7F5637')),
+
+        # =========================
+        # ALINEACIÓN
+        # =========================
+
+        ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
+
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+
+        # =========================
+        # ESPACIADO
+        # =========================
+
+        ('TOPPADDING', (0, 1), (-1, -1), 8),
+
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
+
+    ]))
+
+    elementos.append(tabla)
+
+    elementos.append(Spacer(1, 25))
+
+    # =========================
+    # FOOTER
+    # =========================
+
+    footer = Paragraph(
+        """
+        <para align="center">
+
+        <font size="9" color="#7F5637">
+
+        Documento generado automáticamente por TECNOCAPRINOS
+
+        </font>
+
+        </para>
+        """,
+        estilos['Normal']
+    )
+
+    elementos.append(footer)
+
+    # =========================
+    # CREAR PDF
+    # =========================
+
+    doc.build(elementos)
+
+    return response
+
+
+# =========================
+# ENFERMAS
+# =========================
+
+@login_required_firebase
+def enfermas(request):
+    
+    uid = request.session.get('uid')
+    
+    cabras = []
+
+    try:
+
+        docs = db.collection('cabras')\
+        .where('usuario_id', '==', uid)\
+        .where('categoria', '==', 'enferma')\
+        .stream()
+            
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+    except Exception as e:
+        print(e)
+
+    return render(
+        request,
+        'info/enfermas.html',
+        {
+            'cabras': cabras
+        }
+    )
+
+# =========================
+# producción
+# =========================
+
+@login_required_firebase
+def produccion(request):
+
+    uid = request.session.get('uid')
+
+    cabras = []
+
+    datosUser = {}
+
+    try:
+       # OBTENER DATOS DEL USUARIO
+
+        doc_ref = db.collection('usuarios').document(uid)
+
+        doc = doc_ref.get()
+
+        if doc.exists:
+
+            datosUser = doc.to_dict()
+
+        # OBTENER CABRAS
+        
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'produccion')\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+    except Exception as e:
+
+        print(e)
+
+        messages.error(
+            request,
+            f'Error al cargar datos: {e}'
+        )
+
+    return render(
+        request,
+        'info/produccion.html',
+        {
+            'cabras': cabras,
+            'datos': datosUser
+        }
+    )
+
+# =========================
+# PDF PRODUCCIÓN
+# =========================
+
+@login_required_firebase
+def pdf_produccion(request):
+
+    uid = request.session.get('uid')
+
+    cabras = []
+
+    try:
+
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'produccion')\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+    except Exception as e:
+
+        print(e)
+
+    # =========================
+    # RESPUESTA PDF
+    # =========================
+
+    response = HttpResponse(
+        content_type='application/pdf'
+    )
+
+    response['Content-Disposition'] = (
+        'attachment; filename="reporte_produccion.pdf"'
+    )
+
+    # =========================
+    # DOCUMENTO HORIZONTAL
+    # =========================
+
+    doc = SimpleDocTemplate(
+
+        response,
+
+        pagesize=landscape(letter),
+
+        rightMargin=15,
+        leftMargin=15,
+        topMargin=20,
+        bottomMargin=20
+
+    )
+
+    elementos = []
+
+    estilos = getSampleStyleSheet()
+
+    # =========================
+    # TITULO
+    # =========================
+
+    titulo = Paragraph(
+        """
+        <para align="center">
+
+        <font size="24" color="#7F5637">
+        <b>TECNOCAPRINOS</b>
+        </font>
+
+        <br/><br/>
+
+        <font size="14" color="#C9A06D">
+        REPORTE GENERAL DE PRODUCCIÓN
+        </font>
+
+        </para>
+        """,
+        estilos['Title']
+    )
+
+    elementos.append(titulo)
+
+    elementos.append(Spacer(1, 18))
+
+    # =========================
+    # FECHA
+    # =========================
+
+    from datetime import datetime
+
+    fecha = datetime.now().strftime("%d/%m/%Y %H:%M")
+
+    info = Paragraph(
+        f"""
+        <font size="10" color="#3E2A1F">
+        <b>Fecha de generación:</b> {fecha}
+        </font>
+        """,
+        estilos['Normal']
+    )
+
+    elementos.append(info)
+
+    elementos.append(Spacer(1, 15))
+
+    # =========================
+    # DATOS TABLA
+    # =========================
+
+    datos = [[
+
+        'Código',
+        'Nombre',
+        'Peso',
+        'Sexo',
+        'Ordeño Mañana',
+        'Ordeño Tarde',
+        'Total Diario',
+        'Observaciones',
+        'Responsable'
+
+    ]]
+
+    # =========================
+    # ESTILO CELDAS
+    # =========================
+
+    estilo_celda = estilos['BodyText']
+
+    estilo_celda.fontName = 'Helvetica'
+
+    estilo_celda.fontSize = 7
+
+    estilo_celda.leading = 9
+
+    # =========================
+    # FILAS
+    # =========================
+
+    for cabra in cabras:
+
+        observaciones = Paragraph(
+            str(cabra.get('observaciones', '-')),
+            estilo_celda
+        )
+
+        responsable = Paragraph(
+            str(cabra.get('responsable', '-')),
+            estilo_celda
+        )
+
+        datos.append([
+
+            Paragraph(
+                str(cabra.get('codigo', '-')),
+                estilo_celda
+            ),
+
+            Paragraph(
+                str(cabra.get('nombre', '-')),
+                estilo_celda
+            ),
+
+            Paragraph(
+                str(cabra.get('peso', '-')),
+                estilo_celda
+            ),
+
+            Paragraph(
+                str(cabra.get('sexo', '-')),
+                estilo_celda
+            ),
+
+            Paragraph(
+                str(cabra.get('ordeno_manana', '0')),
+                estilo_celda
+            ),
+
+            Paragraph(
+                str(cabra.get('ordeno_tarde', '0')),
+                estilo_celda
+            ),
+
+            Paragraph(
+                str(cabra.get('total_diario', '0')),
+                estilo_celda
+            ),
+
+            observaciones,
+
+            responsable
+
+        ])
+
+    # =========================
+    # TABLA OPTIMIZADA
+    # =========================
+
+    tabla = Table(
+
+        datos,
+
+        repeatRows=1,
+
+        splitByRow=True,
+
+        colWidths=[
+
+            55,   # Código
+            120,  # Nombre
+            45,   # Peso
+            55,   # Sexo
+            70,   # Ordeño mañana
+            70,   # Ordeño tarde
+            65,   # Total diario
+            145,  # Observaciones
+            95    # Responsable
+
+        ]
+
+    )
+
+    # =========================
+    # ESTILOS TABLA
+    # =========================
+
+    tabla.setStyle(TableStyle([
+
+        # =========================
+        # HEADER
+        # =========================
+
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
+
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+
+        ('FONTSIZE', (0, 0), (-1, 0), 9),
+
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+
+        ('VALIGN', (0, 0), (-1, 0), 'MIDDLE'),
+
+        ('TOPPADDING', (0, 0), (-1, 0), 8),
+
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+
+        # =========================
+        # CUERPO
+        # =========================
+
+        ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#FFFDF9')),
+
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.HexColor('#3E2A1F')),
+
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+
+        ('FONTSIZE', (0, 1), (-1, -1), 7),
+
+        # =========================
+        # FILAS ALTERNAS
+        # =========================
+
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
+
+            colors.HexColor('#FFFDF9'),
+
+            colors.HexColor('#F5E6D3')
+
+        ]),
+
+        # =========================
+        # BORDES
+        # =========================
+
+        ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#7F5637')),
+
+        ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#7F5637')),
+
+        # =========================
+        # ALINEACIÓN
+        # =========================
+
+        ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
+
+        ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),
+
+        # =========================
+        # ESPACIADOS
+        # =========================
+
+        ('TOPPADDING', (0, 1), (-1, -1), 5),
+
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 5),
+
+        ('LEFTPADDING', (0, 0), (-1, -1), 4),
+
+        ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+
+        # =========================
+        # AJUSTE TEXTO
+        # =========================
+
+        ('WORDWRAP', (0, 0), (-1, -1), 'LTR'),
+
+    ]))
+
+    elementos.append(tabla)
+
+    elementos.append(Spacer(1, 20))
+
+    # =========================
+    # FOOTER
+    # =========================
+
+    footer = Paragraph(
+        """
+        <para align="center">
+
+        <font size="9" color="#7F5637">
+
+        Documento generado automáticamente por TECNOCAPRINOS
+
+        </font>
+
+        </para>
+        """,
+        estilos['Normal']
+    )
+
+    elementos.append(footer)
+
+    # =========================
+    # CONSTRUIR PDF
+    # =========================
+
+    doc.build(elementos)
+
+    return response
+
+# =========================
+# FORMULARIOS
+# =========================
+
+def registrar_enfermo(request):
+
+    return render(
+        request,
+        'info/agregar/registrar_enfermo.html'
+    )
+
+
+def registrar_vacuna(request):
+
+    return render(
+        request,
+        'info/agregar/registrar_vacuna.html'
+    )
+
+
+def agregar_produccion(request):
+
+    return render(
+        request,
+        'info/agregar/agregar_produccion.html'
+    )
+
+
+def registrar_seguimiento_gestacion(request):
+
+    return render(
+        request,
+        'info/agregar/registrar_seguimiento_gestacion.html'
+    )
