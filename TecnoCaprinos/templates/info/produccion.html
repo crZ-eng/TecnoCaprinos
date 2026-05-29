@@ -401,11 +401,8 @@
         }
     </style>
 </head>
-
 <body>
-
     <!-- HEADER -->
-
     <div class="white-header">
 
         <div class="logo-container">
@@ -478,59 +475,30 @@
 
                     {% for cabra in cabras %}
 
-                    <tr
-                        class="fila-cabra"
-                        onclick="window.location='{% url 'detalle_animal' cabra.id %}'"
-                    >
-
+                    <tr class="fila-cabra">
                         <td data-label="Código">{{ cabra.codigo }}</td>
-
                         <td data-label="Nombre">{{ cabra.nombre }}</td>
-
                         <td data-label="Peso">{{ cabra.peso }}</td>
-
                         <td data-label="Sexo">{{ cabra.sexo }}</td>
-
                         <td data-label="Ordeño Mañana">
                             {{ cabra.ordeno_manana|default:"0" }}
                         </td>
-
                         <td data-label="Ordeño Tarde">
                             {{ cabra.ordeno_tarde|default:"0" }}
                         </td>
-
                         <td data-label="Total Diario">
                             {{ cabra.total_diario|default:"0" }}
                         </td>
-
                         <td data-label="Observaciones">
                             {{ cabra.observaciones|default:"-" }}
                         </td>
-
                         <td data-label="Responsable">
                             {{ cabra.responsable|default:"-" }}
                         </td>
-
                         <td data-label="Acciones" class="acciones">
-
-                            <a
-                                href="{% url 'guardar_produccion' cabra.id %}"
-                                class="editar-btn"
-                                onclick="event.stopPropagation();"
-                            >
-                                Editar
-                            </a>
-
-                            <a
-                                href="{% url 'eliminar_cabra' cabra.id %}"
-                                class="eliminar-btn"
-                                onclick="event.stopPropagation();"
-                            >
-                                Eliminar
-                            </a>
-
+                            <a href="{% url 'editar_produccion' cabra.id %}" style="color: rgb(115, 183, 13);">Editar</a>
+                            <a href="{% url 'eliminar_cabra' cabra.id %}" class="eliminar-btn" onclick="event.stopPropagation();">Eliminar</a>
                         </td>
-
                     </tr>
 
                     {% empty %}
@@ -564,9 +532,7 @@
     </div>
 
     <!-- CHART JS -->
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script>
 
         const nombres = [];
@@ -664,7 +630,5 @@
         }
 
     </script>
-
 </body>
-
 </html>

@@ -214,11 +214,7 @@ def dashboard(request):
             f'Error al cargar los datos: {e}'
         )
 
-    return render(
-        request,
-        'dashboard.html',
-        {'datos': datosUser}
-    )
+    return render(request, 'dashboard.html', {'datos': datosUser})
 
 
 # =========================
@@ -271,20 +267,11 @@ def info_animales(request):
             f"Hubo un error al obtener sus cabras: {e}"
         )
 
-    return render(
-
-        request,
-
-        'info_animales.html',
-
+    return render(request, 'info_animales.html',
         {
-
             'cabras': cabras,
-
             'razas': sorted(razas)
-
         }
-
     )
 
 # =========================
@@ -642,90 +629,6 @@ def info_completa_cabra(request, cabra_id):
         'info_completa_cabras.html',
         {
             'cabra': cabra
-        }
-    )
-
-
-# =========================
-# FORMULARIOS
-# =========================
-
-
-def registrar_enfermo(request):
-
-    return render(
-        request,
-        'info/agregar/registrar_enfermo.html'
-    )
-
-
-def registrar_vacuna(request):
-
-    return render(
-        request,
-        'info/agregar/registrar_vacuna.html'
-    )
-
-
-def agregar_produccion(request):
-
-    return render(
-        request,
-        'info/agregar/agregar_produccion.html'
-    )
-
-
-def registrar_seguimiento_gestacion(request):
-
-    return render(
-        request,
-        'info/agregar/registrar_seguimiento_gestacion.html'
-    )
-
-    # EDITAR PRODUCCION
-
-
-@login_required_firebase
-def guardar_produccion(request, cabra_id):
-    cabra_ref = db.collection('cabras').document(cabra_id)
-
-    doc = cabra_ref.get()
-
-    if not doc.exists:
-        messages.error(request, "registro no encontrado")
-        return redirect('produccion')
-
-    cabra = doc.to_dict()
-
-    if request.method == 'POST':
-        ordeno_manana = request.POST.get('ordeno_manana')
-        ordeno_tarde = request.POST.get('ordeno_tarde')
-        total_diario = request.POST.get('total_diario')
-        grasa = request.POST.get('grasa')
-        responsable = request.POST.get('responsable')
-        observaciones = request.POST.get('observaciones')
-
-        cabra_ref.update({
-
-            'ordeno_manana': ordeno_manana,
-            'ordeno_tarde': ordeno_tarde,
-            'total_diario': total_diario,
-            'grasa': grasa,
-            'responsable': responsable,
-            'observaciones': observaciones
-
-        })
-
-        messages.success(request, "Datos actualizados correctamente")
-
-        return redirect('produccion')
-
-    return render(
-        request,
-        'info/agregar/agregar_produccion.html',
-        {
-            'cabra': cabra,
-            'id': cabra_id
         }
     )
 
@@ -1732,3 +1635,67 @@ def registrar_seguimiento_gestacion(request, cabra_id):
         else:
             messages.error(request, 'Solo las hembras pueden entrar en En Cinta')
     return redirect('info_animales')
+
+@login_required_firebase
+def editar_produccion(request, cabra_id):
+    """
+    UPDATE: Recupera los datos de la ca especifico y actualiza los campos en firebase
+    """
+    uid = request.session.get('uid')
+    cabra_ref = db.collection('produccion').document(cabra_id)
+
+    try:
+        doc = cabra_ref.get()
+
+        if not doc.exists:
+            messages.error(request, "La cabra no existe")
+            return redirect('info_animales')
+
+        cabra_data = doc.to_dict()
+
+        if cabra_data.get('usuario_id') != uid:
+            messages.error(request, "No tienes permiso para editar esta cabra")
+            return redirect('info_animales')
+
+        if request.method == 'POST':
+            nuevo_cod = request.POST.get('nuevo-codigo')
+            nuevo_nombre = request.POST.get('nuevo-nombre')
+            nueva_raza = request.POST.get('nueva-raza')
+            nuevo_peso = request.POST.get('nuevo-peso')
+            nueva_fecha_nacimiento = request.POST.get('nueva-fecha_nacimiento')
+            nuevo_sexo = request.POST.get('nuevo-sexo')
+            nuevo_color = request.POST.get('nuevo-color')
+            nuevo_cod_madre = request.POST.get('nuevo-cod_madre')
+            nuevo_cod_padre = request.POST.get('nuevo-cod_padre')
+
+            cabra_ref.update({
+                'codigo': nuevo_cod,
+                'nombre': nuevo_nombre,
+                'raza': nueva_raza,
+                'peso': nuevo_peso,
+                'fecha_nacimiento': nueva_fecha_nacimiento,
+                'sexo': nuevo_sexo,
+                'color': nuevo_color,
+                'codigo_madre': nuevo_cod_madre,
+                'codigo_padre': nuevo_cod_padre,
+                'fecha_anadido': firestore.SERVER_TIMESTAMP
+            })
+
+            messages.success(request, "✅ Cabra actualizada correctamente.")
+            return redirect('info_animales')
+    except Exception as e:
+        messages.error(request, f"Error al editar la cabra: {e}")
+        return redirect('info_animales')
+    return render(request, 'info/editar/editar_produccion.html', {'cabra': cabra_data, 'id': cabra_id})
+
+@login_required_firebase
+def editar_vacunas(request, cabra_id):
+    return render(request, 'info/editar/editar_vacunas.html')
+
+@login_required_firebase
+def editar_enCinta(request, cabra_id):
+    return render(request, 'info/editar/editar_enCinta.html')
+
+@login_required_firebase
+def editar_enfermas(request, cabra_id):
+    return render(request, 'info/editar/editar_enfermas.html')
