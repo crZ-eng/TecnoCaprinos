@@ -245,7 +245,7 @@
         }
 
         /* =========================
-            RESPONSIVE
+            RESPONSIVE ORIGINAL
         ========================== */
 
         @media(max-width: 1000px){
@@ -297,13 +297,106 @@
 
         }
 
+        /* ===================================================
+            NUEVAS MEJORAS RESPONSIVE (TABLETS Y SMARTPHONES)
+        ====================================================== */
+        
+        /* Ajustes específicos para Tablets en posición vertical y horizontal media */
+        @media (min-width: 701px) and (max-width: 1024px) {
+            .page-content {
+                width: 90%;
+                gap: 30px;
+                margin: 30px auto;
+            }
+            
+            .section-title {
+                font-size: 2.6rem;
+            }
+            
+            .form-container {
+                padding: 30px;
+                border-radius: 35px;
+            }
+
+            .form-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Ajustes críticos para pantallas muy pequeñas (Celulares de 400px o menos) */
+        @media (max-width: 440px) {
+            .white-header {
+                justify-content: center;
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .logo {
+                height: 50px;
+            }
+
+            .header-title {
+                font-size: 1.2rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
+                order: 3; /* Pasa el título abajo si no cabe al lado del logo */
+                width: 100%;
+            }
+
+            .header-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+
+            .page-content {
+                margin: 20px auto;
+                width: 92%;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
+                margin-bottom: 15px;
+            }
+
+            .image-box {
+                border-width: 4px;
+                border-radius: 25px;
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+
+            .form-container {
+                padding: 20px 15px;
+                border-width: 4px;
+                border-radius: 24px;
+            }
+
+            .form-title {
+                font-size: 1.6rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
+                margin-bottom: 20px;
+            }
+
+            input, select, textarea {
+                padding: 10px;
+                font-size: 0.9rem;
+                border-width: 2.5px;
+                border-radius: 12px;
+            }
+
+            .btn-submit, .btn-volver {
+                padding: 12px;
+                font-size: 0.95rem;
+                border-radius: 14px;
+            }
+        }
+
     </style>
 
 </head>
 
 <body>
-
-    <!-- HEADER -->
 
     <div class="white-header">
 
@@ -319,11 +412,7 @@
 
     </div>
 
-    <!-- CONTENIDO -->
-
     <div class="page-content">
-
-        <!-- PANEL IZQUIERDO -->
 
         <div class="left-panel">
 
@@ -347,8 +436,6 @@
 
         </div>
 
-        <!-- FORMULARIO -->
-
         <div class="form-container">
 
             <h3 class="form-title">
@@ -358,8 +445,6 @@
             <form method="POST" class="form-grid">
 
                 {% csrf_token %}
-
-                <!-- FECHA -->
 
                 <div class="form-group">
 
@@ -372,8 +457,6 @@
                     >
 
                 </div>
-
-                <!-- ORDEÑO MAÑANA -->
 
                 <div class="form-group">
 
@@ -389,8 +472,6 @@
 
                 </div>
 
-                <!-- ORDEÑO TARDE -->
-
                 <div class="form-group">
 
                     <label>Ordeño Tarde (L)</label>
@@ -404,8 +485,6 @@
                     >
 
                 </div>
-
-                <!-- TOTAL DIARIO -->
 
                 <div class="form-group">
 
@@ -421,8 +500,6 @@
 
                 </div>
 
-                <!-- GRASA -->
-
                 <div class="form-group">
 
                     <label>Grasa (%)</label>
@@ -437,8 +514,6 @@
 
                 </div>
 
-                <!-- RESPONSABLE -->
-
                 <div class="form-group">
 
                     <label>Responsable</label>
@@ -452,8 +527,6 @@
 
                 </div>
 
-                <!-- OBSERVACIONES -->
-
                 <div class="form-group full-width">
 
                     <label>Observaciones</label>
@@ -464,8 +537,6 @@
                     ></textarea>
 
                 </div>
-
-                <!-- BOTONES -->
 
                 <div class="buttons-container">
 

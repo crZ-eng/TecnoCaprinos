@@ -25,6 +25,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
         /* HEADER */
@@ -37,6 +38,12 @@
             padding: 10px 50px;
             box-sizing: border-box;
             border-bottom: 4px solid var(--color-trazos);
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .white-header a img {
+            height: 60px;
         }
 
         .header-title {
@@ -46,6 +53,8 @@
             -webkit-text-stroke: 1.5px var(--color-trazos);
             margin: 0;
             text-transform: uppercase;
+            text-align: center;
+            flex: 1;
         }
 
         .btn-plus {
@@ -60,6 +69,7 @@
             font-size: 30px;
             text-decoration: none;
             font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             transition: 0.3s;
         }
 
@@ -68,7 +78,10 @@
         }
 
         .btn-volver {
-            grid-column: span 2;
+            display: block;
+            width: 90%;
+            max-width: 300px;
+            text-align: center;
             background-color: #ab7b41;
             color: white;
             border: none;
@@ -77,14 +90,15 @@
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 15px;
+            margin: 20px auto 40px auto;
             font-family: 'Fredoka', sans-serif;
             transition: transform 0.2s;
             text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .btn-volver:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
         }
 
         /* CONTENEDOR */
@@ -94,7 +108,7 @@
             background-color: var(--bg-cuadros);
             border: 6px solid var(--color-trazos);
             border-radius: 40px;
-            margin: 40px auto;
+            margin: 40px auto 20px auto;
             padding: 30px;
             box-sizing: border-box;
         }
@@ -106,6 +120,7 @@
             -webkit-text-stroke: 2px var(--color-trazos);
             margin-bottom: 25px;
             text-transform: uppercase;
+            margin-top: 0;
         }
 
         /* TABLA */
@@ -123,9 +138,10 @@
             background-color: var(--header-table);
             color: var(--color-trazos);
             padding: 15px 10px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             border-bottom: 3px solid var(--color-trazos);
+            border-right: 1px solid var(--color-trazos);
         }
 
         .data-table td {
@@ -133,23 +149,26 @@
             text-align: center;
             color: var(--color-trazos);
             font-size: 0.9rem;
+            font-weight: 500;
             border-bottom: 1px solid var(--bg-cuadros);
+            border-right: 1px solid var(--bg-cuadros);
             background-color: white;
         }
 
-        .date-tag {
-            background-color: var(--white);
-            border: 1px solid var(--color-trazos);
-            padding: 4px 10px;
-            border-radius: 12px;
-            display: inline-block;
+        .data-table tr:last-child td {
+            border-bottom: none;
         }
 
-        /* Colores de estado */
+        .data-table th:last-child, 
+        .data-table td:last-child {
+            border-right: none;
+        }
+
+        /* Colores de estado alternativos si los usas */
         .status-optimo { color: #2e7d32; font-weight: bold; }
         .status-alerta { color: #d32f2f; font-weight: bold; }
-        /* --- RESPONSIVE --- */
-
+        
+        /* --- RESPONSIVE TABLET / MEDIANO --- */
         @media (max-width: 1024px) {
             .white-header {
                 padding: 10px 20px;
@@ -158,18 +177,32 @@
                 font-size: 1.8rem;
             }
             .main-container {
-                padding: 15px;
+                padding: 20px;
                 width: 98%;
             }
         }
 
+        /* --- RESPONSIVE DE FICHAS VERTICALES (MÓVIL) --- */
         @media (max-width: 768px) {
+            .white-header {
+                padding: 10px 15px;
+                justify-content: center;
+            }
+
             .header-title {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
                 -webkit-text-stroke: 1px var(--color-trazos);
+                order: 1;
+                width: 100%;
+                margin-top: 5px;
             }
             
+            .white-header a {
+                order: 0;
+            }
+
             .btn-plus {
+                order: 2;
                 width: 40px;
                 height: 40px;
                 font-size: 24px;
@@ -179,46 +212,106 @@
                 font-size: 1.8rem;
             }
 
-         
             .main-container {
-                overflow-x: auto;
                 border-radius: 25px;
+                padding: 15px 10px;
+                border-width: 4px;
+            }
+
+            /* Transformación estructural de la tabla */
+            .data-table, 
+            .data-table thead, 
+            .data-table tbody, 
+            .data-table th, 
+            .data-table td, 
+            .data-table tr {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .data-table thead {
+                display: none; /* Ocultamos los headers horizontales */
             }
 
             .data-table {
-                min-width: 800px; 
+                background-color: transparent;
+                border: none;
             }
 
-            .data-table th, .data-table td {
-                padding: 8px 4px;
-                font-size: 0.75rem;
+            .data-table tr {
+                margin-bottom: 25px;
+                border: 3px solid var(--color-trazos);
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            }
+
+            .data-table tr:last-child {
+                margin-bottom: 0;
+            }
+
+            .data-table td {
+                text-align: right;
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(127, 86, 55, 0.15);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #f8f8f8;
+            }
+
+            .data-table td:last-child {
+                border-bottom: none;
+            }
+
+            /* Inyección de títulos a la izquierda */
+            .data-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                color: var(--color-trazos);
+                text-align: left;
+                margin-right: 15px;
+                letter-spacing: 0.5px;
             }
         }
 
+        /* SMARTPHONES COMPACTOS */
         @media (max-width: 480px) {
-            .white-header img {
-                height: 45px;
+            .white-header {
+                padding: 8px 10px;
+                gap: 10px;
             }
+
+            .white-header a img {
+                height: 45px !important;
+            }
+
             .header-title {
-                font-size: 1.1rem;
+                font-size: 0.95rem;
+                -webkit-text-stroke: 0.5px var(--color-trazos);
             }
+
+            .btn-plus {
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
+
             .main-container {
                 margin: 20px auto;
+                border-radius: 20px;
+            }
+
+            .table-title {
+                font-size: 1.4rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
             }
         }
-
-        
-        .main-container::-webkit-scrollbar {
-            height: 8px;
-        }
-        .main-container::-webkit-scrollbar-thumb {
-            background: var(--color-trazos);
-            border-radius: 10px;
-        }
-        .main-container::-webkit-scrollbar-track {
-            background: var(--bg-cuadros);
-        }
-
     </style>
 </head>
 
@@ -226,83 +319,59 @@
 
     <!-- HEADER -->
     <div class="white-header">
-
         <a href="{% url 'info_animales' %}">
-            <img src="{% static 'logo.jpeg' %}" alt="Logo" style="height: 60px;">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo">
         </a>
-        
         <h1 class="header-title">TECNOCAPRINOS - EN CINTA</h1>
         <a href="{% url 'registrar_seguimiento_gestacion' %}" class="btn-plus">+</a>
-
     </div>
 
     <!-- CONTENIDO -->
     <div class="main-container">
 
-        <h2 class="table-title">
-            Cabras En Cinta
-        </h2>
+        <h2 class="table-title">Cabras En Cinta</h2>
 
         <table class="data-table">
-
             <thead>
                 <tr>
                     <th>Código</th>
                     <th>Nombre</th>
                     <th>Raza</th>
-                    <th>Peso</th>
+                    <th>Peso Inicial</th>
                     <th>Sexo</th>
                     <th>Mes de Gestación</th>
                     <th>Estado de gestación</th>
-                    <th>Peso actual </th>
+                    <th>Peso actual</th>
                     <th>Veterinario responsable</th>
                 </tr>
             </thead>
 
             <tbody>
-
                 {% for cabra in cabras %}
-
                 <tr>
-
-                    <td>{{ cabra.codigo }}</td>
-                    <td>{{ cabra.nombre }}</td>
-                    <td>{{ cabra.raza }}</td>
-                    <td>{{ cabra.peso }}</td>
-                    <td>{{ cabra.sexo }}</td>
-
-                    <!-- datos tecnicos "" -->
-
-                    <td>{{ cabra.mes_gestacion|default:"No especificado" }}</td>
-                    <td>{{ cabra.estado_gestacion|default:"No especificado" }}</td>
-                    <td>{{ cabra.estado_gestacion|default:"No especificado" }}</td>
-                    <td>{{ cabra.Veterinario_responsable|default:"-" }}</td>
-
-
+                    <td data-label="Código">{{ cabra.codigo }}</td>
+                    <td data-label="Nombre">{{ cabra.nombre }}</td>
+                    <td data-label="Raza">{{ cabra.raza }}</td>
+                    <td data-label="Peso Inicial">{{ cabra.peso }}</td>
+                    <td data-label="Sexo">{{ cabra.sexo }}</td>
+                    <td data-label="Mes de Gestación">{{ cabra.mes_gestacion|default:"No especificado" }}</td>
+                    <td data-label="Estado de gestación">{{ cabra.estado_gestacion|default:"No especificado" }}</td>
+                    <td data-label="Peso actual">{{ cabra.peso_actual|default:"No especificado" }}</td>
+                    <td data-label="Veterinario responsable">{{ cabra.Veterinario_responsable|default:"-" }}</td>
                 </tr>
-
-
-
-
-
                 {% empty %}
-
                 <tr>
-                    <td colspan="8" class="sin-registros">
+                    <td colspan="9" class="sin-registros" style="text-align: center; padding: 25px; color: var(--color-trazos); font-weight: 600; background-color: #fff8e1;">
                         No hay cabras en cinta registradas.
                     </td>
                 </tr>
-
                 {% endfor %}
-
             </tbody>
-
         </table>
 
     </div>
 
-    <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
+    <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
 
 </body>
-
 </html>

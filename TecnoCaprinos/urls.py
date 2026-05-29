@@ -12,7 +12,9 @@ urlpatterns = [
     path('info-animales/', views.info_animales, name='info_animales'),
     path('info-animales/cinta', views.cinta, name='cinta'),
     path('info-animales/vacunas', views.vacunas, name='vacunas'),
+    path('info-animales/pdf-vacunas/', views.pdf_vacunas, name='pdf_vacunas'),
     path('info-animales/produccion', views.produccion, name='produccion'),
+    path('pdf-produccion/', views.pdf_produccion, name='pdf_produccion'),
     path('info-animales/enfermas', views.enfermas, name='enfermas'),
 
     # Registros
@@ -26,5 +28,17 @@ urlpatterns = [
     
     #CRUD
     path('info-animales/eliminar/<str:cabra_id>/', views.eliminar_cabra, name='eliminar_cabra'),
-    path('info-animales/editar/<str:cabra_id>/', views.editar_cabra, name='editar_cabra')    
+    path('info-animales/editar/<str:cabra_id>/', views.editar_cabra, name='editar_cabra'),
+    path('info-animales/info_cabra/<str:cabra_id>/', views.info_completa_cabra, name='info_completa_cabra'),
+    
+    path('info-animales/listar/eliminar/<str:cabra_id>/', views.eliminar_cabra, name='eliminar_cabra'),
+    path('info-animales/listar/editar/<str:cabra_id>/', views.editar_cabra, name='editar_cabra'),
+    
+    # producción
+    path('guardar-produccion/<str:cabra_id>/',views.guardar_produccion,name='guardar_produccion'),
+    
+    #  detalle animales
+    path('animal/<int:id>/', views.detalle_animal, name='detalle_animal'),
+    path('animal/<str:cabra_id>/',views.detalle_animal,name='detalle_animal'), 
+
 ]

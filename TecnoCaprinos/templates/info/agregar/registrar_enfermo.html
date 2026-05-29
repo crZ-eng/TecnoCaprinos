@@ -180,6 +180,7 @@
         input,
         select,
         textarea{
+            width: 100%;
             background-color: #fffaf3;
             border: 3px solid var(--color-trazos);
             border-radius: 16px;
@@ -323,8 +324,6 @@
 
 <body>
 
-    <!-- HEADER -->
-
     <div class="white-header">
 
         <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo">
@@ -339,11 +338,7 @@
 
     </div>
 
-    <!-- CONTENIDO -->
-
     <div class="page-content">
-
-        <!-- PANEL IZQUIERDO -->
 
         <div class="left-panel">
 
@@ -367,8 +362,6 @@
 
         </div>
 
-        <!-- FORMULARIO -->
-
         <div class="form-container">
 
             <h3 class="form-title">
@@ -378,8 +371,6 @@
             <form method="POST" class="form-grid">
 
                 {% csrf_token %}
-
-                <!-- CABRA -->
 
                 <div class="form-group">
 
@@ -399,8 +390,6 @@
 
                 </div>
 
-                <!-- FECHA -->
-
                 <div class="form-group">
 
                     <label>Fecha de Ingreso</label>
@@ -408,8 +397,6 @@
                     <input type="date" name="fecha_ingreso" required>
 
                 </div>
-
-                <!-- DIAGNOSTICO -->
 
                 <div class="form-group full-width">
 
@@ -423,8 +410,6 @@
 
                 </div>
 
-                <!-- TRATAMIENTO -->
-
                 <div class="form-group full-width">
 
                     <label>Tratamiento Aplicado</label>
@@ -436,8 +421,6 @@
                     ></textarea>
 
                 </div>
-
-                <!-- TEMPERATURA -->
 
                 <div class="form-group">
 
@@ -453,8 +436,6 @@
 
                 </div>
 
-                <!-- FRECUENCIA -->
-
                 <div class="form-group">
 
                     <label>Frecuencia Respiratoria</label>
@@ -467,8 +448,6 @@
                     >
 
                 </div>
-
-                <!-- ESTADO -->
 
                 <div class="form-group">
 
@@ -486,8 +465,6 @@
 
                 </div>
 
-                <!-- RESPONSABLE -->
-
                 <div class="form-group">
 
                     <label>Veterinario / Responsable</label>
@@ -501,8 +478,6 @@
 
                 </div>
 
-                <!-- OBSERVACIONES -->
-
                 <div class="form-group full-width">
 
                     <label>Observaciones Adicionales</label>
@@ -513,8 +488,6 @@
                     ></textarea>
 
                 </div>
-
-                <!-- BOTONES -->
 
                 <div class="buttons-container">
 
