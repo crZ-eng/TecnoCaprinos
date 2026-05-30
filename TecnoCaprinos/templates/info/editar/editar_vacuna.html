@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -252,8 +251,15 @@
             transform: scale(1.02);
         }
 
-        #foto-cabra {
-            width: 300px;
+        .form-group h1{
+            color: #7F5637;
+            font-size: 20px;
+            background-color: var(--white);
+            border: 3px solid var(--color-trazos);
+            border-radius: 15px;
+            padding: 10px 15px;
+            font-family: 'Fredoka', sans-serif;
+            color: var(--color-trazos);
         }
 
         @media (max-width: 950px) {
@@ -342,7 +348,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="white-header">
         <div class="logo-container">
@@ -352,130 +357,77 @@
         <div style="width: 60px;" class="header-spacer"></div>
     </div>
     <div class="page-content">
-        <div class="left-column">
-            <h2 class="section-title">Bienvenido</h2>
-            <div class="image-placeholder">
-                <img src="{{ cabra.foto_url }}" id="foto-cabra" alt="foto-cabra" style="width: 100%; max-width: 400px; border-radius: 20px;">
-            </div>
-        </div>
         <div class="form-container">
             <h3 class="form-title">Edita los Datos de tu Cabra</h3>
             <form method="POST" class="form-grid">
                 {% csrf_token %}
                 <div class="form-group">
                     <label>Codigo:</label>
-                    <input value="{{ cabra.codigo }}" type="text" name="nuevo-codigo" placeholder="Codigo de la Cabra"
-                        required>
+                    <h1>{{ cabra.codigo }}</h1>
+                    <input type="hidden" name="codigo" value="{{ cabra.codigo }}">
                 </div>
                 <div class="form-group">
                     <label>Nombre:</label>
-                    <input value="{{ cabra.nombre }}" type="text" name="nuevo-nombre" placeholder="Nombre de la Cabra"
-                        required>
+                    <h1>{{ cabra.nombre }}</h1>
+                    <input type="hidden" name="nombre" value="{{ cabra.nombre }}">
                 </div>
                 <div class="form-group">
                     <label>Fecha de Nacimiento:</label>
-                    <input value="{{ cabra.fecha_nacimiento }}" type="date" name="nueva-fecha_nacimiento" required>
+                    <h1>{{ cabra.fecha_nacimiento }}</h1>
+                    <input type="hidden" name="fecha_nacimiento" value="{{ cabra.fecha_nacimiento }}">
                 </div>
                 <div class="form-group">
                     <label>Raza:</label>
-                    <select name="nueva-raza" id="raza">
-                        <option value="No Seleccionado">Seleccione una raza</option>
-                        <option selected value="{{ cabra.raza }}">{{ cabra.raza }}</option>
-                        <option value="Boer">Boer</option>
-                        <option value="Saanen">Saanen</option>
-                        <option value="Alpina">Alpina</option>
-                        <option value="Toggenburg">Toggenburg</option>
-                        <option value="Anglonubiana">Anglonubiana</option>
-                        <option value="LaMancha">LaMancha</option>
-                        <option value="Murciano-Granadina">Murciano-Granadina</option>
-                        <option value="Malagueña">Malagueña</option>
-                        <option value="Florida">Florida</option>
-                        <option value="Payoya">Payoya</option>
-                        <option value="Jamnapari">Jamnapari</option>
-                        <option value="Beetal">Beetal</option>
-                        <option value="Black Bengal">Black Bengal</option>
-                        <option value="Kiko">Kiko</option>
-                        <option value="Savanna">Savanna</option>
-                        <option value="Myotonic">Myotonic (Desmayadora)</option>
-                        <option value="Nigerian Dwarf">Nigerian Dwarf</option>
-                        <option value="Pygmy">Pygmy</option>
-                        <option value="Oberhasli">Oberhasli</option>
-                        <option value="Golden Guernsey">Golden Guernsey</option>
-                        <option value="Angora">Angora</option>
-                        <option value="Cashmere">Cashmere</option>
-                        <option value="Criolla">Criolla</option>
-                        <option value="Canaria">Canaria</option>
-                        <option value="Verata">Verata</option>
-                        <option value="Retinta">Retinta</option>
-                        <option value="Blanca Celtibérica">Blanca Celtibérica</option>
-                        <option value="Negra Serrana">Negra Serrana</option>
-                        <option value="Grisona">Grisona</option>
-                        <option value="Rove">Rove</option>
-                        <option value="Poitevine">Poitevine</option>
-                        <option value="Catalana">Catalana</option>
-                        <option value="Corsa">Corsa</option>
-                        <option value="Girgentana">Girgentana</option>
-                        <option value="Damascus">Damascus</option>
-                        <option value="Bionda dell’Adamello">Bionda dell’Adamello</option>
-                        <option value="Appenzell">Appenzell</option>
-                        <option value="Valais Blackneck">Valais Blackneck</option>
-                        <option value="Peacock">Peacock</option>
-                        <option value="Bagot">Bagot</option>
-                        <option value="Feral">Feral</option>
-                        <option value="West African Dwarf">West African Dwarf</option>
-                        <option value="Barbari">Barbari</option>
-                        <option value="Osmanabadi">Osmanabadi</option>
-                        <option value="Sirohi">Sirohi</option>
-                        <option value="Jakhrana">Jakhrana</option>
-                        <option value="Kutchi">Kutchi</option>
-                        <option value="Marwari">Marwari</option>
-                        <option value="Changthangi">Changthangi</option>
-                        <option value="Pashmina">Pashmina</option>
-                        <option value="Boer Cruzada">Boer Cruzada</option>
-                    </select>
+                    <h1>{{ cabra.raza }}</h1>
+                    <input type="hidden" name="raza" value="{{ cabra.raza }}">
                 </div>
                 <div class="form-group">
                     <label>Peso (en Libras):</label>
-                    <input value="{{ cabra.peso }}" type="number" name="nuevo-peso" min="0" placeholder="Peso en Libras"
-                        required>
-                </div>
-                <div class="form-group">
-                    <label>Sexo:</label>
-                    <select name="nuevo-sexo" required>
-                        <option value="No Seleccionado">Seleccione...</option>
-                        <option selected value="{{ cabra.sexo }}">{{ cabra.sexo }}</option>
-                        <option value="Macho">Macho (Cabro)</option>
-                        <option value="Hembra">Hembra (Cabra)</option>
-                    </select>
+                    <h1>{{ cabra.peso }}</h1>
+                    <input type="hidden" name="peso" value="{{ cabra.peso }}">
                 </div>
                 <div class="form-group">
                     <label>Color:</label>
-                    <select name="nuevo-color" required>
-                        <option value="No Seleccionado">Seleccione...</option>
-                        <option selected value="{{ cabra.color }}">{{ cabra.color }}</option>
-                        <option value="blanco">Blanco</option>
-                        <option value="negro">Negro</option>
-                        <option value="marron">Marrón</option>
-                        <option value="gris">Gris</option>
-                        <option value="beige">Beige</option>
-                        <option value="manchado">Manchado</option>
-                        <option value="tricolor">Tricolor</option>
-                        <option value="pinto">Pinto</option>
-                        <option value="rojizo">Rojizo</option>
-                        <option value="crema">Crema</option>
-                        <option value="atigrado">Atigrado</option>
-                        <option value="moteado">Moteado</option>
-                    </select>
+                    <h1>{{ cabra.color }}</h1>
+                    <input type="hidden" name="color" value="{{ cabra.color }}">
                 </div>
                 <div class="form-group">
                     <label>Codigo de la Madre:</label>
-                    <input value="{{ cabra.codigo_madre }}" type="text" name="nuevo-cod_madre"
-                        placeholder="Codigo de la Cabra Madre" required>
+                    <h1>{{ cabra.codigo_madre }}</h1>
+                    <input type="hidden" name="cod_madre" value="{{ cabra.codigo_madre }}">
                 </div>
                 <div class="form-group">
                     <label>Codigo del Padre:</label>
-                    <input value="{{ cabra.codigo_padre }}" type="text" name="nuevo-cod_padre"
-                        placeholder="Codigo del Cabro Padre" required>
+                    <h1>{{ cabra.codigo_padre }}</h1>
+                    <input type="hidden" name="cod_padre" value="{{ cabra.codigo_padre }}">
+                </div>
+                <div class="dorm-group">
+                    <label>Medicamento:</label>
+                    <input value="{{ cabra.medicamento }}" type="text" name="medicamento" placeholder="Medicamento" required>
+                </div>
+                <div class="dorm-group">
+                    <label>Cantidad:</label>
+                    <input value="{{ cabra.cantidad }}" type="number" name="cantidad" placeholder="Cantidad (en ML)" required>
+                </div>
+                <div class="dorm-group">
+                    <label>Via de Administración:</label>
+                    <select name="via_admin" required>
+                        <option value="">Seleccione una vía de administración</option>
+                        <option value="oral">Oral</option>
+                        <option value="subcutanea">Subcutánea (SC)</option>
+                        <option value="intramuscular">Intramuscular (IM)</option>
+                        <option value="intravenosa">Intravenosa (IV)</option>
+                        <option value="intradermica">Intradérmica (ID)</option>
+                        <option value="topica">Tópica</option>
+                        <option value="ocular">Ocular</option>
+                        <option value="intranasal">Intranasal</option>
+                        <option value="rectal">Rectal</option>
+                        <option value="otra">Otra</option>
+                    </select>
+                </div>
+                <div class="dorm-group">
+                    <label>Veterinario Responsable</label>
+                    <input value="{{ cabra.veterinario_responsable }}" type="text" name="veterinario_responsable" placeholder="Veterinario Responsable" required>
                 </div>
                 <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>
                 <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
@@ -483,5 +435,4 @@
         </div>
     </div>
 </body>
-
 </html>

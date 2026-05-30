@@ -38,4 +38,10 @@ urlpatterns = [
     path('info-animales/produccion/editar/<str:cabra_id>', views.editar_produccion, name='editar_produccion'),
     path('info-animales/enfermas/editar/<str:cabra_id>', views.editar_enfermas, name='editar_enfermas'),
     path('info-animales/enCinta/editar/<str:cabra_id>', views.editar_enCinta, name='editar_enCinta'),
+
+    # Eliminar cabras de Vacunas, etc..
+    path('info-animales/enCinta/eliminar/<str:cabra_id>/', views.eliminar_enCinta, name='eliminar_enCinta'),
+    path('info-animales/vacunas/eliminar/<str:cabra_id>/', views.eliminar_vacunas, name='eliminar_vacunas'),
+    path('info-animales/enfermas/eliminar/<str:cabra_id>/', views.eliminar_enfermas, name='eliminar_enfermas'),
+    path('info-animales/produccion/eliminar/<str:cabra_id>/', views.eliminar_produccion, name='eliminar_produccion'),
 ]

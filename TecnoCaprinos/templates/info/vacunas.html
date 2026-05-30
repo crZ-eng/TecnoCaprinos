@@ -281,69 +281,52 @@
     <!-- CONTENIDO -->
 
     <div class="page-content">
-
         <div class="table-container">
-
             <div class="section-header">
                 <h1>Historial de Aplicaciones</h1>
             </div>
-
             <table class="data-table">
-
                 <thead>
-
                     <tr>
-                        <th>Nombre</th>
                         <th>Código</th>
-                        <th>Medicamento</th>
+                        <th>Nombre</th> 
                         <th>Raza</th>
                         <th>Peso</th>
                         <th>Sexo</th>
+                        <th>Medicamento</th>
+                        <th>Cantidad (ml)</th>
                         <th>Vía de Administración</th>
+                        <th>Veterinario Responsable</th>
+                        <th>Opciones</th>
                     </tr>
-
                 </thead>
-
                 <tbody>
-
                     {% for cabra in cabras %}
-
                     <tr>
-
-                        <td>{{ cabra.nombre }}</td>
-
                         <td>{{ cabra.codigo }}</td>
-
-                        <td>{{ cabra.dosis|default:"No asignado" }}</td>
-
+                        <td>{{ cabra.nombre }}</td>
                         <td>{{ cabra.raza }}</td>
-
                         <td>{{ cabra.peso }}</td>
-
                         <td>{{ cabra.sexo }}</td>
-
-                        <td>{{ cabra.Via_admin|default:"Sin asignar" }}</td>
-
+                        <td>{{ cabra.medicamento|default:"No asignado" }}</td>
+                        <td>{{ cabra.cantidad|default:"No asignado" }}</td>
+                        <td>{{ cabra.via_admin|default:"Sin asignar" }}</td>
+                        <td>{{ cabra.veterinario_responsable|default:"Sin asignar" }}</td>
+                        <td>
+                            <a href="{% url 'editar_vacunas' cabra.id %}" style="color: rgb(115, 183, 13);">Editar</a>
+                            <a href="{% url 'eliminar_vacunas' cabra.id %}" class="eliminar-btn" style="color: red;" onclick="return confirm('¿Seguro que deseas eliminar esta cabra?');">Eliminar</a>
+                        </td>
                     </tr>
-
                     {% empty %}
-
                     <tr>
-
                         <td colspan="7" class="sin-registros">
                             No hay vacunas registradas.
                         </td>
-
                     </tr>
-
                     {% endfor %}
-
                 </tbody>
-
             </table>
-
         </div>
-
     </div>
 
     <!-- BOTÓN VOLVER -->
