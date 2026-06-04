@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoCaprinos - En Cinta</title>
-
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -280,6 +280,11 @@
             }
         }
 
+        .columna_opciones{
+            display: flex;
+            flex-direction: column;
+        }
+
         /* SMARTPHONES COMPACTOS */
         @media (max-width: 480px) {
             .white-header {
@@ -314,7 +319,6 @@
         }
     </style>
 </head>
-
 <body>
 
     <!-- HEADER -->
@@ -323,7 +327,6 @@
             <img src="{% static 'logo.jpeg' %}" alt="Logo">
         </a>
         <h1 class="header-title">TECNOCAPRINOS - EN CINTA</h1>
-        <a href="{% url 'registrar_seguimiento_gestacion' %}" class="btn-plus">+</a>
     </div>
 
     <!-- CONTENIDO -->
@@ -337,12 +340,12 @@
                     <th>Código</th>
                     <th>Nombre</th>
                     <th>Raza</th>
-                    <th>Peso Inicial</th>
-                    <th>Sexo</th>
+                    <th>Peso Inicial (lb)</th>
                     <th>Mes de Gestación</th>
                     <th>Estado de gestación</th>
-                    <th>Peso actual</th>
+                    <th>Peso actual (lb)</th>
                     <th>Veterinario responsable</th>
+                    <th>Opciones</th>
                 </tr>
             </thead>
 
@@ -353,11 +356,14 @@
                     <td data-label="Nombre">{{ cabra.nombre }}</td>
                     <td data-label="Raza">{{ cabra.raza }}</td>
                     <td data-label="Peso Inicial">{{ cabra.peso }}</td>
-                    <td data-label="Sexo">{{ cabra.sexo }}</td>
                     <td data-label="Mes de Gestación">{{ cabra.mes_gestacion|default:"No especificado" }}</td>
                     <td data-label="Estado de gestación">{{ cabra.estado_gestacion|default:"No especificado" }}</td>
                     <td data-label="Peso actual">{{ cabra.peso_actual|default:"No especificado" }}</td>
-                    <td data-label="Veterinario responsable">{{ cabra.Veterinario_responsable|default:"-" }}</td>
+                    <td data-label="Veterinario responsable">{{ cabra.veterinario_responsable|default:"-" }}</td>
+                    <td data-label="Opciones" id="columna_opciones">
+                        <a href="{% url 'editar_enCinta' cabra.id %}" style="color: rgb(115, 183, 13);">Editar</a>
+                        <a href="{% url 'eliminar_enCinta' cabra.id %}" class="eliminar-btn" style="color: red;" onclick="return confirm('¿Seguro que deseas eliminar esta cabra?');">Eliminar</a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

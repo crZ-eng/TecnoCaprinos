@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TecnoCaprinos - Info Animales</title>
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Besley&display=swap" rel="stylesheet">
     <style>
@@ -478,12 +479,9 @@
         }
     </style>
 </head>
-
 <body>
-
     <!-- HEADER -->
     <div class="white-header">
-
         <div class="logo-container">
             <img src="{% static 'logo.jpeg' %}" alt="Logo">
         </div>
@@ -540,28 +538,30 @@
     </div>
     <div>
         <div class="main-container">
-    
             <div class="top-content">
-    
-                <h2 class="section-title">
-                    Cabras Registradas
-                </h2>
-    
+                <div>
+                    {% if messages %}
+            
+                    {% for message in messages %}
+            
+                    <div class="mensaje {{ message.tags }}">
+                        {{ message }}
+                    </div>
+            
+                    {% endfor %}
+            
+                    {% endif %}
+                </div>
+                <h2 class="section-title">Cabras Registradas</h2>
                 <div class="search-bar">
-    
                     <span>🔍</span>
-    
                     <input type="text" id="searchInput" placeholder="Buscar cabra...">
-    
                 </div>
     
                 <!-- FILTRO POR RAZA -->
     
                 <select id="filtroRaza" class="filter-select">
-    
-                    <option value="">
-                        Todas las razas
-                    </option>
+                    <option value="">Todas las razas</option>
     
                     {% for raza in razas %}
     
@@ -618,11 +618,6 @@
                                     {{ cabra.fecha_nacimiento }}
                                 </span>
                             </div>
-
-                            <div class="info-item">
-                                <span class="label">Tabla</span>
-                                <span class="value">{{ cabra.categoria }}</span>
-                            </div>
             
                         </div>
             
@@ -638,23 +633,6 @@
                 {% endfor %}
             
             </div>
-            
-                <div>
-            
-                    {% if messages %}
-            
-                    {% for message in messages %}
-            
-                    <div class="mensaje {{ message.tags }}">
-                        {{ message }}
-                    </div>
-            
-                    {% endfor %}
-            
-                    {% endif %}
-            
-                </div>
-    
         </div>
     
         <!-- SCRIPT BUSQUEDA + FILTRO -->

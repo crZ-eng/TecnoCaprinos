@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -81,10 +80,15 @@
             border: solid 7px var(--color-trazos);
         }
 
-        .image-placeholder{
+        .image-placeholder {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-around;
+        }
+
+        .btn-izquierda {
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
@@ -100,7 +104,9 @@
             gap: 15px;
         }
 
-        .container h3, .container .image-placeholder, .container .info-item{
+        .container h3,
+        .container .image-placeholder,
+        .container .info-item {
             grid-column: 1 / 4;
         }
 
@@ -148,7 +154,8 @@
             background-color: #f1e3d2;
         }
 
-        .info-item .btn-volver {
+        .info-item .btn-volver,
+        .btn-izquierda button {
             background-color: #ab7b41;
             color: white;
             border: none;
@@ -169,7 +176,9 @@
         }
 
         @media (max-width: 950px) {
-            .left-column, .container {
+
+            .left-column,
+            .container {
                 width: 100%;
                 max-width: 500px;
             }
@@ -187,7 +196,27 @@
     <div class="container">
         <h3 class="title">Datos de tu Cabra</h3>
         <div class="image-placeholder">
-            <img src="{{ cabra.foto_url }}" id="foto-cabra" alt="foto-cabra">
+            <div class="img-derecha">
+                <img src="{{ cabra.foto_url }}" id="foto-cabra" alt="foto-cabra">
+            </div>
+            <div class="btn-izquierda">
+                <form action="{% url 'registrar_enfermo' cabra.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Registrar Enferma</button>
+                </form>
+                <form action="{% url 'registrar_vacuna' cabra.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Registrar Vacuna</button>
+                </form>
+                <form action="{% url 'agregar_produccion' cabra.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Registrar Producción</button>
+                </form>
+                <form action="{% url 'registrar_seguimiento_gestacion' cabra.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Registrar En Cinta</button>
+                </form>
+            </div>
         </div>
         <div class="datos_cabra">
             <h2>Codigo: <span style="font-weight: normal;">{{ cabra.codigo }}</span></h2>
@@ -219,9 +248,11 @@
         <div class="info-item">
             <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
             <a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">Editar</a>
-            <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red;">Eliminar</a>
+            <a href="{% url 'eliminar_cabra' cabra.id %}"
+                onclick="return confirm('¿Seguro que deseas eliminar esta cabra?');" style="color: red;">Eliminar</a>
             <a href="">Ver mas...</a>
         </div>
     </div>
 </body>
+
 </html>
