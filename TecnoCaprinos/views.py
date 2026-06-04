@@ -1,18 +1,11 @@
 import os
 import cloudinary
 import cloudinary.uploader
-import requests
-
-from functools import wraps
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
-
 from firebase_admin import firestore, auth
-
 from config.firebaseConnection import initialize_firebase
-
 from reportlab.platypus import (
     SimpleDocTemplate,
     Table,
@@ -20,7 +13,9 @@ from reportlab.platypus import (
     Paragraph,
     Spacer
 )
-
+from functools import wraps
+import requests
+from firebase_admin import firestore
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import landscape, letter
@@ -107,7 +102,7 @@ def login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        apiKey = os.getenv('FIREBASE_WEB_API_KEY')
+        apiKey = "AIzaSyDnHUov15lQlXJ0W_PnXFPZbVq1CcP60FI"
 
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}"
 
@@ -296,6 +291,7 @@ def info_animales(request):
 # AÑADIR CABRA
 # =========================
 
+
 @login_required_firebase
 def anadir_cabra(request):
 
@@ -384,7 +380,8 @@ def anadir_cabra(request):
 # ELIMINAR CABRA
 # =========================
 
-@login_required_firebase # Verifica que el usuario esta loggeado
+
+@login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_cabra(request, cabra_id):
     """
     DELETE: Eliminar un documento especifico por id
@@ -401,7 +398,8 @@ def eliminar_cabra(request, cabra_id):
 # EDITAR LOS DATOS DE UNA CABRA
 # ==============================
 
-@login_required_firebase # Verifica que el usuario esta loggeado
+
+@login_required_firebase  # Verifica que el usuario esta loggeado
 def editar_cabra(request, cabra_id):
     """
     UPDATE: Recupera los datos de la ca especifico y actualiza los campos en firebase
@@ -415,13 +413,13 @@ def editar_cabra(request, cabra_id):
         if not doc.exists:
             messages.error(request, "La cabra no existe")
             return redirect('info_animales')
-        
+
         cabra_data = doc.to_dict()
 
         if cabra_data.get('usuario_id') != uid:
             messages.error(request, "No tienes permiso para editar esta cabra")
             return redirect('info_animales')
-        
+
         if request.method == 'POST':
             nuevo_cod = request.POST.get('nuevo-codigo')
             nuevo_nombre = request.POST.get('nuevo-nombre')
@@ -453,12 +451,13 @@ def editar_cabra(request, cabra_id):
     except Exception as e:
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
-    
+
     return render(request, 'info/editar.html', {'cabra': cabra_data, 'id': cabra_id})
 
 # =========================
 # EN CINTA
 # =========================
+
 
 @login_required_firebase
 def cinta(request):
@@ -531,6 +530,252 @@ def vacunas(request):
         }
     )
 
+
+# =========================
+# ENFERMAS
+# =========================
+
+@login_required_firebase
+def enfermas(request):
+
+    uid = request.session.get('uid')
+
+    cabras = []
+
+    try:
+
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'enferma')\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+    except Exception as e:
+        print(e)
+
+    return render(
+        request,
+        'info/enfermas.html',
+        {
+            'cabras': cabras
+        }
+    )
+
+# =========================
+# producción
+# =========================
+
+
+@login_required_firebase
+def produccion(request):
+
+    uid = request.session.get('uid')
+
+    cabras = []
+
+    datosUser = {}
+
+    try:
+       # OBTENER DATOS DEL USUARIO
+
+        doc_ref = db.collection('usuarios').document(uid)
+
+        doc = doc_ref.get()
+
+        if doc.exists:
+
+            datosUser = doc.to_dict()
+
+        # OBTENER CABRAS
+
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'produccion')\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+    except Exception as e:
+
+        print(e)
+
+        messages.error(
+            request,
+            f'Error al cargar datos: {e}'
+        )
+
+    return render(
+        request,
+        'info/produccion.html',
+        {
+            'cabras': cabras,
+            'datos': datosUser
+        }
+    )
+
+def info_completa_cabra(request, cabra_id):
+    try:
+        doc = db.collection('cabras').document(cabra_id).get()
+
+        cabra = doc.to_dict()
+
+        cabra['id'] = doc.id
+
+    except Exception as e:
+        print(e)
+        cabra = None
+
+    return render(
+        request,
+        'info_completa_cabras.html',
+        {
+            'cabra': cabra
+        }
+    )
+
+
+# =========================
+# FORMULARIOS
+# =========================
+
+
+def registrar_enfermo(request):
+
+    return render(
+        request,
+        'info/agregar/registrar_enfermo.html'
+    )
+
+
+def registrar_vacuna(request):
+
+    return render(
+        request,
+        'info/agregar/registrar_vacuna.html'
+    )
+
+
+def agregar_produccion(request):
+
+    return render(
+        request,
+        'info/agregar/agregar_produccion.html'
+    )
+
+
+def registrar_seguimiento_gestacion(request):
+
+    return render(
+        request,
+        'info/agregar/registrar_seguimiento_gestacion.html'
+    )
+
+    # EDITAR PRODUCCION
+
+
+@login_required_firebase
+def guardar_produccion(request, cabra_id):
+    cabra_ref = db.collection('cabras').document(cabra_id)
+
+    doc = cabra_ref.get()
+
+    if not doc.exists:
+        messages.error(request, "registro no encontrado")
+        return redirect('produccion')
+
+    cabra = doc.to_dict()
+
+    if request.method == 'POST':
+        ordeno_manana = request.POST.get('ordeno_manana')
+        ordeno_tarde = request.POST.get('ordeno_tarde')
+        total_diario = request.POST.get('total_diario')
+        grasa = request.POST.get('grasa')
+        responsable = request.POST.get('responsable')
+        observaciones = request.POST.get('observaciones')
+
+        cabra_ref.update({
+
+            'ordeno_manana': ordeno_manana,
+            'ordeno_tarde': ordeno_tarde,
+            'total_diario': total_diario,
+            'grasa': grasa,
+            'responsable': responsable,
+            'observaciones': observaciones
+
+        })
+
+        messages.success(request, "Datos actualizados correctamente")
+
+        return redirect('produccion')
+
+    return render(
+        request,
+        'info/agregar/agregar_produccion.html',
+        {
+            'cabra': cabra,
+            'id': cabra_id
+        }
+    )
+
+# =========================
+# vista para detalles de cada cabra por separado al oprimir sobre.
+# =========================
+
+
+@login_required_firebase
+def detalle_animal(request, cabra_id):
+
+    try:
+
+        doc = db.collection('cabras').document(cabra_id).get()
+
+        if not doc.exists:
+
+            messages.error(request, "La cabra no existe")
+
+            return redirect('info_animales')
+
+        animal = doc.to_dict()
+
+        animal['id'] = doc.id
+
+        return render(
+
+            request,
+
+            'detallesCabras/detalle_animal.html',
+
+            {
+                'animal': animal
+            }
+
+        )
+
+    except Exception as e:
+
+        messages.error(
+            request,
+            f'Error al cargar animal: {e}'
+        )
+
+        return redirect('info_animales')
+    
+    # parte duvan pdf
+    
+    
 @login_required_firebase
 def pdf_vacunas(request):
 

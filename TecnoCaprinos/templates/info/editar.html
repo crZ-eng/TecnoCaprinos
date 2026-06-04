@@ -145,6 +145,7 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
+            box-sizing: border-box;
         }
 
         .welcome-text {
@@ -208,6 +209,7 @@
             font-size: 0.95rem;
             color: var(--color-trazos);
             outline: none;
+            box-sizing: border-box;
         }
 
         .btn-submit {
@@ -259,12 +261,83 @@
                 flex-direction: column;
                 align-items: center;
                 gap: 30px;
+                padding: 30px 15px;
             }
 
             .left-column,
             .form-container {
                 width: 100%;
-                max-width: 500px;
+                max-width: 550px;
+            }
+        }
+
+        /* --- OPTIMIZACIONES RESPONSIVE ADICIONALES --- */
+
+        @media (max-width: 768px) {
+            .white-header {
+                padding: 10px 20px;
+            }
+
+            .header-title {
+                font-size: 1.5rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
+            }
+
+            .logo-container img {
+                height: 45px;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+                -webkit-text-stroke: 1.5px var(--color-trazos);
+            }
+
+            .form-container {
+                padding: 25px;
+                border-radius: 30px;
+                border-width: 4px;
+            }
+
+            .form-title {
+                font-size: 1.6rem;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .white-header {
+                padding: 10px 15px;
+            }
+
+            .header-title {
+                font-size: 1.1rem;
+            }
+
+            .logo-container img {
+                height: 35px;
+            }
+
+            /* Hacemos que la cuadrícula pase a una sola columna en móviles pequeños */
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .form-group {
+                grid-column: span 1 !important;
+            }
+
+            .btn-submit,
+            .btn-volver {
+                grid-column: span 1;
+                font-size: 1rem;
+                padding: 10px;
+            }
+
+            .image-placeholder {
+                border-width: 4px;
+                border-radius: 20px;
+                padding: 10px;
             }
         }
     </style>
@@ -276,7 +349,7 @@
             <img src="{% static 'logo.jpeg' %}" alt="Logo TecnoCaprinos">
         </div>
         <h1 class="header-title">TECNOCAPRINOS</h1>
-        <div style="width: 60px;"></div>
+        <div style="width: 60px;" class="header-spacer"></div>
     </div>
     <div class="page-content">
         <div class="left-column">

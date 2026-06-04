@@ -16,6 +16,7 @@
             --color-trazos: #7F5637;
             --white: #f8f8f8;
             --header-table: #d2b48c;
+            --primario-oscuro: #5c3e27;
         }
 
         body {
@@ -29,6 +30,7 @@
         }
 
         /* HEADER */
+
         .white-header {
             width: 100%;
             background-color: var(--white);
@@ -47,10 +49,41 @@
         .header-title {
             font-size: 2.5rem;
             font-weight: 600;
+            align-tracks: center;
             color: var(--bg-cuadros);
             -webkit-text-stroke: 1.5px var(--color-trazos);
             margin: 0;
             text-transform: uppercase;
+        }
+
+        .btn-plus {
+            background-color: var(--color-trazos);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .btn-plus:hover {
+            transform: scale(1.1);
+            background-color: var(--primario-oscuro);
+        }
+
+        /* CONTENEDOR BOTÓN VOLVER */
+
+        .footer-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            padding: 20px 0 40px 0;
         }
 
         .btn-pdf {
@@ -102,26 +135,28 @@
         }
 
         .btn-volver {
-            grid-column: span 2;
             background-color: #ab7b41;
             color: white;
             border: none;
-            padding: 12px;
+            padding: 12px 40px;
             border-radius: 20px;
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 15px;
             font-family: 'Fredoka', sans-serif;
-            transition: transform 0.2s;
+            transition: transform 0.2s, background-color 0.2s;
             text-decoration: none;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
         }
 
         .btn-volver:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
+            background-color: var(--color-trazos);
         }
 
         /* CONTENIDO PRINCIPAL */
+
         .page-content {
             display: flex;
             justify-content: center;
@@ -130,16 +165,24 @@
             padding: 40px 20px;
             max-width: 1400px;
             width: 95%;
+            box-sizing: border-box;
         }
 
         /* COLUMNA IZQUIERDA */
+
         .left-column {
-            flex: 0.7;
+            flex: 0.8;
             background-color: var(--bg-cuadros);
             border: 6px solid var(--color-trazos);
             border-radius: 30px;
             padding: 20px;
             text-align: center;
+            box-sizing: border-box;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 25px;
+            align-self: flex-start;
+            z-index: 10;
         }
 
         .left-column h2 {
@@ -147,17 +190,13 @@
             -webkit-text-stroke: 1.5px var(--color-trazos);
             text-transform: uppercase;
             font-size: 1.8rem;
-        }
-
-        .left-column img {
-            width: 100%;
-            border-radius: 20px;
-            border: 3px solid var(--color-trazos);
+            margin-top: 0;
         }
 
         /* COLUMNA DERECHA */
+
         .table-container {
-            flex: 2.3;
+            flex: 2.2;
             background-color: var(--bg-cuadros);
             border: 6px solid var(--color-trazos);
             border-radius: 40px;
@@ -191,7 +230,6 @@
             font-size: 0.85rem;
             text-transform: uppercase;
             border-bottom: 3px solid var(--color-trazos);
-            border-right: 1px solid var(--color-trazos);
         }
 
         .data-table td {
@@ -201,18 +239,45 @@
             font-weight: 500;
             font-size: 0.9rem;
             border-bottom: 1px solid var(--bg-cuadros);
-            border-right: 1px solid var(--bg-cuadros);
         }
 
-        .date-tag {
-            background-color: var(--white);
-            border: 1px solid var(--color-trazos);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.85rem;
+        .data-table tr:last-child td {
+            border-bottom: none;
         }
+
+        .data-table th:last-child,
+        .data-table td:last-child {
+            border-right: none;
+        }
+
+        .acciones a {
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .editar-btn {
+            color: rgb(0, 191, 0);
+        }
+
+        .eliminar-btn {
+            color: red;
+        }
+
+        /* FILA CLICKEABLE */
+
+        .fila-cabra {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .fila-cabra:hover {
+            background-color: #f5e6c8;
+        }
+
+        /* RESPONSIVE */
 
         @media (max-width: 1100px) {
+
             .page-content {
                 flex-direction: column;
                 align-items: center;
@@ -222,13 +287,14 @@
             .table-container {
                 width: 100%;
             }
-        }
 
-        /* --- RESPONSIVE  --- */
+            .left-column {
+                position: static;
+            }
+        }
 
         @media (max-width: 768px) {
 
-            /* Ajuste del Header */
             .white-header {
                 padding: 10px 15px;
             }
@@ -265,89 +331,136 @@
                 font-size: 1.5rem;
             }
 
+            .data-table,
+            .data-table thead,
+            .data-table tbody,
+            .data-table th,
+            .data-table td,
+            .data-table tr {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
 
-            .table-container {
-                overflow-x: auto;
+            .data-table thead {
+                display: none;
             }
 
             .data-table {
-                min-width: 700px;
+                background-color: transparent;
+                border: none;
             }
 
-            .data-table th,
+            .data-table tr {
+                margin-bottom: 25px;
+                border: 3px solid var(--color-trazos);
+                border-radius: 20px;
+                background-color: #fff8e1;
+                overflow: hidden;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+                padding: 5px 0;
+            }
+
+            .data-table tr:last-child {
+                margin-bottom: 0;
+            }
+
             .data-table td {
-                padding: 8px 5px;
-                font-size: 0.8rem;
+                text-align: right;
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(127, 86, 55, 0.15);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
-        }
 
+            .data-table td:last-child {
+                border-bottom: none;
+            }
 
-        .table-container::-webkit-scrollbar {
-            height: 8px;
-        }
+            .data-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                color: var(--color-trazos);
+                text-align: left;
+                margin-right: 15px;
+                letter-spacing: 0.5px;
+            }
 
-        .table-container::-webkit-scrollbar-thumb {
-            background: var(--color-trazos);
-            border-radius: 10px;
-        }
-
-        .table-container::-webkit-scrollbar-track {
-            background: var(--bg-cuadros);
+            .data-table td[data-label="Acciones"] {
+                justify-content: flex-end;
+                gap: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
 
+    <!-- HEADER -->
+
     <div class="white-header">
+
         <div class="logo-container">
             <a href="{% url 'info_animales' %}">
                 <img src="{% static 'logo.jpeg' %}" alt="Logo">
             </a>
         </div>
+
+        <h1 class="header-title">
+            TECNOCAPRINOS - PRODUCCIÓN
+        </h1>
+
         <h1 class="header-title">TECNOCAPRINOS - PRODUCCIÓN</h1>
         <a href="{% url 'pdf_produccion' %}" class="btn-pdf">Descargar PDF</a>
 
     </div>
 
+    <!-- CONTENIDO -->
+
     <div class="page-content">
+
+        <!-- IZQUIERDA -->
 
         <div class="left-column">
 
+            <h2>Gráfica de Producción</h2>
 
-            <div style="margin-top: 40px;">
-                <h2 style="
-        text-align:center;
-        color: white;
-        -webkit-text-stroke: 1px var(--color-trazos);
-    ">
-                    Gráfica de Producción
-                </h2>
+            <canvas id="graficaLeche"></canvas>
 
-                <canvas id="graficaLeche"></canvas>
-            </div>
-
-            <p style="color: var(--color-trazos); font-weight: 600; margin-top: 15px;">
-                Bienvenido, {{ datos.nombre }}. Monitorea el rendimiento diario.
+            <p style="
+                color: var(--color-trazos);
+                font-weight: 600;
+                margin-top: 20px;
+                margin-bottom: 0;
+            ">
+                Bienvenido, {{ datos.nombre }}.
+                Monitorea el rendimiento diario.
             </p>
+
         </div>
 
+        <!-- TABLA -->
 
         <div class="table-container">
+
             <div class="section-header">
                 <h1>Registros Diarios</h1>
             </div>
 
             <table class="data-table">
-                <thead>
-                    <tr>
 
+                <thead>
+
+                    <tr>
                         <th>Código</th>
                         <th>Nombre</th>
                         <th>Peso</th>
                         <th>Sexo</th>
-
-
                         <th>Ordeño Mañana (L)</th>
                         <th>Ordeño Tarde (L)</th>
                         <th>Total Diario (L)</th>
@@ -355,30 +468,64 @@
                         <th>Responsable</th>
                         <th>Acciones</th>
                     </tr>
+
                 </thead>
+
                 <tbody>
 
                     {% for cabra in cabras %}
-                    <tr>
 
-                        <td>{{ cabra.codigo }}</td>
-                        <td>{{ cabra.nombre }}</td>
-                        <td>{{ cabra.peso }}</td>
-                        <td>{{ cabra.sexo }}</td>
+                    <tr
+                        class="fila-cabra"
+                        onclick="window.location='{% url 'detalle_animal' cabra.id %}'"
+                    >
 
+                        <td data-label="Código">{{ cabra.codigo }}</td>
 
-                        <td>{{ cabra.ordeno_manana|default:"0" }}</td>
-                        <td>{{ cabra.ordeno_tarde|default:"0" }}</td>
-                        <td>{{ cabra.total_diario|default:"0" }}</td>
-                        <td>{{ cabra.observaciones|default:"-" }}</td>
-                        <td>{{ cabra.responsable|default:"-" }}</td>
-                        <td><a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">
+                        <td data-label="Nombre">{{ cabra.nombre }}</td>
+
+                        <td data-label="Peso">{{ cabra.peso }}</td>
+
+                        <td data-label="Sexo">{{ cabra.sexo }}</td>
+
+                        <td data-label="Ordeño Mañana">
+                            {{ cabra.ordeno_manana|default:"0" }}
+                        </td>
+
+                        <td data-label="Ordeño Tarde">
+                            {{ cabra.ordeno_tarde|default:"0" }}
+                        </td>
+
+                        <td data-label="Total Diario">
+                            {{ cabra.total_diario|default:"0" }}
+                        </td>
+
+                        <td data-label="Observaciones">
+                            {{ cabra.observaciones|default:"-" }}
+                        </td>
+
+                        <td data-label="Responsable">
+                            {{ cabra.responsable|default:"-" }}
+                        </td>
+
+                        <td data-label="Acciones" class="acciones">
+
+                            <a
+                                href="{% url 'guardar_produccion' cabra.id %}"
+                                class="editar-btn"
+                                onclick="event.stopPropagation();"
+                            >
                                 Editar
                             </a>
 
-                            <a href="{% url 'eliminar_cabra' cabra.id %}" style="color: red;">
+                            <a
+                                href="{% url 'eliminar_cabra' cabra.id %}"
+                                class="eliminar-btn"
+                                onclick="event.stopPropagation();"
+                            >
                                 Eliminar
                             </a>
+
                         </td>
 
                     </tr>
@@ -386,74 +533,135 @@
                     {% empty %}
 
                     <tr>
-                        <td colspan="10">
+
+                        <td colspan="10" style="text-align: center;">
                             No hay registros de producción todavía.
                         </td>
+
                     </tr>
 
                     {% endfor %}
 
                 </tbody>
+
             </table>
+
         </div>
 
     </div>
 
-    <a href="{% url 'info_animales' %}" class="btn-volver">volver</a>
+    <!-- BOTÓN VOLVER -->
+
+    <div class="footer-container">
+
+        <a href="{% url 'info_animales' %}" class="btn-volver">
+            Volver
+        </a>
+
+    </div>
+
+    <!-- CHART JS -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
 
-        const nombres = [
-            {% for cabra in cabras %}
-                "{{ cabra.nombre }}",
-            {% endfor %}
-        ];
+        const nombres = [];
 
-        const totalLeche = [
-            {% for cabra in cabras %}
-                {{ cabra.total_diario|default:"0" }},
-            {% endfor %}
-        ];
+        const totalLeche = [];
+
+        {% for cabra in cabras %}
+
+            nombres.push("{{ cabra.nombre|escapejs }}");
+
+            totalLeche.push(
+                parseFloat("{{ cabra.total_diario|default:0 }}".replace(',', '.')) || 0
+            );
+
+        {% endfor %}
 
         const ctx = document.getElementById('graficaLeche');
 
-        new Chart(ctx, {
+        if (ctx) {
 
-            type: 'bar',
+            new Chart(ctx, {
 
-            data: {
+                type: 'bar',
 
-                labels: nombres,
+                data: {
 
-                datasets: [{
+                    labels: nombres,
 
-                    label: 'Litros diarios',
+                    datasets: [{
 
-                    data: totalLeche,
+                        label: 'Litros diarios',
 
-                    borderWidth: 2
+                        data: totalLeche,
 
-                }]
-            },
+                        borderWidth: 2
 
-            options: {
+                    }]
 
-                responsive: true,
+                },
 
-                scales: {
+                options: {
 
-                    y: {
+                    responsive: true,
 
-                        beginAtZero: true
+                    plugins: {
+
+                        legend: {
+
+                            labels: {
+
+                                font: {
+
+                                    family: 'Fredoka',
+                                    size: 14
+
+                                }
+                            }
+                        }
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            ticks: {
+
+                                font: {
+                                    family: 'Fredoka'
+                                }
+
+                            }
+
+                        },
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            ticks: {
+
+                                font: {
+                                    family: 'Fredoka'
+                                }
+
+                            }
+
+                        }
 
                     }
+
                 }
-            }
-        });
+
+            });
+
+        }
 
     </script>
+
 </body>
 
 </html>
