@@ -12,7 +12,6 @@
     <style>
         /* ===== BODY (IGUAL AL LOGIN) ===== */
         body {
-            position: fixed; 
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', sans-serif;
@@ -20,20 +19,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden; /* Evita scrolls raros de lado */
         }
 
         /* ===== CONTENEDOR GENERAL ===== */
+        /* Al usar flex-row y un max-width, garantizamos que mantengan distancia en PC */
         .container {
             display: flex;
+            flex-direction: row;
             align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 1200px;
-            height: 500px;
-            padding-left: 80px;
-            padding-right: 0;
-            position: relative;
+            justify-content: center;
+            gap: 80px; /* Distancia fija sagrada entre el formulario y la cabra */
+            width: 90%;
+            max-width: 1300px;
+            padding: 40px 0;
+            box-sizing: border-box;
         }
 
         /* ===== BLOQUE DE REGISTRO ===== */
@@ -41,7 +43,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            z-index: 10;
+            flex-shrink: 0; /* Impide que el formulario se aplaste si se achica la pantalla */
         }
 
         /* ===== FORMULARIO (ESTILO LOGIN COMPACTO) ===== */
@@ -55,7 +57,6 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-left: 150px; /* Consistencia con tu login */
         }
 
         form h2 {
@@ -106,7 +107,6 @@
         /* ===== LINKS ===== */
         .links {
             margin-top: 20px;
-            margin-left: 150px;
             text-align: center;
         }
 
@@ -119,91 +119,65 @@
             font-size: 14px;
         }
 
-        /* ===== IMAGEN (PC) ===== */
+        /* ===== IMAGEN (PC - FLUJO NATURAL) ===== */
+        /* Al quitar fixed y absolute, se alinea al lado derecho sin flotar sobre el form */
         .imagen {
-            position: fixed;
-            right: -150px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            max-width: 600px; /* Controla el tamaño máximo en pantallas gigantes */
         }
 
         .imagen img {
-            width: 960px;
-            height: 900px;
+            width: 100%;
+            max-width: 550px;
+            height: auto;
+            aspect-ratio: 1 / 1; /* Mantiene proporción cuadrada perfecta */
             object-fit: cover;
-            border-radius: 50% 0% 0% 50%;
+            border-radius: 50%; /* Círculo completo impecable */
             border: 10px solid #EAD4B8;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.2);
         }
 
-        /* ===========================================
-        ===== MÓVIL (SISTEMA RESPONSIVE IGUAL) =====
-           =========================================== */
-        @media (max-width: 480px) {
+        /* ==========================================================
+        ===== RESPONSIVE GENERAL (TABLETS Y MÓVILES - ABAJO DE 1024px) =====
+        ========================================================== */
+        @media (max-width: 1024px) {
             body {
-                position: relative;
-                height: 100vh;
-                display: flex;
-                justify-content: center;
                 align-items: flex-start;
-                padding-top: 40px; /* Un poco más arriba para que quepa el form de registro */
-                overflow: hidden;
+                overflow-y: auto; /* Scroll si falta espacio en pantallas bajas */
             }
 
             .container {
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: flex-start;
-                padding: 0;
+                flex-direction: column-reverse; /* Pone el formulario arriba y la cabra abajo */
+                gap: 30px; /* Espaciado controlado en móviles */
+                padding: 30px 0;
             }
 
-            .register-box {
-                width: 280px;
-                margin-left: 0;
-            }
-
-            form {
-                width: 100%;
-                padding: 25px 20px;
-                margin-left: 0; /* Centra el form */
-                border: 6px solid #C9A06D;
-                gap: 10px;
-            }
-
-            form h2 {
-                font-size: 22px;
-            }
-
-            input {
-                width: 100%;
-                padding: 10px;
-                font-size: 13px;
-                box-sizing: border-box;
-            }
-
-            .links {
-                margin-left: 0;
-                margin-top: 15px;
-            }
-
-            /* --- CABRA INFERIOR (SEMICÍRCULO) --- */
+            /* --- CABRA EN RESPONSIVE (COMPLETA Y MEDIANA) --- */
             .imagen {
-                display: flex !important;
-                position: fixed;
-                bottom: -220px; /* Posición para alejar de las letras */
-                right: auto;
-                left: 50%;
-                top: auto;
-                transform: translateX(-50%);
-                z-index: 1;
+                max-width: 100%;
+                margin-top: 10px;
             }
 
             .imagen img {
-                width: 400px;
-                height: 400px;
-                border-radius: 50%;
-                border: 8px solid #EAD4B8;
+                width: 180px; /* Tamaño medio ideal sin cortarse con los bordes */
+                max-width: 180px;
+                border: 6px solid #EAD4B8;
+            }
+        }
+
+        /* Ajustes menores para pantallas muy chicas de celular */
+        @media (max-width: 480px) {
+            .register-box {
+                width: 290px;
+            }
+            form {
+                padding: 25px 20px;
+            }
+            .imagen img {
+                width: 150px; /* Ligeramente más pequeña en celulares clásicos */
             }
         }
     </style>
