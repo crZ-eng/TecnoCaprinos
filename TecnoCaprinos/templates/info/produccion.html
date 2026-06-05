@@ -156,7 +156,7 @@
 
             top: 100%;
 
-            margin-top: 2px;
+            margin-top: 10px;
 
             background-color: white;
 
@@ -367,19 +367,11 @@
 
             .white-header {
                 padding: 10px 15px;
-                gap: 10px; /* Evita que los elementos colapsen entre sí */
             }
 
-            /* Mantiene solo el primer título visible y oculta el segundo duplicado */
             .header-title {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
                 -webkit-text-stroke: 1px var(--color-trazos);
-                text-align: center;
-                flex: 1;
-            }
-
-            .white-header .header-title + .header-title {
-                display: none !important;
             }
 
             .logo-container img {
@@ -387,11 +379,9 @@
             }
 
             .btn-pdf {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-                gap: 4px;
-                white-space: nowrap; /* Evita que el texto del botón se rompa en dos líneas */
-                border-radius: 12px;
+                padding: 10px 16px;
+                font-size: 0.85rem;
+                gap: 6px;
             }
 
             .page-content {
@@ -490,7 +480,7 @@
                 <img src="{% static 'logo.jpeg' %}" alt="Logo">
             </a>
         </div>
-
+        
         <h1 class="header-title">TECNOCAPRINOS - PRODUCCIÓN</h1>
 
         <div class="dropdown-export">
