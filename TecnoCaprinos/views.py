@@ -4,6 +4,11 @@ import cloudinary.uploader
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
+
+import csv
+
+from openpyxl import Workbook
+
 from firebase_admin import firestore, auth
 from config.firebaseConnection import initialize_firebase
 from reportlab.platypus import (
@@ -102,7 +107,7 @@ def login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        apiKey = os.getenv('FIREBASE_WEB_API_KEY')
+        apiKey = "AIzaSyDnHUov15lQlXJ0W_PnXFPZbVq1CcP60FI"
 
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}"
 
@@ -1523,6 +1528,144 @@ def pdf_produccion(request):
     # =========================
 
     doc.build(elementos)
+
+    return response
+
+# =========================
+# CSV PRODUCCIÓN
+# =========================
+
+@login_required_firebase
+def csv_produccion(request):
+
+    uid = request.session.get('uid')
+
+    response = HttpResponse(
+        content_type='text/csv'
+    )
+
+    response['Content-Disposition'] = (
+        'attachment; filename="reporte_produccion.csv"'
+    )
+
+    writer = csv.writer(response)
+
+    writer.writerow([
+        'Código',
+        'Nombre',
+        'Peso',
+        'Sexo',
+        'Ordeño Mañana',
+        'Ordeño Tarde',
+        'Total Diario',
+        'Observaciones',
+        'Responsable'
+    ])
+
+    try:
+
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'produccion')\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            writer.writerow([
+
+                cabra.get('codigo', '-'),
+                cabra.get('nombre', '-'),
+                cabra.get('peso', '-'),
+                cabra.get('sexo', '-'),
+                cabra.get('ordeno_manana', '0'),
+                cabra.get('ordeno_tarde', '0'),
+                cabra.get('total_diario', '0'),
+                cabra.get('observaciones', '-'),
+                cabra.get('responsable', '-')
+
+            ])
+
+    except Exception as e:
+
+        print(e)
+
+    return response
+
+# =========================
+# EXCEL PRODUCCIÓN
+# =========================
+
+@login_required_firebase
+def excel_produccion(request):
+
+    uid = request.session.get('uid')
+
+    workbook = Workbook()
+
+    sheet = workbook.active
+
+    sheet.title = 'Producción'
+
+    headers = [
+
+        'Código',
+        'Nombre',
+        'Peso',
+        'Sexo',
+        'Ordeño Mañana',
+        'Ordeño Tarde',
+        'Total Diario',
+        'Observaciones',
+        'Responsable'
+
+    ]
+
+    sheet.append(headers)
+
+    try:
+
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'produccion')\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            sheet.append([
+
+                cabra.get('codigo', '-'),
+                cabra.get('nombre', '-'),
+                cabra.get('peso', '-'),
+                cabra.get('sexo', '-'),
+                cabra.get('ordeno_manana', '0'),
+                cabra.get('ordeno_tarde', '0'),
+                cabra.get('total_diario', '0'),
+                cabra.get('observaciones', '-'),
+                cabra.get('responsable', '-')
+
+            ])
+
+    except Exception as e:
+
+        print(e)
+
+    response = HttpResponse(
+
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
+    )
+
+    response['Content-Disposition'] = (
+
+        'attachment; filename="reporte_produccion.xlsx"'
+
+    )
+
+    workbook.save(response)
 
     return response
 
