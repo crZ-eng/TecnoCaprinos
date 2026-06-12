@@ -4,8 +4,6 @@ import cloudinary.uploader
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
-import csv
-from openpyxl import Workbook
 from firebase_admin import firestore, auth
 from config.firebaseConnection import initialize_firebase
 from reportlab.platypus import (
@@ -394,52 +392,6 @@ def eliminar_cabra(request, cabra_id):
 
     return redirect('info_animales')
 
-
-
-@login_required_firebase
-def guardar_produccion(request, cabra_id):
-    cabra_ref = db.collection('cabras').document(cabra_id)
-
-    doc = cabra_ref.get()
-
-    if not doc.exists:
-        messages.error(request, "registro no encontrado")
-        return redirect('produccion')
-
-    cabra = doc.to_dict()
-
-    if request.method == 'POST':
-        ordeno_manana = request.POST.get('ordeno_manana')
-        ordeno_tarde = request.POST.get('ordeno_tarde')
-        total_diario = request.POST.get('total_diario')
-        grasa = request.POST.get('grasa')
-        responsable = request.POST.get('responsable')
-        observaciones = request.POST.get('observaciones')
-
-        cabra_ref.update({
-
-            'ordeno_manana': ordeno_manana,
-            'ordeno_tarde': ordeno_tarde,
-            'total_diario': total_diario,
-            'grasa': grasa,
-            'responsable': responsable,
-            'observaciones': observaciones
-
-        })
-
-        messages.success(request, "Datos actualizados correctamente")
-
-        return redirect('produccion')
-
-    return render(
-        request,
-        'info/agregar/agregar_produccion.html',
-        {
-            'cabra': cabra,
-            'id': cabra_id
-        }
-    )
-
 # ==============================
 # EDITAR LOS DATOS DE UNA CABRA
 # ==============================
@@ -600,6 +552,63 @@ def enfermas(request):
         'info/enfermas.html',
         {
             'cabras': cabras
+        }
+    )
+
+# =========================
+# producción
+# =========================
+
+
+@login_required_firebase
+def produccion(request):
+
+    uid = request.session.get('uid')
+
+    cabras = []
+
+    datosUser = {}
+
+    try:
+        # OBTENER DATOS DEL USUARIO
+
+        doc_ref = db.collection('usuarios').document(uid)
+
+        doc = doc_ref.get()
+
+        if doc.exists:
+
+            datosUser = doc.to_dict()
+
+        # OBTENER CABRAS
+
+        docs = db.collection('produccion')\
+            .where('usuario_id', '==', uid)\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            cabra['id'] = doc.id
+
+            cabras.append(cabra)
+
+    except Exception as e:
+
+        print(e)
+
+        messages.error(
+            request,
+            f'Error al cargar datos: {e}'
+        )
+
+    return render(
+        request,
+        'info/produccion.html',
+        {
+            'cabras': cabras,
+            'datos': datosUser
         }
     )
 
@@ -1499,7 +1508,6 @@ def registrar_vacuna(request, cabra_id):
             return redirect('info_animales')
         try:
             db.collection('vacunas').add({
-                'cabra_id': cabra_id,   # 🔥 IMPORTANTE
                 'codigo': cabra['codigo'],
                 'nombre': cabra['nombre'],
                 'raza': cabra['raza'],
@@ -1556,7 +1564,6 @@ def agregar_produccion(request, cabra_id):
             
             try:
                 db.collection('produccion').add({
-                    'cabra_id': cabra_id,  
                     'codigo': cabra['codigo'],
                     'nombre': cabra['nombre'],
                     'raza': cabra['raza'],
@@ -1927,178 +1934,3 @@ def eliminar_produccion(request, cabra_id):
         messages.error(request, f"Error al eliminar: {e}")
 
     return redirect('info_animales')
-
-
-# =========================
-# CSV PRODUCCIÓN
-# =========================
-
-@login_required_firebase
-def csv_produccion(request):
-
-    uid = request.session.get('uid')
-
-    response = HttpResponse(
-        content_type='text/csv'
-    )
-
-    response['Content-Disposition'] = (
-        'attachment; filename="reporte_produccion.csv"'
-    )
-
-    writer = csv.writer(response)
-
-    writer.writerow([
-        'Código',
-        'Nombre',
-        'Peso',
-        'Sexo',
-        'Ordeño Mañana',
-        'Ordeño Tarde',
-        'Total Diario',
-        'Observaciones',
-        'Responsable'
-    ])
-
-    try:
-
-        docs = db.collection('cabras')\
-            .where('usuario_id', '==', uid)\
-            .where('categoria', '==', 'produccion')\
-            .stream()
-
-        for doc in docs:
-
-            cabra = doc.to_dict()
-
-            writer.writerow([
-
-                cabra.get('codigo', '-'),
-                cabra.get('nombre', '-'),
-                cabra.get('peso', '-'),
-                cabra.get('sexo', '-'),
-                cabra.get('ordeno_manana', '0'),
-                cabra.get('ordeno_tarde', '0'),
-                cabra.get('total_diario', '0'),
-                cabra.get('observaciones', '-'),
-                cabra.get('responsable', '-')
-
-            ])
-
-    except Exception as e:
-
-        print(e)
-
-    return response
-
-# =========================
-# EXCEL PRODUCCIÓN
-# =========================
-
-@login_required_firebase
-def excel_produccion(request):
-
-    uid = request.session.get('uid')
-
-    workbook = Workbook()
-
-    sheet = workbook.active
-
-    sheet.title = 'Producción'
-
-    headers = [
-
-        'Código',
-        'Nombre',
-        'Peso',
-        'Sexo',
-        'Ordeño Mañana',
-        'Ordeño Tarde',
-        'Total Diario',
-        'Observaciones',
-        'Responsable'
-
-    ]
-
-    sheet.append(headers)
-
-    try:
-
-        docs = db.collection('cabras')\
-            .where('usuario_id', '==', uid)\
-            .where('categoria', '==', 'produccion')\
-            .stream()
-
-        for doc in docs:
-
-            cabra = doc.to_dict()
-
-            sheet.append([
-
-                cabra.get('codigo', '-'),
-                cabra.get('nombre', '-'),
-                cabra.get('peso', '-'),
-                cabra.get('sexo', '-'),
-                cabra.get('ordeno_manana', '0'),
-                cabra.get('ordeno_tarde', '0'),
-                cabra.get('total_diario', '0'),
-                cabra.get('observaciones', '-'),
-                cabra.get('responsable', '-')
-
-            ])
-
-    except Exception as e:
-
-        print(e)
-
-    response = HttpResponse(
-
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-
-    )
-
-    response['Content-Disposition'] = (
-
-        'attachment; filename="reporte_produccion.xlsx"'
-
-    )
-
-    workbook.save(response)
-
-    return response
-
-# =========================
-# FORMULARIOS
-# =========================
-
-def registrar_enfermo(request):
-
-    return render(
-        request,
-        'info/agregar/registrar_enfermo.html'
-    )
-
-
-def registrar_vacuna(request):
-
-    return render(
-        request,
-        'info/agregar/registrar_vacuna.html'
-    )
-
-
-def agregar_produccion(request):
-
-    return render(
-        request,
-        'info/agregar/agregar_produccion.html'
-    )
-
-
-def registrar_seguimiento_gestacion(request):
-
-    return render(
-        request,
-        'info/agregar/registrar_seguimiento_gestacion.html'
-    )
-
