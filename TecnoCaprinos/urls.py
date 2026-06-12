@@ -28,17 +28,19 @@ urlpatterns = [
     path('info-animales/info_cabra/<str:cabra_id>/', views.info_completa_cabra, name='info_completa_cabra'),
     path('info-animales/listar/eliminar/<str:cabra_id>/', views.eliminar_cabra, name='eliminar_cabra'),
     path('info-animales/listar/editar/<str:cabra_id>/', views.editar_cabra, name='editar_cabra'),
+        # producción
+    path('guardar-produccion/<str:cabra_id>/',views.guardar_produccion,name='guardar_produccion'),
     
+    path('excel-produccion/', views.excel_produccion, name='excel_produccion'),
+    path('csv-produccion/', views.csv_produccion, name='csv_produccion'),
     # Detalle animales
     path('animal/<int:id>/', views.detalle_animal, name='detalle_animal'),
     path('animal/<str:cabra_id>/',views.detalle_animal, name='detalle_animal'),
-
     # Editar informaciones de vacunas, etc...
     path('info-animales/vacunas/editar/<str:cabra_id>', views.editar_vacunas, name='editar_vacunas'),
     path('info-animales/produccion/editar/<str:cabra_id>', views.editar_produccion, name='editar_produccion'),
     path('info-animales/enfermas/editar/<str:cabra_id>', views.editar_enfermas, name='editar_enfermas'),
     path('info-animales/enCinta/editar/<str:cabra_id>', views.editar_enCinta, name='editar_enCinta'),
-
     # Eliminar cabras de Vacunas, etc..
     path('info-animales/enCinta/eliminar/<str:cabra_id>/', views.eliminar_enCinta, name='eliminar_enCinta'),
     path('info-animales/vacunas/eliminar/<str:cabra_id>/', views.eliminar_vacunas, name='eliminar_vacunas'),
