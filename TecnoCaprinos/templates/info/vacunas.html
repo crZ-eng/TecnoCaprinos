@@ -202,34 +202,55 @@
             background: var(--bg-cuadros);
         }
 
-        /* =========================
+       /* =========================
            RESPONSIVE
         ========================= */
 
-        @media (max-width: 768px) {
-            .white-header {
+        @media (max-width: 1100px) {
+            .page-content {
                 flex-direction: column;
-                padding: 15px;
-                text-align: center;
+                align-items: center;
+            }
+
+            .table-container {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .white-header {
+                padding: 10px 15px;
+                gap: 10px; /* Evita que los elementos colapsen entre sí */
             }
 
             .header-title {
-                font-size: 1.3rem;
+                font-size: 1.1rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
+                text-align: center;
+                flex: 1;
+            }
+
+            /* Mantiene solo el primer título visible por si acaso */
+            .white-header .header-title + .header-title {
+                display: none !important;
             }
 
             .logo-container img {
-                height: 50px;
+                height: 40px;
             }
 
             .btn-pdf {
-                width: 100%;
-                max-width: 220px;
-                text-align: center;
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                gap: 4px;
+                white-space: nowrap; /* Evita que el texto del botón se rompa en dos líneas */
+                border-radius: 12px;
             }
 
             .page-content {
+                gap: 20px;
                 padding: 20px 10px;
-                width: 100%;
             }
 
             .table-container {
@@ -242,16 +263,79 @@
                 font-size: 1.5rem;
             }
 
+            /* Transformación de la tabla a bloques tipo tarjetas */
+            .data-table,
+            .data-table thead,
+            .data-table tbody,
+            .data-table th,
+            .data-table td,
+            .data-table tr {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .data-table thead {
+                display: none;
+            }
+
+            .data-table {
+                background-color: transparent;
+                border: none;
+                min-width: 100%; /* Elimina el desborde horizontal */
+            }
+
+            .data-table tr {
+                margin-bottom: 25px;
+                border: 3px solid var(--color-trazos);
+                border-radius: 20px;
+                background-color: #fff8e1;
+                overflow: hidden;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+                padding: 5px 0;
+            }
+
             .data-table tr:last-child {
                 margin-bottom: 0;
             }
 
             .data-table td {
-                padding: 10px 6px;
-                font-size: 0.75rem;
+                text-align: right;
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(127, 86, 55, 0.15);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .data-table td:last-child {
+                border-bottom: none;
+            }
+
+            .data-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                color: var(--color-trazos);
+                text-align: left;
+                margin-right: 15px;
+                letter-spacing: 0.5px;
+            }
+
+            /* Ajuste por si el mensaje de "No hay vacunas registradas" hereda el flex */
+            .data-table td.sin-registros {
+                display: block;
+                text-align: center;
+                padding: 30px 10px;
+            }
+
+            .data-table td.sin-registros::before {
+                display: none;
             }
         }
-
     </style>
 
 </head>

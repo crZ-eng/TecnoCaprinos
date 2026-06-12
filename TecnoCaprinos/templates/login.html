@@ -7,276 +7,174 @@
     <title>Ganado Digital - Iniciar Sesión</title>
 
     <link rel="icon" href="{% static 'logo.jpeg' %}">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-
-    <!-- FUENTES -->
     <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Besley&display=swap" rel="stylesheet">
 
     <style>
         /* ===== BODY ===== */
-body {
-    position: fixed; 
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #6f4a2d;
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #6f4a2d; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden; 
+        }
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+        /* ===== CONTENEDOR GENERAL (AJUSTADO PARA CLONAR IMAGE_21D60B.JPG) ===== */
+        /* Cambiado a width: auto para que el formulario y la cabra se queden juntos en el centro */
+        .container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 80px; /* Separación exacta entre los dos bloques */
+            width: auto; 
+            padding: 40px;
+            box-sizing: border-box;
+        }
 
+        /* ===== BLOQUE DE LOGIN ===== */
+        .login-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0; 
+        }
 
-/* ===== CONTENEDOR GENERAL ===== */
-.container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+        /* ===== FORMULARIO ===== */
+        form {
+            background: #EAD4B8;
+            padding: 40px 30px;
+            border-radius: 35px;
+            width: 320px;
+            border: 8px solid #C9A06D;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-    width: 100%;          /* ← antes 1000px */
-    max-width: 1200px;   /* opcional para no deformar */
-    height: 500px;
+        form h2 {
+            text-align: center;
+            color: #7F5637;
+            font-family: 'Bagel Fat One', cursive;
+            font-size: 30px;
+            margin: 0;
+        }
 
-    padding-left: 80px;
-    padding-right: 0;    /* ← importante */
-}
+        /* ===== INPUTS ===== */
+        input {
+            width: 91%;
+            padding: 14px;
+            border-radius: 25px;
+            border: none;
+            background: #C9A06D;
+            color: #7F5637;
+            font-family: 'Besley', serif;
+            font-size: 14px;
+            outline: none;
+        }
 
-/* ===== LADO IZQUIERDO ===== */
-.login-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        input::placeholder {
+            color: #7F5637;
+            opacity: 0.7;
+        }
 
+        /* ===== BOTÓN ===== */
+        .btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
 
-/* ===== FORMULARIO ===== */
-form {
-    background: #EAD4B8;
-    padding: 40px 30px;
-    border-radius: 35px;
-    width: 320px;
+        .btn button {
+            background: #7F5637;
+            color: #F2EDDF;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Bagel Fat One', cursive;
+            font-size: 16px;
+            transition: 0.3s;
+        }
 
-    border: 8px solid #C9A06D; /* ← ESTE ES EL BORDE REAL */
+        /* ===== LINKS ===== */
+        .links {
+            margin-top: 20px;
+            text-align: center;
+        }
 
-    box-shadow: 0 20px 30px rgba(0,0,0,0.25);
+        .link {
+            display: block;
+            color: #F2EDDF;
+            font-family: 'Besley', serif;
+            text-decoration: none;
+            margin: 5px 0;
+            font-size: 14px;
+        }
 
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-left: 150px;
-}
+        /* ===== IMAGEN (PC - FLUJO NATURAL CENTRAL) ===== */
+        .imagen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
 
-/* ===== TITULO ===== */
-form h2 {
-    text-align: center;
-    color: #7F5637;
-    font-family: 'Bagel Fat One', cursive;
-    font-size: 30px;
-}
+        .imagen img {
+            width: 450px; /* Tamaño ideal y controlado para que se vea igual a la foto */
+            height: 450px;
+            object-fit: cover;
+            border-radius: 50%; 
+            border: 10px solid #EAD4B8;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+        }
 
+        /* ==========================================================
+        ===== RESPONSIVE GENERAL (REMANENTE SIN TOCAR EL ESCRITORIO) =====
+        ========================================================== */
+        @media (max-width: 1024px) {
+            body {
+                align-items: flex-start;
+                overflow-y: auto; 
+            }
 
-/* ===== INPUTS ===== */
-input {
-    width: 91%;
-    padding: 14px;
-    border-radius: 25px;
-    border: none;
+            .container {
+                flex-direction: column-reverse; 
+                gap: 30px; 
+                padding: 30px 0;
+                width: 100%;
+            }
 
-    background: #C9A06D;
-    color: #7F5637;
-    font-family: 'Besley', serif;
-    font-size: 14px;
+            .imagen {
+                max-width: 100%;
+                margin-top: 10px;
+            }
 
-    outline: none;
-}
+            .imagen img {
+                width: 180px; 
+                height: 180px;
+                border: 6px solid #EAD4B8;
+            }
+        }
 
-input::placeholder {
-    color: #7F5637;
-    opacity: 0.7;
-}
-
-input:focus {
-    box-shadow: 0 0 0 3px rgba(127, 86, 55, 0.3);
-}
-
-
-/* ===== BOTÓN ===== */
-.btn {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-.btn button {
-    background: #7F5637;
-    color: #F2EDDF;
-
-    border: none;
-    padding: 12px 30px;
-    border-radius: 25px;
-
-    cursor: pointer;
-    font-family: 'Bagel Fat One', cursive;
-    font-size: 16px;
-
-    transition: 0.3s;
-}
-
-.btn button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-}
-
-
-/* ===== LINKS DEBAJO DEL FORM ===== */
-.links {
-    margin-top: 20px;
-    margin-left: 150px;
-    text-align: center;
-}
-
-.link {
-    display: block;
-    color: #F2EDDF;
-    font-family: 'Besley', serif;
-    text-decoration: none;
-    margin: 5px 0;
-}
-
-.link:hover {
-    text-decoration: underline;
-}
-
-
-/* ===== MENSAJES ===== */
-.mensaje {
-    text-align: center;
-    margin-top: 10px;
-    font-family: 'Besley', serif;
-    font-size: 13px;
-    color: red;
-}
-
-/* ===== IMAGEN FIJA A LA DERECHA ===== */
-.imagen {
-    position: fixed;   /* ← CLAVE */
-    right: -150px;     /* ← ajusta qué tanto se mete */
-    top: 50%;
-    transform: translateY(-50%);
-
-    z-index: 0; /* detrás del form */
-}
-
-.imagen img {
-    width: 960px;
-    height: 900px;
-
-    object-fit: cover;
-
-    object-position: 3px center; /* ← mueve la imagen */
-
-    border-radius: 50% 0% 0% 50%;
-    border: 10px solid #EAD4B8;
-}
-
-/* ===== TRANSICIÓN SUAVE ===== */
-.container,
-.imagen,
-form {
-    transition: all 0.4s ease;
-}
-
-
-/* ===== TABLET (opcional, transición suave antes de móvil) ===== */
-@media (max-width: 768px) {
-
-    .imagen img {
-        width: 500px;
-        height: 500px;
-
-        right: -200px;
-    }
-}
-
-/* ===== MÓVIL (CENTRO PERFECTO) ===== */
-/* ===== MÓVIL (SOLO CAMBIOS EN RESPONSIVE) ===== */
-@media (max-width: 480px) {
-
-    body {
-        position: relative; /* Cambiado de fixed para permitir scroll si el teclado abre */
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start; /* Formulario un poco más arriba */
-        padding-top: 50px;
-        overflow: hidden;
-    }
-
-    .container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        padding: 0;
-    }
-
-    form {
-        width: 100%;
-        padding: 25px 20px; /* Padding reducido */
-        margin-left: 0; /* IMPORTANTE: Elimina el margin-left de escritorio */
-        border: 6px solid #C9A06D;
-        gap: 10px;
-    }
-
-    form h2 {
-        font-size: 22px; /* Título más pequeño */
-        margin-bottom: 5px;
-    }
-
-    input {
-        width: 100%;
-        padding: 10px;
-        font-size: 13px;
-        box-sizing: border-box;
-    }
-
-    .btn button {
-        width: 100%;
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    .links {
-        margin-left: 0; /* Elimina el margin-left de escritorio */
-        margin-top: 15px;
-
-    }
-
-    .link {
-        font-size: 12px;
-    }
-
-    /* --- CABRA EN LA PARTE INFERIOR (SEMICÍRCULO) --- */
-    .imagen {
-        display: flex !important; /* Asegura que se vea */
-        position: fixed;
-        bottom: -195px; /* Se oculta la mitad para crear el semicírculo */
-        right: auto;
-        left: 50%;
-        top: auto;
-        transform: translateX(-50%); /* Centra la imagen horizontalmente */
-        z-index: 1;
-    }
-
-    .imagen img {
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    border: 8px solid #EAD4B8;
-}
-}
-
+        @media (max-width: 480px) {
+            .login-box {
+                width: 290px;
+            }
+            form {
+                padding: 25px 20px;
+            }
+            .imagen img {
+                width: 150px;
+                height: 150px;
+            }
+        }
     </style>
 </head>
 
@@ -284,39 +182,33 @@ form {
 
     <div class="container">
 
-        <!-- LADO IZQUIERDO -->
+        <!-- BLOQUE DE LOGIN -->
         <div class="login-box">
-
             <form method="POST">
                 {% csrf_token %}
-
-                <h2>Iniciar Sesion</h2>
+                <h2>Iniciar Sesión</h2>
 
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
 
                 <div class="btn">
-                    <button type="submit">iniciar sesion</button>
+                    <button type="submit">iniciar sesión</button>
                 </div>
 
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="mensaje {{ message.tags }}">
-                            {{ message }}
-                        </div>
+                        <p style="color: red; text-align: center; font-size: 12px; margin-top: 10px;">{{ message }}</p>
                     {% endfor %}
                 {% endif %}
             </form>
 
-            <!-- LINKS FUERA DEL FORM -->
             <div class="links">
                 <a href="#" class="link">¿Olvidaste tu Contraseña?</a>
-                <a href="{% url 'registro' %}" class="link">¿No tienes cuenta? registrate</a>
+                <a href="{% url 'registro' %}" class="link" style="text-decoration: underline;">¿No tienes cuenta? regístrate</a>
             </div>
-
         </div>
 
-        <!-- LADO DERECHO (IMAGEN) -->
+        <!-- LADO DERECHO (IMAGEN COPIADA DE IMAGE_21D60B.JPG) -->
         <div class="imagen">
             <img src="{% static 'cabrafeliz.jpg' %}" alt="cabra">
         </div>

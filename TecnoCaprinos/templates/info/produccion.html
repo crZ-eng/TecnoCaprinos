@@ -88,37 +88,35 @@
 
         .btn-pdf {
 
-        background: linear-gradient(
-            135deg,
-            #7F5637,
-            #ab7b41
-        );
+            background: linear-gradient(135deg,
+                    #7F5637,
+                    #ab7b41);
 
-        color: white;
+            color: white;
 
-        padding: 12px 22px;
+            padding: 12px 22px;
 
-        border-radius: 18px;
+            border-radius: 18px;
 
-        text-decoration: none;
+            text-decoration: none;
 
-        font-size: 1rem;
+            font-size: 1rem;
 
-        font-weight: 600;
+            font-weight: 600;
 
-        font-family: 'Fredoka', sans-serif;
+            font-family: 'Fredoka', sans-serif;
 
-        display: flex;
+            display: flex;
 
-        align-items: center;
+            align-items: center;
 
-        gap: 10px;
+            gap: 10px;
 
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 
-        transition: all 0.3s ease;
+            transition: all 0.3s ease;
 
-        border: 2px solid transparent;
+            border: 2px solid transparent;
 
         }
 
@@ -126,17 +124,86 @@
 
         .btn-pdf:hover {
 
-        transform: translateY(-2px) scale(1.03);
+            transform: translateY(-2px) scale(1.03);
 
-        background: linear-gradient(
-            135deg,
-            #6d4a30,
-            #966834
-        );
+            background: linear-gradient(135deg,
+                    #6d4a30,
+                    #966834);
 
-        border-color: #C9A06D;
+            border-color: #C9A06D;
 
         }
+
+        /* DROPDOWN EXPORTAR */
+
+        .dropdown-export {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            cursor: pointer;
+            border: none;
+        }
+
+        .dropdown-content {
+
+            display: none;
+
+            position: absolute;
+
+            right: 0;
+
+            top: 100%;
+
+            margin-top: 10px;
+
+            background-color: white;
+
+            min-width: 220px;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+
+            z-index: 1000;
+
+            border: 2px solid var(--color-trazos);
+
+        }
+
+        .dropdown-content a {
+
+            display: block;
+
+            padding: 14px 18px;
+
+            text-decoration: none;
+
+            color: var(--color-trazos);
+
+            font-weight: 600;
+
+            transition: background 0.2s;
+
+            background-color: #fff8e1;
+
+        }
+
+        .dropdown-content a:hover {
+
+            background-color: var(--bg-cuadros);
+
+        }
+
+        .dropdown-export:hover .dropdown-content {
+
+            display: block;
+
+        }
+
         .btn-volver {
             background-color: #ab7b41;
             color: white;
@@ -300,19 +367,11 @@
 
             .white-header {
                 padding: 10px 15px;
-                gap: 10px; /* Evita que los elementos colapsen entre sí */
             }
 
-            /* Mantiene solo el primer título visible y oculta el segundo duplicado */
             .header-title {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
                 -webkit-text-stroke: 1px var(--color-trazos);
-                text-align: center;
-                flex: 1;
-            }
-
-            .white-header .header-title + .header-title {
-                display: none !important;
             }
 
             .logo-container img {
@@ -320,11 +379,9 @@
             }
 
             .btn-pdf {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-                gap: 4px;
-                white-space: nowrap; /* Evita que el texto del botón se rompa en dos líneas */
-                border-radius: 12px;
+                padding: 10px 16px;
+                font-size: 0.85rem;
+                gap: 6px;
             }
 
             .page-content {
@@ -420,9 +477,32 @@
                 <img src="{% static 'logo.jpeg' %}" alt="Logo">
             </a>
         </div>
-
+        
         <h1 class="header-title">TECNOCAPRINOS - PRODUCCIÓN</h1>
-        <a href="{% url 'pdf_produccion' %}" class="btn-pdf">Descargar PDF</a>
+
+        <div class="dropdown-export">
+
+            <button class="btn-pdf dropdown-btn">
+                Descargar ▼
+            </button>
+
+            <div class="dropdown-content">
+
+                <a href="{% url 'pdf_produccion' %}">
+                    Descargar PDF
+                </a>
+
+                <a href="{% url 'excel_produccion' %}">
+                    Descargar Excel
+                </a>
+
+                <a href="{% url 'csv_produccion' %}">
+                    Descargar CSV
+                </a>
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -481,7 +561,8 @@
 
                     {% for cabra in cabras %}
 
-                    <tr class="fila-cabra">
+                    <tr class="fila-cabra" onclick="window.location='{% url 'detalle_animal' cabra.id %}'">
+
                         <td data-label="Código">{{ cabra.codigo }}</td>
                         <td data-label="Nombre">{{ cabra.nombre }}</td>
                         <td data-label="Peso">{{ cabra.peso }}</td>
@@ -502,8 +583,17 @@
                             {{ cabra.responsable|default:"-" }}
                         </td>
                         <td data-label="Acciones" class="acciones">
-                            <a href="{% url 'editar_produccion' cabra.id %}" style="color: rgb(115, 183, 13);">Editar</a>
-                            <a href="{% url 'eliminar_cabra' cabra.id %}" class="eliminar-btn" onclick="event.stopPropagation();">Eliminar</a>
+
+                            <a href="{% url 'guardar_produccion' cabra.id %}" class="editar-btn"
+                                onclick="event.stopPropagation();">
+                                Editar
+                            </a>
+
+                            <a href="{% url 'eliminar_cabra' cabra.id %}" class="eliminar-btn"
+                                onclick="event.stopPropagation();">
+                                Eliminar
+                            </a>
+
                         </td>
                     </tr>
 
@@ -547,11 +637,11 @@
 
         {% for cabra in cabras %}
 
-            nombres.push("{{ cabra.nombre|escapejs }}");
+        nombres.push("{{ cabra.nombre|escapejs }}");
 
-            totalLeche.push(
-                parseFloat("{{ cabra.total_diario|default:0 }}".replace(',', '.')) || 0
-            );
+        totalLeche.push(
+            parseFloat("{{ cabra.total_diario|default:0 }}".replace(',', '.')) || 0
+        );
 
         {% endfor %}
 

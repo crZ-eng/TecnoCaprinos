@@ -102,7 +102,7 @@ def login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        apiKey = "AIzaSyDnHUov15lQlXJ0W_PnXFPZbVq1CcP60FI"
+        apiKey = os.getenv('FIREBASE_WEB_API_KEY')
 
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}"
 
@@ -1934,3 +1934,178 @@ def eliminar_produccion(request, cabra_id):
         messages.error(request, f"Error al eliminar: {e}")
 
     return redirect('info_animales')
+
+
+# =========================
+# CSV PRODUCCIÓN
+# =========================
+
+@login_required_firebase
+def csv_produccion(request):
+
+    uid = request.session.get('uid')
+
+    response = HttpResponse(
+        content_type='text/csv'
+    )
+
+    response['Content-Disposition'] = (
+        'attachment; filename="reporte_produccion.csv"'
+    )
+
+    writer = csv.writer(response)
+
+    writer.writerow([
+        'Código',
+        'Nombre',
+        'Peso',
+        'Sexo',
+        'Ordeño Mañana',
+        'Ordeño Tarde',
+        'Total Diario',
+        'Observaciones',
+        'Responsable'
+    ])
+
+    try:
+
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'produccion')\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            writer.writerow([
+
+                cabra.get('codigo', '-'),
+                cabra.get('nombre', '-'),
+                cabra.get('peso', '-'),
+                cabra.get('sexo', '-'),
+                cabra.get('ordeno_manana', '0'),
+                cabra.get('ordeno_tarde', '0'),
+                cabra.get('total_diario', '0'),
+                cabra.get('observaciones', '-'),
+                cabra.get('responsable', '-')
+
+            ])
+
+    except Exception as e:
+
+        print(e)
+
+    return response
+
+# =========================
+# EXCEL PRODUCCIÓN
+# =========================
+
+@login_required_firebase
+def excel_produccion(request):
+
+    uid = request.session.get('uid')
+
+    workbook = Workbook()
+
+    sheet = workbook.active
+
+    sheet.title = 'Producción'
+
+    headers = [
+
+        'Código',
+        'Nombre',
+        'Peso',
+        'Sexo',
+        'Ordeño Mañana',
+        'Ordeño Tarde',
+        'Total Diario',
+        'Observaciones',
+        'Responsable'
+
+    ]
+
+    sheet.append(headers)
+
+    try:
+
+        docs = db.collection('cabras')\
+            .where('usuario_id', '==', uid)\
+            .where('categoria', '==', 'produccion')\
+            .stream()
+
+        for doc in docs:
+
+            cabra = doc.to_dict()
+
+            sheet.append([
+
+                cabra.get('codigo', '-'),
+                cabra.get('nombre', '-'),
+                cabra.get('peso', '-'),
+                cabra.get('sexo', '-'),
+                cabra.get('ordeno_manana', '0'),
+                cabra.get('ordeno_tarde', '0'),
+                cabra.get('total_diario', '0'),
+                cabra.get('observaciones', '-'),
+                cabra.get('responsable', '-')
+
+            ])
+
+    except Exception as e:
+
+        print(e)
+
+    response = HttpResponse(
+
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
+    )
+
+    response['Content-Disposition'] = (
+
+        'attachment; filename="reporte_produccion.xlsx"'
+
+    )
+
+    workbook.save(response)
+
+    return response
+
+# =========================
+# FORMULARIOS
+# =========================
+
+def registrar_enfermo(request):
+
+    return render(
+        request,
+        'info/agregar/registrar_enfermo.html'
+    )
+
+
+def registrar_vacuna(request):
+
+    return render(
+        request,
+        'info/agregar/registrar_vacuna.html'
+    )
+
+
+def agregar_produccion(request):
+
+    return render(
+        request,
+        'info/agregar/agregar_produccion.html'
+    )
+
+
+def registrar_seguimiento_gestacion(request):
+
+    return render(
+        request,
+        'info/agregar/registrar_seguimiento_gestacion.html'
+    )
+

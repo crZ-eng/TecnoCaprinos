@@ -14,7 +14,9 @@ urlpatterns = [
     path('info-animales/vacunas', views.vacunas, name='vacunas'),
     path('info-animales/pdf-vacunas/', views.pdf_vacunas, name='pdf_vacunas'),
     path('info-animales/produccion', views.produccion, name='produccion'),
-    path('info-animales/pdf-produccion/', views.pdf_produccion, name='pdf_produccion'),
+    path('pdf-produccion/', views.pdf_produccion, name='pdf_produccion'),
+    path('excel-produccion/', views.excel_produccion, name='excel_produccion'),   
+    path('csv-produccion/', views.csv_produccion, name='csv_produccion'),
     path('info-animales/enfermas', views.enfermas, name='enfermas'),
 
     # Registros
