@@ -176,11 +176,62 @@
         }
 
         @media (max-width: 950px) {
+            .white-header {
+                padding: 10px 20px;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
 
-            .left-column,
+            .white-header div {
+                display: none; /* Oculta el div espaciador */
+            }
+
+            .header-title {
+                font-size: 2rem;
+            }
+
             .container {
+                grid-template-columns: 1fr;
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .container h3,
+            .container .image-placeholder,
+            .container .info-item,
+            .datos_cabra {
+                grid-column: 1 / 2;
+            }
+
+            .image-placeholder {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            #foto-cabra {
+                width: 200px;
+                height: 200px;
+            }
+
+            .btn-izquierda {
                 width: 100%;
-                max-width: 500px;
+            }
+
+            .btn-izquierda button {
+                width: 100%;
+            }
+
+            .info-item {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .info-item a {
+                text-align: center;
+                width: 100%;
+                box-sizing: border-box;
             }
         }
     </style>
