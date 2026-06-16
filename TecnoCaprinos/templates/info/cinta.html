@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoCaprinos - En Cinta</title>
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-principal: #C9A06D;
+            --bg-cuadros: #EAD4B8;
+            --color-trazos: #7F5637;
+            --white: #f8f8f8;
+            --header-table: #d2b48c;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg-principal);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        .white-header {
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            box-sizing: border-box;
+            border-bottom: 4px solid var(--color-trazos);
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .white-header a img {
+            height: 60px;
+        }
+
+        .header-title {
+            font-size: 2.3rem;
+            font-weight: 600;
+            color: var(--bg-cuadros);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
+            margin: 0;
+            text-transform: uppercase;
+            text-align: center;
+            flex: 1;
+        }
+
+        .btn-plus {
+            background-color: var(--color-trazos);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transition: 0.3s;
+        }
+
+        .btn-plus:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-volver {
+            display: block;
+            width: 90%;
+            max-width: 300px;
+            text-align: center;
+            background-color: #ab7b41;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px auto 40px auto;
+            font-family: 'Fredoka', sans-serif;
+            transition: transform 0.2s;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-volver:hover {
+            transform: scale(1.05);
+        }
+
+        /* CONTENEDOR */
+        .main-container {
+            width: 95%;
+            max-width: 1300px;
+            background-color: var(--bg-cuadros);
+            border: 6px solid var(--color-trazos);
+            border-radius: 40px;
+            margin: 40px auto 20px auto;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .table-title {
+            text-align: center;
+            color: var(--white);
+            font-size: 2.5rem;
+            -webkit-text-stroke: 2px var(--color-trazos);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            margin-top: 0;
+        }
+
+        /* TABLA */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: #fff8e1;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--color-trazos);
+        }
+
+        .data-table th {
+            background-color: var(--header-table);
+            color: var(--color-trazos);
+            padding: 15px 10px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 3px solid var(--color-trazos);
+            border-right: 1px solid var(--color-trazos);
+        }
+
+        .data-table td {
+            padding: 12px 10px;
+            text-align: center;
+            color: var(--color-trazos);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-bottom: 1px solid var(--bg-cuadros);
+            border-right: 1px solid var(--bg-cuadros);
+            background-color: white;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table th:last-child, 
+        .data-table td:last-child {
+            border-right: none;
+        }
+
+        /* Colores de estado alternativos si los usas */
+        .status-optimo { color: #2e7d32; font-weight: bold; }
+        .status-alerta { color: #d32f2f; font-weight: bold; }
+        
+        /* --- RESPONSIVE TABLET / MEDIANO --- */
+        @media (max-width: 1024px) {
+            .white-header {
+                padding: 10px 20px;
+            }
+            .header-title {
+                font-size: 1.8rem;
+            }
+            .main-container {
+                padding: 20px;
+                width: 98%;
+            }
+        }
+
+        /* --- RESPONSIVE DE FICHAS VERTICALES (MÓVIL) --- */
+        @media (max-width: 768px) {
+            .white-header {
+                padding: 10px 15px;
+                justify-content: center;
+            }
+
+            .header-title {
+                font-size: 1.3rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
+                order: 1;
+                width: 100%;
+                margin-top: 5px;
+            }
+            
+            .white-header a {
+                order: 0;
+            }
+
+            .btn-plus {
+                order: 2;
+                width: 40px;
+                height: 40px;
+                font-size: 24px;
+            }
+
+            .table-title {
+                font-size: 1.8rem;
+            }
+
+            .main-container {
+                border-radius: 25px;
+                padding: 15px 10px;
+                border-width: 4px;
+            }
+
+            /* Transformación estructural de la tabla */
+            .data-table, 
+            .data-table thead, 
+            .data-table tbody, 
+            .data-table th, 
+            .data-table td, 
+            .data-table tr {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .data-table thead {
+                display: none; /* Ocultamos los headers horizontales */
+            }
+
+            .data-table {
+                background-color: transparent;
+                border: none;
+            }
+
+            .data-table tr {
+                margin-bottom: 25px;
+                border: 3px solid var(--color-trazos);
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            }
+
+            .data-table tr:last-child {
+                margin-bottom: 0;
+            }
+
+            .data-table td {
+                text-align: right;
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(127, 86, 55, 0.15);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background-color: #f8f8f8;
+            }
+
+            .data-table td:last-child {
+                border-bottom: none;
+            }
+
+            /* Inyección de títulos a la izquierda */
+            .data-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                color: var(--color-trazos);
+                text-align: left;
+                margin-right: 15px;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        .columna_opciones{
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* SMARTPHONES COMPACTOS */
+        @media (max-width: 480px) {
+            .white-header {
+                padding: 8px 10px;
+                gap: 10px;
+            }
+
+            .white-header a img {
+                height: 45px !important;
+            }
+
+            .header-title {
+                font-size: 0.95rem;
+                -webkit-text-stroke: 0.5px var(--color-trazos);
+            }
+
+            .btn-plus {
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
+
+            .main-container {
+                margin: 20px auto;
+                border-radius: 20px;
+            }
+
+            .table-title {
+                font-size: 1.4rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="white-header">
+        <a href="{% url 'info_animales' %}">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo">
+        </a>
+        <h1 class="header-title">TECNOCAPRINOS - EN CINTA</h1>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="main-container">
+
+        <h2 class="table-title">Cabras En Cinta</h2>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Raza</th>
+                    <th>Peso Inicial (lb)</th>
+                    <th>Mes de Gestación</th>
+                    <th>Estado de gestación</th>
+                    <th>Peso actual (lb)</th>
+                    <th>Veterinario responsable</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for cabra in cabras %}
+                <tr>
+                    <td data-label="Código">{{ cabra.codigo }}</td>
+                    <td data-label="Nombre">{{ cabra.nombre }}</td>
+                    <td data-label="Raza">{{ cabra.raza }}</td>
+                    <td data-label="Peso Inicial">{{ cabra.peso }}</td>
+                    <td data-label="Mes de Gestación">{{ cabra.mes_gestacion|default:"No especificado" }}</td>
+                    <td data-label="Estado de gestación">{{ cabra.estado_gestacion|default:"No especificado" }}</td>
+                    <td data-label="Peso actual">{{ cabra.peso_actual|default:"No especificado" }}</td>
+                    <td data-label="Veterinario responsable">{{ cabra.veterinario_responsable|default:"-" }}</td>
+                    <td data-label="Opciones" id="columna_opciones">
+                        <a href="{% url 'editar_enCinta' cabra.id %}" style="color: rgb(115, 183, 13);">Editar</a>
+                        <a href="{% url 'eliminar_enCinta' cabra.id %}" class="eliminar-btn" style="color: red;" onclick="return confirm('¿Seguro que deseas eliminar esta cabra?');">Eliminar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="sin-registros" style="text-align: center; padding: 25px; color: var(--color-trazos); font-weight: 600; background-color: #fff8e1;">
+                        No hay cabras en cinta registradas.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
+
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TecnoCaprinos - Vacunas</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+            --bg-principal: #C9A06D;
+            --bg-cuadros: #EAD4B8;
+            --color-trazos: #7F5637;
+            --white: #f8f8f8;
+            --header-table: #d2b48c;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg-principal);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .white-header {
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 40px;
+            box-sizing: border-box;
+            border-bottom: 4px solid var(--color-trazos);
+            gap: 20px;
+        }
+
+        .logo-container img {
+            height: 60px;
+        }
+
+        .header-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--bg-cuadros);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
+            margin: 0;
+            text-transform: uppercase;
+            text-align: center;
+            flex: 1;
+        }
+
+        /* =========================
+           BOTÓN PDF
+        ========================= */
+
+        .btn-pdf {
+            background-color: var(--color-trazos);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            white-space: nowrap;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-pdf:hover {
+            transform: scale(1.05);
+            background-color: #6b472c;
+        }
+
+        /* =========================
+           BOTÓN VOLVER
+        ========================= */
+
+        .btn-volver {
+            background-color: #ab7b41;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px 0 30px;
+            font-family: 'Fredoka', sans-serif;
+            transition: transform 0.2s;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-volver:hover {
+            transform: scale(1.03);
+        }
+
+        /* =========================
+           CONTENIDO PRINCIPAL
+        ========================= */
+
+        .page-content {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            max-width: 1300px;
+            width: 95%;
+            box-sizing: border-box;
+        }
+
+        /* =========================
+           TABLA
+        ========================= */
+
+        .table-container {
+            width: 100%;
+            background-color: var(--bg-cuadros);
+            border: 6px solid var(--color-trazos);
+            border-radius: 40px;
+            padding: 30px;
+            box-sizing: border-box;
+            overflow-x: auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .section-header h1 {
+            color: var(--white);
+            font-size: 2.2rem;
+            -webkit-text-stroke: 2px var(--color-trazos);
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: #fff8e1;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--color-trazos);
+            min-width: 700px;
+        }
+
+        .data-table th {
+            background-color: var(--header-table);
+            color: var(--color-trazos);
+            padding: 15px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 3px solid var(--color-trazos);
+            border-right: 1px solid var(--color-trazos);
+        }
+
+        .data-table td {
+            padding: 12px 10px;
+            text-align: center;
+            color: var(--color-trazos);
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--bg-cuadros);
+        }
+
+        .sin-registros {
+            padding: 20px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           SCROLL
+        ========================= */
+
+        .table-container::-webkit-scrollbar {
+            height: 7px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: var(--color-trazos);
+            border-radius: 10px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: var(--bg-cuadros);
+        }
+
+       /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+            .page-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .table-container {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .white-header {
+                padding: 10px 15px;
+                gap: 10px; /* Evita que los elementos colapsen entre sí */
+            }
+
+            .header-title {
+                font-size: 1.1rem;
+                -webkit-text-stroke: 1px var(--color-trazos);
+                text-align: center;
+                flex: 1;
+            }
+
+            /* Mantiene solo el primer título visible por si acaso */
+            .white-header .header-title + .header-title {
+                display: none !important;
+            }
+
+            .logo-container img {
+                height: 40px;
+            }
+
+            .btn-pdf {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                gap: 4px;
+                white-space: nowrap; /* Evita que el texto del botón se rompa en dos líneas */
+                border-radius: 12px;
+            }
+
+            .page-content {
+                gap: 20px;
+                padding: 20px 10px;
+            }
+
+            .table-container {
+                border-width: 4px;
+                padding: 15px;
+                border-radius: 25px;
+            }
+
+            .section-header h1 {
+                font-size: 1.5rem;
+            }
+
+            /* Transformación de la tabla a bloques tipo tarjetas */
+            .data-table,
+            .data-table thead,
+            .data-table tbody,
+            .data-table th,
+            .data-table td,
+            .data-table tr {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .data-table thead {
+                display: none;
+            }
+
+            .data-table {
+                background-color: transparent;
+                border: none;
+                min-width: 100%; /* Elimina el desborde horizontal */
+            }
+
+            .data-table tr {
+                margin-bottom: 25px;
+                border: 3px solid var(--color-trazos);
+                border-radius: 20px;
+                background-color: #fff8e1;
+                overflow: hidden;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+                padding: 5px 0;
+            }
+
+            .data-table tr:last-child {
+                margin-bottom: 0;
+            }
+
+            .data-table td {
+                text-align: right;
+                padding: 12px 20px;
+                font-size: 0.95rem;
+                border-right: none;
+                border-bottom: 1px solid rgba(127, 86, 55, 0.15);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .data-table td:last-child {
+                border-bottom: none;
+            }
+
+            .data-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                color: var(--color-trazos);
+                text-align: left;
+                margin-right: 15px;
+                letter-spacing: 0.5px;
+            }
+
+            /* Ajuste por si el mensaje de "No hay vacunas registradas" hereda el flex */
+            .data-table td.sin-registros {
+                display: block;
+                text-align: center;
+                padding: 30px 10px;
+            }
+
+            .data-table td.sin-registros::before {
+                display: none;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <div class="white-header">
+
+        <div class="logo-container">
+            <a href="{% url 'info_animales' %}">
+                <img src="{% static 'logo.jpeg' %}" alt="Logo">
+            </a>
+        </div>
+
+        <h1 class="header-title">
+            TECNOCAPRINOS - VACUNAS
+        </h1>
+
+        <a href="{% url 'pdf_vacunas' %}" class="btn-pdf">
+            Descargar PDF
+        </a>
+
+    </div>
+
+    <!-- CONTENIDO -->
+
+    <div class="page-content">
+        <div class="table-container">
+            <div class="section-header">
+                <h1>Historial de Aplicaciones</h1>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th> 
+                        <th>Raza</th>
+                        <th>Peso</th>
+                        <th>Sexo</th>
+                        <th>Medicamento</th>
+                        <th>Cantidad (ml)</th>
+                        <th>Vía de Administración</th>
+                        <th>Veterinario Responsable</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cabra in cabras %}
+                    <tr>
+                        <td>{{ cabra.codigo }}</td>
+                        <td>{{ cabra.nombre }}</td>
+                        <td>{{ cabra.raza }}</td>
+                        <td>{{ cabra.peso }}</td>
+                        <td>{{ cabra.sexo }}</td>
+                        <td>{{ cabra.medicamento|default:"No asignado" }}</td>
+                        <td>{{ cabra.cantidad|default:"No asignado" }}</td>
+                        <td>{{ cabra.via_admin|default:"Sin asignar" }}</td>
+                        <td>{{ cabra.veterinario_responsable|default:"Sin asignar" }}</td>
+                        <td>
+                            <a href="{% url 'editar_vacunas' cabra.id %}" style="color: rgb(115, 183, 13);">Editar</a>
+                            <a href="{% url 'eliminar_vacunas' cabra.id %}" class="eliminar-btn" style="color: red;" onclick="return confirm('¿Seguro que deseas eliminar esta cabra?');">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="sin-registros">
+                            No hay vacunas registradas.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- BOTÓN VOLVER -->
+
+    <a href="{% url 'info_animales' %}" class="btn-volver">
+        Volver
+    </a>
+
+</body>
+
+</html>

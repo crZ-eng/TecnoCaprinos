@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        detalles de animales 
+    </h1>
+
+    <h2> {{ animal.nombre}}</h2>
+
+    <p><strong>Código</strong> {{ cabra.codigo }}</p>
+    <p><strong>Peso</strong> {{ cabra.peso }}</p>
+    <p><strong>Raza</strong> {{ cabra.raza }}</p>
+    <p><strong>Edad</strong> {{ cabra.Edad }}</p>
+    <p><strong>Código</strong> {{ cabra.codigo }}</p>
+    <p><strong>Observaciones</strong> {{ cabra.observaciones }}</p>
+
+    <a href="{% url 'produccion' %}">Volver</a>
+</body>
+</html>

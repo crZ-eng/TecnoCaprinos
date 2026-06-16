@@ -1,0 +1,144 @@
+/* Variables de color de TecnoCaprinos */
+:root {
+    --bg-principal: #C9A06D;
+    --bg-cuadros: #EAD4B8;
+    --color-trazos: #7F5637;
+    --white: #f8f8f8;
+}
+
+body {
+    margin: 0;
+    font-family: 'Fredoka', sans-serif;
+    background-color: var(--bg-principal);
+}
+
+/* --- ESTILOS DEL HEADER --- */
+.white-header {
+    width: 100%;
+    background-color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    box-sizing: border-box;
+}
+
+.logo-container img {
+    height: 60px;
+}
+
+.header-title {
+    font-size: 3rem;
+    font-weight: 600;
+    color: var(--bg-cuadros);
+    -webkit-text-stroke: 2px var(--color-trazos);
+    margin: 0;
+}
+
+.btn-info {
+    background-color: var(--color-trazos);
+    color: white;
+    padding: 8px 25px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* --- CUERPO PRINCIPAL --- */
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Sección de texto izquierda */
+.about-section {
+    width: 60%;
+}
+
+.section-title {
+    font-family: serif;
+    color: var(--bg-cuadros);
+    font-size: 3.5rem;
+    margin-bottom: 25px;
+    -webkit-text-stroke: 2px var(--color-trazos);
+}
+
+.text-box {
+    background-color: var(--bg-cuadros);
+    border: 6px solid var(--color-trazos);
+    border-radius: 30px;
+    padding: 35px;
+    color: var(--color-trazos);
+    text-align: center;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    font-weight: 600;
+    max-width: 500px;
+}
+
+/* --- SIDEBAR DE LOGIN (DERECHA) --- */
+.login-sidebar {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.goat-img {
+    width: 150px;
+    position: absolute;
+    top: -60px;
+    z-index: 2;
+}
+
+.login-box {
+    background-color: var(--bg-cuadros);
+    border: 6px solid var(--color-trazos);
+    border-radius: 30px;
+    padding: 80px 25px 30px;
+    width: 100%;
+    text-align: center;
+}
+
+.login-box h3 {
+    color: #9d8170;
+    font-family: serif;
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+}
+
+.btn-action {
+    display: block;
+    background-color: var(--color-trazos);
+    color: white;
+    padding: 12px;
+    margin: 12px auto;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    width: 80%;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+    .main-content {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .about-section,
+    .login-sidebar {
+        width: 100%;
+        text-align: center;
+    }
+
+    .text-box {
+        margin: auto;
+    }
+}

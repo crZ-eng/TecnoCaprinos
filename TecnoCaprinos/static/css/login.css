@@ -1,0 +1,246 @@
+/* ===== BODY ===== */
+body {
+    position: fixed; 
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #6f4a2d;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+/* ===== CONTENEDOR GENERAL ===== */
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;          /* ← antes 1000px */
+    max-width: 1200px;   /* opcional para no deformar */
+    height: 500px;
+
+    padding-left: 80px;
+    padding-right: 0;    /* ← importante */
+}
+
+/* ===== LADO IZQUIERDO ===== */
+.login-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ===== FORMULARIO ===== */
+form {
+    background: #EAD4B8;
+    padding: 40px 30px;
+    border-radius: 35px;
+    width: 320px;
+
+    border: 8px solid #C9A06D; /* ← ESTE ES EL BORDE REAL */
+
+    box-shadow: 0 20px 30px rgba(0,0,0,0.25);
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-left: 150px;
+}
+
+/* ===== TITULO ===== */
+form h2 {
+    text-align: center;
+    color: #7F5637;
+    font-family: 'Bagel Fat One', cursive;
+    font-size: 30px;
+}
+
+
+/* ===== INPUTS ===== */
+input {
+    width: 91%;
+    padding: 14px;
+    border-radius: 25px;
+    border: none;
+
+    background: #C9A06D;
+    color: #7F5637;
+    font-family: 'Besley', serif;
+    font-size: 14px;
+
+    outline: none;
+}
+
+input::placeholder {
+    color: #7F5637;
+    opacity: 0.7;
+}
+
+input:focus {
+    box-shadow: 0 0 0 3px rgba(127, 86, 55, 0.3);
+}
+
+
+/* ===== BOTÓN ===== */
+.btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.btn button {
+    background: #7F5637;
+    color: #F2EDDF;
+
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+
+    cursor: pointer;
+    font-family: 'Bagel Fat One', cursive;
+    font-size: 16px;
+
+    transition: 0.3s;
+}
+
+.btn button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+
+/* ===== LINKS DEBAJO DEL FORM ===== */
+.links {
+    margin-top: 20px;
+    margin-left: 150px;
+    text-align: center;
+}
+
+.link {
+    display: block;
+    color: #F2EDDF;
+    font-family: 'Besley', serif;
+    text-decoration: none;
+    margin: 5px 0;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+
+/* ===== MENSAJES ===== */
+.mensaje {
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Besley', serif;
+    font-size: 13px;
+    color: red;
+}
+
+/* ===== IMAGEN FIJA A LA DERECHA ===== */
+.imagen {
+    position: fixed;   /* ← CLAVE */
+    right: -150px;     /* ← ajusta qué tanto se mete */
+    top: 50%;
+    transform: translateY(-50%);
+
+    z-index: 0; /* detrás del form */
+}
+
+.imagen img {
+    width: 960px;
+    height: 900px;
+
+    object-fit: cover;
+
+    object-position: 3px center; /* ← mueve la imagen */
+
+    border-radius: 50% 0% 0% 50%;
+    border: 10px solid #EAD4B8;
+}
+
+/* ===== TRANSICIÓN SUAVE ===== */
+.container,
+.imagen,
+form {
+    transition: all 0.4s ease;
+}
+
+
+/* ===== TABLET (opcional, transición suave antes de móvil) ===== */
+@media (max-width: 768px) {
+
+    .imagen img {
+        width: 500px;
+        height: 500px;
+
+        right: -200px;
+    }
+}
+
+/* ===== MÓVIL (CENTRO PERFECTO) ===== */
+@media (max-width: 480px) {
+
+    body {
+        margin: 0;
+        height: 100vh;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 0;
+    }
+
+    /* eliminar imagen */
+    .imagen {
+        display: none;
+        position: static;
+    }
+
+    /* 🔥 CLAVE: limitar ancho del bloque */
+    .login-box {
+        width: 100%;
+        max-width: 340px; /* ← esto centra visualmente */
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    form {
+        width: 100%;
+        padding: 30px 20px;
+    }
+
+    input {
+        width: 85%;
+        padding: 10px;
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .btn button {
+        width: 85%;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .links {
+        text-align: center;
+        margin-top: 20px;
+    }
+}
