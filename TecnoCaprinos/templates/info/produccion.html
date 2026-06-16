@@ -584,8 +584,12 @@
                         </td>
                         <td data-label="Acciones" class="acciones">
 
-                            <a href="{% url 'guardar_produccion' cabra.id %}" class="editar-btn"
-                                onclick="event.stopPropagation();">
+                          <a
+                                href="{% url 'agregar_produccion' cabra.id %}"
+                                class="editar-btn"
+                                onclick="event.stopPropagation();"
+                                
+                            >
                                 Editar
                             </a>
 

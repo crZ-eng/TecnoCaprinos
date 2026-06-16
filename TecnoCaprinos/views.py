@@ -3,6 +3,7 @@ import cloudinary
 import cloudinary.uploader
 import csv
 from django.shortcuts import render, redirect
+from openpyxl import Workbook
 from django.contrib import messages
 from django.http import HttpResponse
 from firebase_admin import firestore, auth
@@ -269,11 +270,11 @@ def info_animales(request):
         )
 
     return render(request, 'info_animales.html',
-        {
-            'cabras': cabras,
-            'razas': sorted(razas)
-        }
-    )
+                  {
+                      'cabras': cabras,
+                      'razas': sorted(razas)
+                  }
+                  )
 
 # =========================
 # AÑADIR CABRA
@@ -380,6 +381,7 @@ def anadir_cabra(request):
 # ELIMINAR CABRA
 # =========================
 
+
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_cabra(request, cabra_id):
     """
@@ -396,6 +398,7 @@ def eliminar_cabra(request, cabra_id):
 # ==============================
 # EDITAR LOS DATOS DE UNA CABRA
 # ==============================
+
 
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def editar_cabra(request, cabra_id):
@@ -453,6 +456,7 @@ def editar_cabra(request, cabra_id):
 # =========================
 # EN CINTA
 # =========================
+
 
 @login_required_firebase
 def cinta(request):
@@ -556,62 +560,6 @@ def enfermas(request):
         }
     )
 
-# =========================
-# producción
-# =========================
-
-
-@login_required_firebase
-def produccion(request):
-
-    uid = request.session.get('uid')
-
-    cabras = []
-
-    datosUser = {}
-
-    try:
-        # OBTENER DATOS DEL USUARIO
-
-        doc_ref = db.collection('usuarios').document(uid)
-
-        doc = doc_ref.get()
-
-        if doc.exists:
-
-            datosUser = doc.to_dict()
-
-        # OBTENER CABRAS
-
-        docs = db.collection('produccion')\
-            .where('usuario_id', '==', uid)\
-            .stream()
-
-        for doc in docs:
-
-            cabra = doc.to_dict()
-
-            cabra['id'] = doc.id
-
-            cabras.append(cabra)
-
-    except Exception as e:
-
-        print(e)
-
-        messages.error(
-            request,
-            f'Error al cargar datos: {e}'
-        )
-
-    return render(
-        request,
-        'info/produccion.html',
-        {
-            'cabras': cabras,
-            'datos': datosUser
-        }
-    )
 
 def info_completa_cabra(request, cabra_id):
     try:
@@ -675,10 +623,10 @@ def detalle_animal(request, cabra_id):
         )
 
         return redirect('info_animales')
-    
+
     # parte duvan pdf
-    
-    
+
+
 @login_required_firebase
 def pdf_vacunas(request):
 
@@ -860,7 +808,7 @@ def pdf_vacunas(request):
     tabla = Table(
 
         datos,
-        
+
         splitByRow=True,
 
         colWidths=[
@@ -993,17 +941,17 @@ def pdf_vacunas(request):
 
 @login_required_firebase
 def enfermas(request):
-    
+
     uid = request.session.get('uid')
-    
+
     cabras = []
 
     try:
 
         docs = db.collection('enfermas')\
-        .where('usuario_id', '==', uid)\
-        .stream()
-            
+            .where('usuario_id', '==', uid)\
+            .stream()
+
         for doc in docs:
 
             cabra = doc.to_dict()
@@ -1027,61 +975,28 @@ def enfermas(request):
 # producción
 # =========================
 
+
 @login_required_firebase
 def produccion(request):
-
     uid = request.session.get('uid')
 
+    registros = db.collection('produccion')\
+        .where('usuario_id', '==', uid)\
+        .stream()
+
     cabras = []
+    for doc in registros:
+        data = doc.to_dict()
+        data['id'] = doc.id
+        cabras.append(data)
 
-    datosUser = {}
-
-    try:
-        # OBTENER DATOS DEL USUARIO
-
-        doc_ref = db.collection('usuarios').document(uid)
-
-        doc = doc_ref.get()
-
-        if doc.exists:
-
-            datosUser = doc.to_dict()
-
-        # OBTENER CABRAS
-        
-        docs = db.collection('produccion')\
-            .where('usuario_id', '==', uid)\
-            .stream()
-
-        for doc in docs:
-
-            cabra = doc.to_dict()
-
-            cabra['id'] = doc.id
-
-            cabras.append(cabra)
-
-    except Exception as e:
-
-        print(e)
-
-        messages.error(
-            request,
-            f'Error al cargar datos: {e}'
-        )
-
-    return render(
-        request,
-        'info/produccion.html',
-        {
-            'cabras': cabras,
-            'datos': datosUser
-        }
-    )
-
+    return render(request, 'info/produccion.html', {
+        'cabras': cabras
+    })
 # =========================
 # PDF PRODUCCIÓN
 # =========================
+
 
 @login_required_firebase
 def pdf_produccion(request):
@@ -1425,6 +1340,7 @@ def pdf_produccion(request):
 
     return response
 
+
 @login_required_firebase
 def registrar_enfermo(request, cabra_id):
     uid = request.session.get('uid')
@@ -1478,6 +1394,7 @@ def registrar_enfermo(request, cabra_id):
             )
 
     return redirect('info_animales')
+
 
 @login_required_firebase
 def registrar_vacuna(request, cabra_id):
@@ -1533,6 +1450,7 @@ def registrar_vacuna(request, cabra_id):
 
     return redirect('info_animales')
 
+
 @login_required_firebase
 def agregar_produccion(request, cabra_id):
     uid = request.session.get('uid')
@@ -1562,7 +1480,7 @@ def agregar_produccion(request, cabra_id):
                     "Esta cabra ya está registrada en producción"
                 )
                 return redirect('info_animales')
-            
+
             try:
                 db.collection('produccion').add({
                     'codigo': cabra['codigo'],
@@ -1580,10 +1498,13 @@ def agregar_produccion(request, cabra_id):
                 messages.success(request, "Cabra registrada en producción 🐐")
                 return redirect('info_animales')
             except Exception as e:
-                messages.error(request, f"Error al registrar la cabra en producción: {e}")
+                messages.error(
+                    request, f"Error al registrar la cabra en producción: {e}")
         else:
-            messages.error(request, 'Solo las hembras pueden entrar en producción')
+            messages.error(
+                request, 'Solo las hembras pueden entrar en producción')
     return redirect('info_animales')
+
 
 @login_required_firebase
 def registrar_seguimiento_gestacion(request, cabra_id):
@@ -1614,7 +1535,7 @@ def registrar_seguimiento_gestacion(request, cabra_id):
                     "Esta cabra ya está registrada en En CInta"
                 )
                 return redirect('info_animales')
-            
+
             try:
                 db.collection('en_cinta').add({
                     'codigo': cabra['codigo'],
@@ -1631,10 +1552,13 @@ def registrar_seguimiento_gestacion(request, cabra_id):
                 messages.success(request, "Cabra registrada en En Cinta 🐐")
                 return redirect('info_animales')
             except Exception as e:
-                messages.error(request, f"Error al registrar la cabra en En Cinta: {e}")
+                messages.error(
+                    request, f"Error al registrar la cabra en En Cinta: {e}")
         else:
-            messages.error(request, 'Solo las hembras pueden entrar en En Cinta')
+            messages.error(
+                request, 'Solo las hembras pueden entrar en En Cinta')
     return redirect('info_animales')
+
 
 @login_required_firebase
 def editar_enCinta(request, cabra_id):
@@ -1671,7 +1595,8 @@ def editar_enCinta(request, cabra_id):
             mes_gestacion = request.POST.get('mes_gestacion')
             estado_gestacion = request.POST.get('estado_gestacion')
             peso_actual = request.POST.get('peso_actual')
-            veterinario_responsable = request.POST.get('veterinario_responsable')
+            veterinario_responsable = request.POST.get(
+                'veterinario_responsable')
 
             cabra_ref.update({
                 'codigo': cod,
@@ -1683,7 +1608,7 @@ def editar_enCinta(request, cabra_id):
                 'color': color,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
-                
+
                 'mes_gestacion': mes_gestacion,
                 'estado_gestacion': estado_gestacion,
                 'peso_actual': peso_actual,
@@ -1698,6 +1623,7 @@ def editar_enCinta(request, cabra_id):
         return redirect('info_animales')
     return render(request, 'info/editar/editar_enCinta.html', {'cabra': cabra_data, 'id': cabra_id})
 
+
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_enCinta(request, cabra_id):
     """
@@ -1710,6 +1636,7 @@ def eliminar_enCinta(request, cabra_id):
         messages.error(request, f"Error al eliminar: {e}")
 
     return redirect('info_animales')
+
 
 @login_required_firebase
 def editar_vacunas(request, cabra_id):
@@ -1746,7 +1673,8 @@ def editar_vacunas(request, cabra_id):
             medicamento = request.POST.get('medicamento')
             cantidad = request.POST.get('cantidad')
             via_admin = request.POST.get('via_admin')
-            veterinario_responsable = request.POST.get('veterinario_responsable')
+            veterinario_responsable = request.POST.get(
+                'veterinario_responsable')
 
             cabra_ref.update({
                 'codigo': cod,
@@ -1758,7 +1686,7 @@ def editar_vacunas(request, cabra_id):
                 'color': color,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
-                
+
                 'medicamento': medicamento,
                 'cantidad': cantidad,
                 'via_admin': via_admin,
@@ -1773,6 +1701,7 @@ def editar_vacunas(request, cabra_id):
         return redirect('info_animales')
     return render(request, 'info/editar/editar_vacuna.html', {'cabra': cabra_data, 'id': cabra_id})
 
+
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_vacunas(request, cabra_id):
     """
@@ -1785,6 +1714,7 @@ def eliminar_vacunas(request, cabra_id):
         messages.error(request, f"Error al eliminar: {e}")
 
     return redirect('info_animales')
+
 
 @login_required_firebase
 def editar_enfermas(request, cabra_id):
@@ -1821,7 +1751,8 @@ def editar_enfermas(request, cabra_id):
             mes_gestacion = request.POST.get('mes_gestacion')
             estado_gestacion = request.POST.get('estado_gestacion')
             peso_actual = request.POST.get('peso_actual')
-            veterinario_responsable = request.POST.get('veterinario_responsable')
+            veterinario_responsable = request.POST.get(
+                'veterinario_responsable')
 
             cabra_ref.update({
                 'codigo': cod,
@@ -1833,7 +1764,7 @@ def editar_enfermas(request, cabra_id):
                 'color': color,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
-                
+
                 'mes_gestacion': mes_gestacion,
                 'estado_gestacion': estado_gestacion,
                 'peso_actual': peso_actual,
@@ -1848,6 +1779,7 @@ def editar_enfermas(request, cabra_id):
         return redirect('info_animales')
     return render(request, 'info/editar/editar_enCinta.html', {'cabra': cabra_data, 'id': cabra_id})
 
+
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_enfermas(request, cabra_id):
     """
@@ -1860,6 +1792,7 @@ def eliminar_enfermas(request, cabra_id):
         messages.error(request, f"Error al eliminar: {e}")
 
     return redirect('info_animales')
+
 
 @login_required_firebase
 def editar_produccion(request, cabra_id):
@@ -1896,7 +1829,8 @@ def editar_produccion(request, cabra_id):
             mes_gestacion = request.POST.get('mes_gestacion')
             estado_gestacion = request.POST.get('estado_gestacion')
             peso_actual = request.POST.get('peso_actual')
-            veterinario_responsable = request.POST.get('veterinario_responsable')
+            veterinario_responsable = request.POST.get(
+                'veterinario_responsable')
 
             cabra_ref.update({
                 'codigo': cod,
@@ -1908,7 +1842,7 @@ def editar_produccion(request, cabra_id):
                 'color': color,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
-                
+
                 'mes_gestacion': mes_gestacion,
                 'estado_gestacion': estado_gestacion,
                 'peso_actual': peso_actual,
@@ -1922,6 +1856,7 @@ def editar_produccion(request, cabra_id):
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
     return render(request, 'info/editar/editar_enCinta.html', {'cabra': cabra_data, 'id': cabra_id})
+
 
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_produccion(request, cabra_id):
@@ -2001,6 +1936,7 @@ def csv_produccion(request):
 # =========================
 # EXCEL PRODUCCIÓN
 # =========================
+
 
 @login_required_firebase
 def excel_produccion(request):
@@ -2120,3 +2056,47 @@ def guardar_produccion(request, cabra_id):
     )
 
 
+def lista_cabras(request):
+    uid = request.session.get('uid')
+
+    cabras = []
+
+    docs = db.collection('cabras')\
+        .where('usuario_id', '==', uid)\
+        .stream()
+
+    for doc in docs:
+        cabra = doc.to_dict()
+        cabra['id'] = doc.id
+        cabras.append(cabra)
+
+    return render(request, 'info/produccion.html', {
+        'cabras': cabras
+    })
+
+
+def cabras(request):
+    uid = request.session.get('uid')
+
+    cabras = db.collection('cabras').where('usuario_id', '==', uid).stream()
+
+    lista = []
+    for doc in cabras:
+        data = doc.to_dict()
+        data['id'] = doc.id
+        lista.append(data)
+
+    return render(request, 'info/cabras.html', {'cabras': lista})
+
+def produccion(request):
+    uid = request.session.get('uid')
+
+    registros = db.collection('produccion').where('usuario_id', '==', uid).stream()
+
+    data = []
+    for doc in registros:
+        d = doc.to_dict()
+        d['id'] = doc.id
+        data.append(d)
+
+    return render(request, 'info/produccion.html', {'cabras': data})
