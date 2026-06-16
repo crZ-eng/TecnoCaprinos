@@ -201,12 +201,13 @@
         }
 
         /* =========================
-            PREVIEW IMAGEN
+            PREVIEW IMAGEN (NO SE USA AHORA)
         ========================== */
 
         .preview-container {
             margin-top: 15px;
             text-align: center;
+            display: none; /* Ocultamos el preview-container original */
         }
 
         #preview {
@@ -404,6 +405,7 @@
             <div class="image-placeholder">
 
                 <img
+                    id="imagenPrincipal"
                     src="{% static 'img1.webp' %}"
                     alt="Cabra animada"
                 >
@@ -657,23 +659,30 @@
     </div>
 
     <script>
-
+        // Obtenemos referencias a los elementos
         const inputFoto = document.getElementById("fotoInput");
-        const preview = document.getElementById("preview");
+        const imagenPrincipal = document.getElementById("imagenPrincipal");
 
+        // Escuchamos cuando el usuario selecciona un archivo
         inputFoto.addEventListener("change", function () {
-
+            // Obtenemos el archivo seleccionado
             const archivo = this.files[0];
 
-            if (archivo) {
+            // Si hay un archivo y es una imagen
+            if (archivo && archivo.type.startsWith('image/')) {
+                // Creamos un lector de archivos
+                const reader = new FileReader();
 
-                preview.src = URL.createObjectURL(archivo);
-                preview.style.display = "block";
+                // Cuando el lector termine de cargar la imagen
+                reader.onload = function(e) {
+                    // Reemplazamos la 'src' de la imagen principal con los datos cargados
+                    imagenPrincipal.src = e.target.result;
+                }
 
+                // Iniciamos la lectura del archivo
+                reader.readAsDataURL(archivo);
             }
-
         });
-
     </script>
 
 </body>
