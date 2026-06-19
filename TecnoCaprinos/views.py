@@ -8,129 +8,86 @@ from django.contrib import messages
 from django.http import HttpResponse
 from firebase_admin import firestore, auth
 from config.firebaseConnection import initialize_firebase
-from reportlab.platypus import (
-    SimpleDocTemplate,
-    Table,
-    TableStyle,
-    Paragraph,
-    Spacer
-)
+from reportlab.platypus import ( SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer )
 from functools import wraps
 import requests
 from firebase_admin import firestore
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import landscape, letter
-
+from django.templatetags.static import static
 # Inicializar Firebase
 db = initialize_firebase()
-
-
 # =========================
 # VISTA PRINCIPAL
 # =========================
-
 def bienvenido(request):
     return render(request, 'home.html')
-
-
 # =========================
 # REGISTRO
 # =========================
-
 def registro_usuario(request):
-
     mensaje = None
-
     if request.method == 'POST':
-
         nombre = request.POST.get('nombre')
         email = request.POST.get('email')
         password = request.POST.get('password')
-
         try:
-
-            user = auth.create_user(
-                email=email,
-                password=password
-            )
-
+            user = auth.create_user(email=email,password=password)
             db.collection('usuarios').document(user.uid).set({
                 'nombre': nombre,
                 'email': email,
                 'uid': user.uid,
                 'fecha_registro': firestore.SERVER_TIMESTAMP,
             })
-
             mensaje = f"Te has registrado correctamente 😊: {nombre}"
-
         except Exception as e:
             mensaje = f"Error: {e}"
-
     return render(request, 'registro.html', {
         'mensaje': mensaje
     })
-
-
+    
 # =========================
 # DECORADOR LOGIN
 # =========================
 
 def login_required_firebase(view_func):
-
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
 
         if 'uid' not in request.session:
             messages.warning(request, "Warning, no has iniciado sesión")
             return redirect('login')
-
         return view_func(request, *args, **kwargs)
-
     return _wrapped_view
-
 
 # =========================
 # LOGIN
 # =========================
 
 def login(request):
-
     if 'uid' in request.session:
         return redirect('info_animales')
-
     if request.method == 'POST':
-
         email = request.POST.get('email')
         password = request.POST.get('password')
-
         apiKey = os.getenv('FIREBASE_WEB_API_KEY')
-
         url = f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={apiKey}"
-
         payload = {
             "email": email,
             "password": password,
             "returnSecureToken": True
         }
-
         try:
-
             response = requests.post(url, json=payload)
             data = response.json()
-
             if response.status_code == 200:
-
                 request.session['uid'] = data['localId']
                 request.session['email'] = data['email']
                 request.session['idToken'] = data['idToken']
-
                 messages.success(request, '👌 Acceso correcto al sistema')
-
                 return redirect('info_animales')
-
             else:
-
                 errorMessage = data.get(
                     'error',
                     {}
@@ -138,45 +95,34 @@ def login(request):
                     'message',
                     'UNKNOWN ERROR'
                 )
-
                 errores_comunes = {
                     'INVALID_LOGIN_CREDENTIALS': 'La contraseña es incorrecta o el correo no es válido.',
                     'EMAIL_NOT_FOUND': 'Este correo no está registrado en el sistema.',
                     'USER_DISABLED': 'Esta cuenta ha sido inhabilitada por el administrador.',
                     'TOO_MANY_ATTEMPTS_TRY_LATER': 'Demasiados intentos fallidos. Espere unos minutos.'
                 }
-
                 mensaje_usuario = errores_comunes.get(
                     errorMessage,
                     "Error de autenticación, revisa tus credenciales"
                 )
-
                 messages.error(request, mensaje_usuario)
-
         except requests.exceptions.RequestException:
             messages.error(request, "Error de conexión con el servidor")
-
         except Exception as e:
             messages.error(request, f"Error inesperado: {str(e)}")
-
     return render(request, 'login.html')
-
 
 # =========================
 # CERRAR SESIÓN
 # =========================
 
 def cerrar_sesion(request):
-
     request.session.flush()
-
     messages.info(
         request,
         'Has cerrado sesión correctamente'
     )
-
     return redirect('login')
-
 
 # =========================
 # DASHBOARD
@@ -184,23 +130,14 @@ def cerrar_sesion(request):
 
 @login_required_firebase
 def dashboard(request):
-
     uid = request.session.get('uid')
-
     datosUser = {}
-
     try:
-
         doc_ref = db.collection('usuarios').document(uid)
-
         doc = doc_ref.get()
-
         if doc.exists:
-
             datosUser = doc.to_dict()
-
         else:
-
             datosUser = {
                 'nombre': request.session.get('nombre'),
                 'email': request.session.get('email'),
@@ -208,16 +145,12 @@ def dashboard(request):
                 'uid': request.session.get('uid'),
                 'fecha_registro': firestore.SERVER_TIMESTAMP
             }
-
     except Exception as e:
-
         messages.error(
             request,
             f'Error al cargar los datos: {e}'
         )
-
     return render(request, 'dashboard.html', {'datos': datosUser})
-
 
 # =========================
 # INFO ANIMALES
@@ -226,66 +159,44 @@ def dashboard(request):
 @login_required_firebase
 def info_animales(request):
     uid = request.session.get('uid')
-
     cabras = []
-
     razas = set()
-
     try:
-
         docs = (
-
             db.collection('cabras')
-
             .where('usuario_id', '==', uid)
-
             .order_by(
                 'fecha_anadido',
                 direction=firestore.Query.DESCENDING
             )
-
             .stream()
-
         )
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             cabra['id'] = doc.id
-
             cabras.append(cabra)
-
             # GUARDAR RAZAS ÚNICAS
-
             if cabra.get('raza'):
-
                 razas.add(cabra['raza'])
-
     except Exception as e:
-
         messages.error(
             request,
             f"Hubo un error al obtener sus cabras: {e}"
         )
-
     return render(request, 'info_animales.html',
         {
             'cabras': cabras,
             'razas': sorted(razas)
         }
     )
-
+    
 # =========================
 # AÑADIR CABRA
 # =========================
 
-
 @login_required_firebase
 def anadir_cabra(request):
-
     if request.method == 'POST':
-
         cod = request.POST.get('cod')
         nombre = request.POST.get('nombre')
         raza = request.POST.get('raza')
@@ -295,7 +206,6 @@ def anadir_cabra(request):
         color = request.POST.get('color')
         cod_madre = request.POST.get('cod_madre')
         cod_padre = request.POST.get('cod_padre')
-
         uid = request.session.get('uid')
 
         # =========================
@@ -303,23 +213,18 @@ def anadir_cabra(request):
         # =========================
 
         foto = request.FILES.get('foto')
-
         foto_url = ""
-
         try:
             cabra_existente = db.collection('cabras') \
                 .where('usuario_id', '==', uid) \
                 .where('codigo', '==', cod) \
                 .limit(1) \
                 .stream()
-
             if any(cabra_existente):
-
                 messages.warning(
                     request,
                     "Ya existe una cabra con ese código 🐐"
                 )
-
                 return redirect('anadir_cabra')
 
             # =========================
@@ -327,20 +232,19 @@ def anadir_cabra(request):
             # =========================
 
             if foto:
-
                 resultado = cloudinary.uploader.upload(
                     foto,
                     folder='cabras'
                 )
-
                 foto_url = resultado.get('secure_url')
-
+                
             # =========================
             # GUARDAR EN FIREBASE
             # =========================
-
+            
+            if not foto_url:
+                foto_url = static('/cabra_registro.jpg')
             db.collection('cabras').add({
-
                 'codigo': cod,
                 'nombre': nombre,
                 'raza': raza,
@@ -351,27 +255,21 @@ def anadir_cabra(request):
                 'usuario_id': uid,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
-
                 # NUEVO CAMPO
                 'foto_url': foto_url,
-
                 'fecha_anadido': firestore.SERVER_TIMESTAMP
             })
-
             messages.success(
                 request,
                 "Cabra añadida con éxito 🐐"
             )
             print(foto_url)
             return redirect('info_animales')
-
         except Exception as e:
-
             messages.error(
                 request,
                 f"Error al añadir la cabra: {e}"
             )
-
     return render(
         request,
         'info/anadir.html'
@@ -380,7 +278,6 @@ def anadir_cabra(request):
 # =========================
 # ELIMINAR CABRA
 # =========================
-
 
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_cabra(request, cabra_id):
@@ -392,13 +289,11 @@ def eliminar_cabra(request, cabra_id):
         messages.success(request, "🗑️ Cabra eliminada.")
     except Exception as e:
         messages.error(request, f"Error al eliminar: {e}")
-
     return redirect('info_animales')
 
 # ==============================
 # EDITAR LOS DATOS DE UNA CABRA
 # ==============================
-
 
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def editar_cabra(request, cabra_id):
@@ -407,20 +302,15 @@ def editar_cabra(request, cabra_id):
     """
     uid = request.session.get('uid')
     cabra_ref = db.collection('cabras').document(cabra_id)
-
     try:
         doc = cabra_ref.get()
-
         if not doc.exists:
             messages.error(request, "La cabra no existe")
             return redirect('info_animales')
-
         cabra_data = doc.to_dict()
-
         if cabra_data.get('usuario_id') != uid:
             messages.error(request, "No tienes permiso para editar esta cabra")
             return redirect('info_animales')
-
         if request.method == 'POST':
             nuevo_cod = request.POST.get('nuevo-codigo')
             nuevo_nombre = request.POST.get('nuevo-nombre')
@@ -431,7 +321,6 @@ def editar_cabra(request, cabra_id):
             nuevo_color = request.POST.get('nuevo-color')
             nuevo_cod_madre = request.POST.get('nuevo-cod_madre')
             nuevo_cod_padre = request.POST.get('nuevo-cod_padre')
-
             cabra_ref.update({
                 'codigo': nuevo_cod,
                 'nombre': nuevo_nombre,
@@ -444,19 +333,16 @@ def editar_cabra(request, cabra_id):
                 'codigo_padre': nuevo_cod_padre,
                 'fecha_anadido': firestore.SERVER_TIMESTAMP
             })
-
             messages.success(request, "✅ Cabra actualizada correctamente.")
             return redirect('info_animales')
     except Exception as e:
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
-
     return render(request, 'info/editar.html', {'cabra': cabra_data, 'id': cabra_id})
 
 # =========================
 # EN CINTA
 # =========================
-
 
 @login_required_firebase
 def cinta(request):
@@ -466,18 +352,12 @@ def cinta(request):
         docs = db.collection('en_cinta')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             cabra['id'] = doc.id
-
             cabras.append(cabra)
-
     except Exception as e:
         print(e)
-
     return render(
         request,
         'info/cinta.html',
@@ -485,20 +365,14 @@ def cinta(request):
             'cabras': cabras
         }
     )
-
 @login_required_firebase
 def csv_en_cinta(request):
-
     uid = request.session.get('uid')
-
     response = HttpResponse(content_type='text/csv')
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_en_cinta.csv"'
     )
-
     writer = csv.writer(response)
-
     writer.writerow([
         'Código',
         'Nombre',
@@ -509,17 +383,12 @@ def csv_en_cinta(request):
         'Peso Actual',
         'Veterinario Responsable'
     ])
-
     try:
-
         docs = db.collection('en_cinta')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             writer.writerow([
                 cabra.get('codigo', '-'),
                 cabra.get('nombre', '-'),
@@ -533,20 +402,13 @@ def csv_en_cinta(request):
 
     except Exception as e:
         print(e)
-
     return response
-
 @login_required_firebase
 def excel_en_cinta(request):
-
     uid = request.session.get('uid')
-
     workbook = Workbook()
-
     sheet = workbook.active
-
     sheet.title = 'En Cinta'
-
     sheet.append([
         'Código',
         'Nombre',
@@ -557,17 +419,12 @@ def excel_en_cinta(request):
         'Peso Actual',
         'Veterinario Responsable'
     ])
-
     try:
-
         docs = db.collection('en_cinta')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             sheet.append([
                 cabra.get('codigo', '-'),
                 cabra.get('nombre', '-'),
@@ -578,22 +435,16 @@ def excel_en_cinta(request):
                 cabra.get('peso_actual', '-'),
                 cabra.get('veterinario_responsable', '-')
             ])
-
     except Exception as e:
         print(e)
-
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_en_cinta.xlsx"'
     )
-
     workbook.save(response)
-
     return response
-
 
 # =========================
 # VACUNAS
@@ -601,28 +452,18 @@ def excel_en_cinta(request):
 
 @login_required_firebase
 def vacunas(request):
-
     uid = request.session.get('uid')
-
     cabras = []
-
     try:
-
         docs = db.collection('vacunas')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             cabra['id'] = doc.id
-
             cabras.append(cabra)
-
     except Exception as e:
         print(e)
-
     return render(
         request,
         'info/vacunas.html',
@@ -631,35 +472,24 @@ def vacunas(request):
         }
     )
 
-
 # =========================
 # ENFERMAS
 # =========================
 
 @login_required_firebase
 def enfermas(request):
-
     uid = request.session.get('uid')
-
     cabras = []
-
     try:
-
         docs = db.collection('enfermas')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             cabra['id'] = doc.id
-
             cabras.append(cabra)
-
     except Exception as e:
         print(e)
-
     return render(
         request,
         'info/enfermas.html',
@@ -667,19 +497,14 @@ def enfermas(request):
             'cabras': cabras
         }
     )
-
 def info_completa_cabra(request, cabra_id):
     try:
         doc = db.collection('cabras').document(cabra_id).get()
-
         cabra = doc.to_dict()
-
         cabra['id'] = doc.id
-
     except Exception as e:
         print(e)
         cabra = None
-
     return render(
         request,
         'info_completa_cabras.html',
@@ -687,20 +512,14 @@ def info_completa_cabra(request, cabra_id):
             'cabra': cabra
         }
     )
-
 @login_required_firebase
 def csv_enfermas(request):
-
     uid = request.session.get('uid')
-
     response = HttpResponse(content_type='text/csv')
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_enfermas.csv"'
     )
-
     writer = csv.writer(response)
-
     writer.writerow([
         'Código',
         'Nombre',
@@ -711,17 +530,12 @@ def csv_enfermas(request):
         'Estado Evolución',
         'Veterinario Responsable'
     ])
-
     try:
-
         docs = db.collection('enfermas')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             writer.writerow([
                 cabra.get('codigo', '-'),
                 cabra.get('nombre', '-'),
@@ -732,23 +546,15 @@ def csv_enfermas(request):
                 cabra.get('estado_evolucion', '-'),
                 cabra.get('veterinario_responsable', '-')
             ])
-
     except Exception as e:
         print(e)
-
     return response
-
 @login_required_firebase
 def excel_enfermas(request):
-
     uid = request.session.get('uid')
-
     workbook = Workbook()
-
     sheet = workbook.active
-
     sheet.title = 'Enfermas'
-
     sheet.append([
         'Código',
         'Nombre',
@@ -759,17 +565,12 @@ def excel_enfermas(request):
         'Estado Evolución',
         'Veterinario Responsable'
     ])
-
     try:
-
         docs = db.collection('enfermas')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             sheet.append([
                 cabra.get('codigo', '-'),
                 cabra.get('nombre', '-'),
@@ -780,47 +581,31 @@ def excel_enfermas(request):
                 cabra.get('estado_evolucion', '-'),
                 cabra.get('veterinario_responsable', '-')
             ])
-
     except Exception as e:
         print(e)
-
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_enfermas.xlsx"'
     )
-
     workbook.save(response)
-
     return response
-
 @login_required_firebase
 def pdf_vacunas(request):
-
     uid = request.session.get('uid')
-
     cabras = []
-
     try:
-
         docs = db.collection('vacunas')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             cabra['id'] = doc.id
-
             cabras.append(cabra)
-
     except Exception as e:
-
         print(e)
-
+        
     # =========================
     # RESPUESTA PDF
     # =========================
@@ -828,38 +613,31 @@ def pdf_vacunas(request):
     response = HttpResponse(
         content_type='application/pdf'
     )
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_vacunas.pdf"'
     )
-
+    
     # =========================
     # IMPORT HORIZONTAL
     # =========================
 
     from reportlab.lib.pagesizes import landscape, letter
-
+    
     # =========================
     # DOCUMENTO HORIZONTAL
     # =========================
 
     doc = SimpleDocTemplate(
-
         response,
-
         pagesize=landscape(letter),
-
         rightMargin=20,
         leftMargin=20,
         topMargin=25,
         bottomMargin=20
-
     )
-
     elementos = []
-
     estilos = getSampleStyleSheet()
-
+    
     # =========================
     # TITULO PRINCIPAL
     # =========================
@@ -867,24 +645,18 @@ def pdf_vacunas(request):
     titulo = Paragraph(
         """
         <para align="center">
-
         <font size="24" color="#7F5637">
         <b>TECNOCAPRINOS</b>
         </font>
-
         <br/><br/>
-
         <font size="14" color="#C9A06D">
         REPORTE GENERAL DE VACUNAS
         </font>
-
         </para>
         """,
         estilos['Title']
     )
-
     elementos.append(titulo)
-
     elementos.append(Spacer(1, 20))
 
     # =========================
@@ -892,9 +664,7 @@ def pdf_vacunas(request):
     # =========================
 
     from datetime import datetime
-
     fecha = datetime.now().strftime("%d/%m/%Y %H:%M")
-
     info = Paragraph(
         f"""
         <font size="10" color="#3E2A1F">
@@ -903,9 +673,7 @@ def pdf_vacunas(request):
         """,
         estilos['Normal']
     )
-
     elementos.append(info)
-
     elementos.append(Spacer(1, 18))
 
     # =========================
@@ -913,7 +681,6 @@ def pdf_vacunas(request):
     # =========================
 
     datos = [
-
         [
             'Código',
             'Nombre',
@@ -923,7 +690,6 @@ def pdf_vacunas(request):
             'Medicamento',
             'Vía Administración'
         ]
-
     ]
 
     # =========================
@@ -931,55 +697,43 @@ def pdf_vacunas(request):
     # =========================
 
     for cabra in cabras:
-
         datos.append([
-
             Paragraph(
                 str(cabra.get('codigo', 'No registrado')),
                 estilos['BodyText']
             ),
-
             Paragraph(
                 str(cabra.get('nombre', 'No registrado')),
                 estilos['BodyText']
             ),
-
             Paragraph(
                 str(cabra.get('raza', 'No registrado')),
                 estilos['BodyText']
             ),
-
             Paragraph(
                 str(cabra.get('peso', 'No registrado')),
                 estilos['BodyText']
             ),
-
             Paragraph(
                 str(cabra.get('sexo', 'No registrado')),
                 estilos['BodyText']
             ),
-
             Paragraph(
                 str(cabra.get('dosis', 'No asignado')),
                 estilos['BodyText']
             ),
-
             Paragraph(
                 str(cabra.get('Via_admin', 'No asignado')),
                 estilos['BodyText']
             )
-
         ])
 
     # =========================
     # TABLA PRINCIPAL
     # =========================
     tabla = Table(
-
         datos,
-
         splitByRow=True,
-
         colWidths=[
             80,   # Código
             120,  # Nombre
@@ -989,9 +743,7 @@ def pdf_vacunas(request):
             150,  # Medicamento
             150   # Vía administración
         ],
-
         repeatRows=1
-
     )
 
     # =========================
@@ -1005,20 +757,13 @@ def pdf_vacunas(request):
         # =========================
 
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
-
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-
         ('FONTSIZE', (0, 0), (-1, 0), 11),
-
         ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-
         # AJUSTAR TEXTO
         ('WORDWRAP', (0, 0), (-1, -1), 'CJK'),
-
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-
         ('TOPPADDING', (0, 0), (-1, 0), 12),
 
         # =========================
@@ -1026,11 +771,8 @@ def pdf_vacunas(request):
         # =========================
 
         ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#FFFDF9')),
-
         ('TEXTCOLOR', (0, 1), (-1, -1), colors.HexColor('#3E2A1F')),
-
         ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-
         ('FONTSIZE', (0, 1), (-1, -1), 9),
 
         # =========================
@@ -1038,10 +780,8 @@ def pdf_vacunas(request):
         # =========================
 
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
-
             colors.HexColor('#FFFDF9'),
             colors.HexColor('#F5E6D3')
-
         ]),
 
         # =========================
@@ -1049,7 +789,6 @@ def pdf_vacunas(request):
         # =========================
 
         ('GRID', (0, 0), (-1, -1), 1.2, colors.HexColor('#7F5637')),
-
         ('BOX', (0, 0), (-1, -1), 2, colors.HexColor('#7F5637')),
 
         # =========================
@@ -1057,7 +796,6 @@ def pdf_vacunas(request):
         # =========================
 
         ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
-
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
 
         # =========================
@@ -1065,13 +803,10 @@ def pdf_vacunas(request):
         # =========================
 
         ('TOPPADDING', (0, 1), (-1, -1), 8),
-
         ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
-
     ]))
 
     elementos.append(tabla)
-
     elementos.append(Spacer(1, 25))
 
     # =========================
@@ -1081,18 +816,13 @@ def pdf_vacunas(request):
     footer = Paragraph(
         """
         <para align="center">
-
         <font size="9" color="#7F5637">
-
         Documento generado automáticamente por TECNOCAPRINOS
-
         </font>
-
         </para>
         """,
         estilos['Normal']
     )
-
     elementos.append(footer)
 
     # =========================
@@ -1100,7 +830,6 @@ def pdf_vacunas(request):
     # =========================
 
     doc.build(elementos)
-
     return response
 
 # =========================
@@ -1110,48 +839,35 @@ def pdf_vacunas(request):
 @login_required_firebase
 def produccion(request):
     uid = request.session.get('uid')
-
     registros = db.collection('produccion')\
         .where('usuario_id', '==', uid)\
         .stream()
-
     cabras = []
     for doc in registros:
         data = doc.to_dict()
         data['id'] = doc.id
         cabras.append(data)
-
     return render(request, 'info/produccion.html', {
         'cabras': cabras
     })
+    
 # =========================
 # PDF PRODUCCIÓN
 # =========================
 
-
 @login_required_firebase
 def pdf_produccion(request):
-
     uid = request.session.get('uid')
-
     cabras = []
-
     try:
-
-        docs = db.collection('produccion')\
+        docs = db.collection('Produccion')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             cabra['id'] = doc.id
-
             cabras.append(cabra)
-
     except Exception as e:
-
         print(e)
 
     # =========================
@@ -1161,7 +877,6 @@ def pdf_produccion(request):
     response = HttpResponse(
         content_type='application/pdf'
     )
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_produccion.pdf"'
     )
@@ -1169,22 +884,16 @@ def pdf_produccion(request):
     # =========================
     # DOCUMENTO HORIZONTAL
     # =========================
-
+    
     doc = SimpleDocTemplate(
-
         response,
-
         pagesize=landscape(letter),
-
         rightMargin=15,
         leftMargin=15,
         topMargin=20,
         bottomMargin=20
-
     )
-
     elementos = []
-
     estilos = getSampleStyleSheet()
 
     # =========================
@@ -1194,24 +903,18 @@ def pdf_produccion(request):
     titulo = Paragraph(
         """
         <para align="center">
-
         <font size="24" color="#7F5637">
         <b>TECNOCAPRINOS</b>
         </font>
-
         <br/><br/>
-
         <font size="14" color="#C9A06D">
         REPORTE GENERAL DE PRODUCCIÓN
         </font>
-
         </para>
         """,
         estilos['Title']
     )
-
     elementos.append(titulo)
-
     elementos.append(Spacer(1, 18))
 
     # =========================
@@ -1219,9 +922,7 @@ def pdf_produccion(request):
     # =========================
 
     from datetime import datetime
-
     fecha = datetime.now().strftime("%d/%m/%Y %H:%M")
-
     info = Paragraph(
         f"""
         <font size="10" color="#3E2A1F">
@@ -1230,12 +931,10 @@ def pdf_produccion(request):
         """,
         estilos['Normal']
     )
-
     elementos.append(info)
-
     elementos.append(Spacer(1, 15))
-
-        # =========================
+    
+    # =========================
     # DATOS TABLA
     # =========================
 
@@ -1255,11 +954,8 @@ def pdf_produccion(request):
     # =========================
 
     estilo_celda = estilos['BodyText']
-
     estilo_celda.fontName = 'Helvetica'
-
     estilo_celda.fontSize = 7
-
     estilo_celda.leading = 9
 
     # =========================
@@ -1267,19 +963,15 @@ def pdf_produccion(request):
     # =========================
 
     for cabra in cabras:
-
         observaciones = Paragraph(
             str(cabra.get('observaciones', '-')),
             estilo_celda
         )
-
         responsable = Paragraph(
             str(cabra.get('responsable', '-')),
             estilo_celda
         )
-
         datos.append([
-
             Paragraph(str(cabra.get('codigo', '-')), estilo_celda),
             Paragraph(str(cabra.get('nombre', '-')), estilo_celda),
             Paragraph(str(cabra.get('raza', '-')), estilo_celda),
@@ -1288,7 +980,6 @@ def pdf_produccion(request):
             Paragraph(str(cabra.get('ordeno_tarde', '0')), estilo_celda),
             observaciones,
             responsable
-
         ])
 
     # =========================
@@ -1296,16 +987,11 @@ def pdf_produccion(request):
     # =========================
 
     tabla = Table(
-
         datos,
-
         repeatRows=1,
-
         splitByRow=True,
-
         colWidths=[
-
-            60,   # Código
+            200,   # Código
             120,  # Nombre
             110,  # Raza
             50,   # Peso
@@ -1313,9 +999,7 @@ def pdf_produccion(request):
             70,   # Ordeño tarde
             150,  # Observaciones
             120   # Responsable
-
         ]
-
     )
 
     # =========================
@@ -1323,25 +1007,18 @@ def pdf_produccion(request):
     # =========================
 
     tabla.setStyle(TableStyle([
-
+        
         # =========================
         # HEADER
         # =========================
 
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
-
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-
         ('FONTSIZE', (0, 0), (-1, 0), 9),
-
         ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-
         ('VALIGN', (0, 0), (-1, 0), 'MIDDLE'),
-
         ('TOPPADDING', (0, 0), (-1, 0), 8),
-
         ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
 
         # =========================
@@ -1349,11 +1026,8 @@ def pdf_produccion(request):
         # =========================
 
         ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#FFFDF9')),
-
         ('TEXTCOLOR', (0, 1), (-1, -1), colors.HexColor('#3E2A1F')),
-
         ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-
         ('FONTSIZE', (0, 1), (-1, -1), 7),
 
         # =========================
@@ -1361,11 +1035,8 @@ def pdf_produccion(request):
         # =========================
 
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
-
             colors.HexColor('#FFFDF9'),
-
             colors.HexColor('#F5E6D3')
-
         ]),
 
         # =========================
@@ -1373,7 +1044,6 @@ def pdf_produccion(request):
         # =========================
 
         ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#7F5637')),
-
         ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#7F5637')),
 
         # =========================
@@ -1381,7 +1051,6 @@ def pdf_produccion(request):
         # =========================
 
         ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
-
         ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),
 
         # =========================
@@ -1389,11 +1058,8 @@ def pdf_produccion(request):
         # =========================
 
         ('TOPPADDING', (0, 1), (-1, -1), 5),
-
         ('BOTTOMPADDING', (0, 1), (-1, -1), 5),
-
         ('LEFTPADDING', (0, 0), (-1, -1), 4),
-
         ('RIGHTPADDING', (0, 0), (-1, -1), 4),
 
         # =========================
@@ -1401,11 +1067,9 @@ def pdf_produccion(request):
         # =========================
 
         ('WORDWRAP', (0, 0), (-1, -1), 'LTR'),
-
     ]))
 
     elementos.append(tabla)
-
     elementos.append(Spacer(1, 20))
 
     # =========================
@@ -1415,18 +1079,13 @@ def pdf_produccion(request):
     footer = Paragraph(
         """
         <para align="center">
-
         <font size="9" color="#7F5637">
-
         Documento generado automáticamente por TECNOCAPRINOS
-
         </font>
-
         </para>
         """,
         estilos['Normal']
     )
-
     elementos.append(footer)
 
     # =========================
@@ -1434,7 +1093,6 @@ def pdf_produccion(request):
     # =========================
 
     doc.build(elementos)
-
     return response
 
 @login_required_firebase
@@ -1446,11 +1104,9 @@ def registrar_produccion(request, cabra_id):
             messages.error(request, "La cabra no existe")
             return redirect('info_animales')
         cabra = doc.to_dict()
-
     except Exception as e:
         messages.error(request, f"Error al obtener la cabra: {e}")
         return redirect('info_animales')
-
     if request.method == 'POST':
         if cabra['sexo'] == 'Hembra':
             existe = (
@@ -1459,14 +1115,12 @@ def registrar_produccion(request, cabra_id):
                 .where('usuario_id', '==', uid)
                 .stream()
             )
-
             if list(existe):
                 messages.error(
                     request,
                     "Esta cabra ya está registrada en producción"
                 )
                 return redirect('info_animales')
-
             try:
                 db.collection('produccion').add({
                     'codigo': cabra['codigo'],
@@ -1479,7 +1133,6 @@ def registrar_produccion(request, cabra_id):
                     'codigo_madre': cabra.get('codigo_madre'),
                     'codigo_padre': cabra.get('codigo_padre')
                 })
-
                 messages.success(request, "Cabra registrada en producción 🐐")
                 return redirect('info_animales')
             except Exception as e:
@@ -1489,7 +1142,6 @@ def registrar_produccion(request, cabra_id):
             messages.error(
                 request, 'Solo las hembras pueden entrar en producción')
     return redirect('info_animales')
-
 @login_required_firebase
 def editar_produccion(request, cabra_id):
     """
@@ -1497,20 +1149,15 @@ def editar_produccion(request, cabra_id):
     """
     uid = request.session.get('uid')
     cabra_ref = db.collection('produccion').document(cabra_id)
-
     try:
         doc = cabra_ref.get()
-
         if not doc.exists:
             messages.error(request, "La cabra no existe")
             return redirect('info_animales')
-
         cabra_data = doc.to_dict()
-
         if cabra_data.get('usuario_id') != uid:
             messages.error(request, "No tienes permiso para editar esta cabra")
             return redirect('info_animales')
-
         if request.method == 'POST':
             cod = request.POST.get('codigo')
             nombre = request.POST.get('nombre')
@@ -1520,12 +1167,10 @@ def editar_produccion(request, cabra_id):
             color = request.POST.get('color')
             cod_madre = request.POST.get('cod_madre')
             cod_padre = request.POST.get('cod_padre')
-
             ordeno_manana = request.POST.get('ordeno_manana')
             ordeno_tarde = request.POST.get('ordeno_tarde')
             observaciones = request.POST.get('observaciones')
             responsable = request.POST.get('responsable')
-
             cabra_ref.update({
                 'codigo': cod,
                 'nombre': nombre,
@@ -1535,22 +1180,18 @@ def editar_produccion(request, cabra_id):
                 'color': color,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
-
                 'ordeno_manana': ordeno_manana,
                 'ordeno_tarde': ordeno_tarde,
                 'observaciones': observaciones,
                 'responsable': responsable,
                 'fecha_anadido': firestore.SERVER_TIMESTAMP
             })
-
             messages.success(request, "✅ Cabra actualizada correctamente.")
             return redirect('info_animales')
     except Exception as e:
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
     return render(request, 'info/editar/editar_produccion.html', {'cabra': cabra_data, 'id': cabra_id})
-
-
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_produccion(request, cabra_id):
     """
@@ -1561,7 +1202,6 @@ def eliminar_produccion(request, cabra_id):
         messages.success(request, "🗑️ Cabra eliminada de Produccion.")
     except Exception as e:
         messages.error(request, f"Error al eliminar: {e}")
-
     return redirect('info_animales')
 
 # =========================
@@ -1570,19 +1210,14 @@ def eliminar_produccion(request, cabra_id):
 
 @login_required_firebase
 def csv_produccion(request):
-
     uid = request.session.get('uid')
-
     response = HttpResponse(
         content_type='text/csv'
     )
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_produccion.csv"'
     )
-
     writer = csv.writer(response)
-
     writer.writerow([
         'Código',
         'Nombre',
@@ -1593,19 +1228,13 @@ def csv_produccion(request):
         'Observaciones',
         'Responsable'
     ])
-
     try:
-
         docs = db.collection('produccion')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             writer.writerow([
-
                 cabra.get('codigo', '-'),
                 cabra.get('nombre', '-'),
                 cabra.get('raza', '-'),
@@ -1614,32 +1243,22 @@ def csv_produccion(request):
                 cabra.get('ordeno_tarde', '0'),
                 cabra.get('observaciones', '-'),
                 cabra.get('responsable', '-')
-
             ])
-
     except Exception as e:
-
         print(e)
-
     return response
+
 # =========================
 # EXCEL PRODUCCIÓN
 # =========================
 
-
 @login_required_firebase
 def excel_produccion(request):
-
     uid = request.session.get('uid')
-
     workbook = Workbook()
-
     sheet = workbook.active
-
     sheet.title = 'Producción'
-
     headers = [
-
         'Código',
         'Nombre',
         'Raza',
@@ -1648,21 +1267,14 @@ def excel_produccion(request):
         'Ordeño Tarde',
         'Observaciones',
         'Responsable'
-
     ]
-
     sheet.append(headers)
-
     try:
-
         docs = db.collection('produccion')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             sheet.append([
                 cabra.get('codigo', '-'),
                 cabra.get('nombre', '-'),
@@ -1673,59 +1285,37 @@ def excel_produccion(request):
                 cabra.get('observaciones', '-'),
                 cabra.get('responsable', '-')
             ])
-
     except Exception as e:
-
         print(e)
-
     response = HttpResponse(
-
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-
     )
-
     response['Content-Disposition'] = (
-
         'attachment; filename="reporte_produccion.xlsx"'
-
     )
-
     workbook.save(response)
-
     return response
-
-
 @login_required_firebase
 def guardar_produccion(request, cabra_id):
     cabra_ref = db.collection('cabras').document(cabra_id)
-
     doc = cabra_ref.get()
-
     if not doc.exists:
         messages.error(request, "registro no encontrado")
         return redirect('produccion')
-
     cabra = doc.to_dict()
-
     if request.method == 'POST':
         ordeno_manana = request.POST.get('ordeno_manana')
         ordeno_tarde = request.POST.get('ordeno_tarde')
         responsable = request.POST.get('responsable')
         observaciones = request.POST.get('observaciones')
-
         cabra_ref.update({
-
             'ordeno_manana': ordeno_manana,
             'ordeno_tarde': ordeno_tarde,
             'responsable': responsable,
             'observaciones': observaciones
-
         })
-
         messages.success(request, "Datos actualizados correctamente")
-
         return redirect('produccion')
-
     return render(
         request,
         'info/agregar/_produccion.html',
@@ -1734,93 +1324,63 @@ def guardar_produccion(request, cabra_id):
             'id': cabra_id
         }
     )
-
-
 def lista_cabras(request):
     uid = request.session.get('uid')
-
     cabras = []
-
     docs = db.collection('cabras')\
         .where('usuario_id', '==', uid)\
         .stream()
-
     for doc in docs:
         cabra = doc.to_dict()
         cabra['id'] = doc.id
         cabras.append(cabra)
-
     return render(request, 'info/produccion.html', {
         'cabras': cabras
     })
-
-
 def cabras(request):
     uid = request.session.get('uid')
-
     cabras = db.collection('cabras').where('usuario_id', '==', uid).stream()
-
     lista = []
     for doc in cabras:
         data = doc.to_dict()
         data['id'] = doc.id
         lista.append(data)
-
     return render(request, 'info/cabras.html', {'cabras': lista})
-
 def produccion(request):
     uid = request.session.get('uid')
-
     registros = db.collection('produccion').where('usuario_id', '==', uid).stream()
-
     data = []
     for doc in registros:
         d = doc.to_dict()
         d['id'] = doc.id
         data.append(d)
-
     return render(request, 'info/produccion.html', {'cabras': data})
-
 @login_required_firebase
 def pdf_enfermas(request):
-
     uid = request.session.get('uid')
-
     cabras = []
-
     try:
-
         docs = db.collection('enfermas')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
             cabra['id'] = doc.id
-
             cabras.append(cabra)
-
     except Exception as e:
         print(e)
-
     response = HttpResponse(
         content_type='application/pdf'
     )
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_enfermas.pdf"'
     )
-
     doc = SimpleDocTemplate(
         response,
         pagesize=landscape(letter)
     )
-
     elementos = []
-
     estilos = getSampleStyleSheet()
-
     titulo = Paragraph(
         """
         <para align="center">
@@ -1833,10 +1393,8 @@ def pdf_enfermas(request):
         """,
         estilos['Title']
     )
-
     elementos.append(titulo)
     elementos.append(Spacer(1, 20))
-
     datos = [[
         'Código',
         'Nombre',
@@ -1847,9 +1405,7 @@ def pdf_enfermas(request):
         'Estado Evolución',
         'Veterinario'
     ]]
-
     for cabra in cabras:
-
         datos.append([
             cabra.get('codigo', '-'),
             cabra.get('nombre', '-'),
@@ -1860,74 +1416,49 @@ def pdf_enfermas(request):
             cabra.get('estado_evolucion', '-'),
             cabra.get('veterinario_responsable', '-')
         ])
-
     tabla = Table(
         datos,
         repeatRows=1
     )
-
     tabla.setStyle(TableStyle([
-
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
-
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
             colors.HexColor('#FFFDF9'),
             colors.HexColor('#F5E6D3')
         ]),
-
         ('ALIGN', (0, 0), (-1, -1), 'CENTER')
     ]))
-
     elementos.append(tabla)
-
     doc.build(elementos)
-
     return response
-
-
 @login_required_firebase
 def pdf_en_cinta(request):
-
     uid = request.session.get('uid')
-
     cabras = []
-
     try:
-
         docs = db.collection('en_cinta')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
             cabra['id'] = doc.id
-
             cabras.append(cabra)
-
     except Exception as e:
         print(e)
-
     response = HttpResponse(
         content_type='application/pdf'
     )
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_en_cinta.pdf"'
     )
-
     doc = SimpleDocTemplate(
         response,
         pagesize=landscape(letter)
     )
-
     elementos = []
-
     estilos = getSampleStyleSheet()
-
     titulo = Paragraph(
         """
         <para align="center">
@@ -1940,10 +1471,8 @@ def pdf_en_cinta(request):
         """,
         estilos['Title']
     )
-
     elementos.append(titulo)
     elementos.append(Spacer(1, 20))
-
     datos = [[
         'Código',
         'Nombre',
@@ -1954,9 +1483,7 @@ def pdf_en_cinta(request):
         'Peso Actual',
         'Veterinario'
     ]]
-
     for cabra in cabras:
-
         datos.append([
             cabra.get('codigo', '-'),
             cabra.get('nombre', '-'),
@@ -1967,33 +1494,23 @@ def pdf_en_cinta(request):
             cabra.get('peso_actual', '-'),
             cabra.get('veterinario_responsable', '-')
         ])
-
     tabla = Table(
         datos,
         repeatRows=1
     )
-
     tabla.setStyle(TableStyle([
-
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
-
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
             colors.HexColor('#FFFDF9'),
             colors.HexColor('#F5E6D3')
         ]),
-
         ('ALIGN', (0, 0), (-1, -1), 'CENTER')
     ]))
-
     elementos.append(tabla)
-
     doc.build(elementos)
-
     return response
-
 @login_required_firebase
 def registrar_seguimiento_gestacion(request, cabra_id):
     uid = request.session.get('uid')
@@ -2003,11 +1520,9 @@ def registrar_seguimiento_gestacion(request, cabra_id):
             messages.error(request, "La cabra no existe")
             return redirect('info_animales')
         cabra = doc.to_dict()
-
     except Exception as e:
         messages.error(request, f"Error al obtener la cabra: {e}")
         return redirect('info_animales')
-
     if request.method == 'POST':
         if cabra['sexo'] == 'Hembra':
             existe = (
@@ -2016,14 +1531,12 @@ def registrar_seguimiento_gestacion(request, cabra_id):
                 .where('usuario_id', '==', uid)
                 .stream()
             )
-
             if list(existe):
                 messages.error(
                     request,
                     "Esta cabra ya está registrada en En CInta"
                 )
                 return redirect('info_animales')
-
             try:
                 db.collection('en_cinta').add({
                     'codigo': cabra['codigo'],
@@ -2036,7 +1549,6 @@ def registrar_seguimiento_gestacion(request, cabra_id):
                     'codigo_madre': cabra.get('codigo_madre'),
                     'codigo_padre': cabra.get('codigo_padre')
                 })
-
                 messages.success(request, "Cabra registrada en En Cinta 🐐")
                 return redirect('info_animales')
             except Exception as e:
@@ -2046,7 +1558,6 @@ def registrar_seguimiento_gestacion(request, cabra_id):
             messages.error(
                 request, 'Solo las hembras pueden entrar en En Cinta')
     return redirect('info_animales')
-
 @login_required_firebase
 def editar_enCinta(request, cabra_id):
     """
@@ -2054,20 +1565,15 @@ def editar_enCinta(request, cabra_id):
     """
     uid = request.session.get('uid')
     cabra_ref = db.collection('en_cinta').document(cabra_id)
-
     try:
         doc = cabra_ref.get()
-
         if not doc.exists:
             messages.error(request, "La cabra no existe")
             return redirect('info_animales')
-
         cabra_data = doc.to_dict()
-
         if cabra_data.get('usuario_id') != uid:
             messages.error(request, "No tienes permiso para editar esta cabra")
             return redirect('info_animales')
-
         if request.method == 'POST':
             cod = request.POST.get('codigo')
             nombre = request.POST.get('nombre')
@@ -2078,13 +1584,10 @@ def editar_enCinta(request, cabra_id):
             color = request.POST.get('color')
             cod_madre = request.POST.get('cod_madre')
             cod_padre = request.POST.get('cod_padre')
-
             mes_gestacion = request.POST.get('mes_gestacion')
             estado_gestacion = request.POST.get('estado_gestacion')
             peso_actual = request.POST.get('peso_actual')
-            veterinario_responsable = request.POST.get(
-                'veterinario_responsable')
-
+            veterinario_responsable = request.POST.get('veterinario_responsable')
             cabra_ref.update({
                 'codigo': cod,
                 'nombre': nombre,
@@ -2095,21 +1598,18 @@ def editar_enCinta(request, cabra_id):
                 'color': color,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
-
                 'mes_gestacion': mes_gestacion,
                 'estado_gestacion': estado_gestacion,
                 'peso_actual': peso_actual,
                 'veterinario_responsable': veterinario_responsable,
                 'fecha_anadido': firestore.SERVER_TIMESTAMP
             })
-
             messages.success(request, "✅ Cabra actualizada correctamente.")
             return redirect('info_animales')
     except Exception as e:
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
     return render(request, 'info/editar/editar_enCinta.html', {'cabra': cabra_data, 'id': cabra_id})
-
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_enCinta(request, cabra_id):
     """
@@ -2120,9 +1620,7 @@ def eliminar_enCinta(request, cabra_id):
         messages.success(request, "🗑️ Cabra eliminada de En Cinta.")
     except Exception as e:
         messages.error(request, f"Error al eliminar: {e}")
-
     return redirect('info_animales')
-
 @login_required_firebase
 def registrar_vacuna(request, cabra_id):
     uid = request.session.get('uid')
@@ -2132,11 +1630,9 @@ def registrar_vacuna(request, cabra_id):
             messages.error(request, "La cabra no existe")
             return redirect('info_animales')
         cabra = doc.to_dict()
-
     except Exception as e:
         messages.error(request, f"Error al obtener la cabra: {e}")
         return redirect('info_animales')
-
     if request.method == 'POST':
         existe = (
             db.collection('vacunas')
@@ -2144,7 +1640,6 @@ def registrar_vacuna(request, cabra_id):
             .where('usuario_id', '==', uid)
             .stream()
         )
-
         if list(existe):
             messages.error(
                 request,
@@ -2164,19 +1659,14 @@ def registrar_vacuna(request, cabra_id):
                 'codigo_madre': cabra.get('codigo_madre'),
                 'codigo_padre': cabra.get('codigo_padre')
             })
-
             messages.success(request, "Cabra registrada en Vacunas 🐐")
             return redirect('info_animales')
-
         except Exception as e:
-
             messages.error(
                 request,
                 f"Error al registrar la cabra en Vacunas: {e}"
             )
-
     return redirect('info_animales')
-
 @login_required_firebase
 def editar_vacunas(request, cabra_id):
     """
@@ -2184,20 +1674,15 @@ def editar_vacunas(request, cabra_id):
     """
     uid = request.session.get('uid')
     cabra_ref = db.collection('vacunas').document(cabra_id)
-
     try:
         doc = cabra_ref.get()
-
         if not doc.exists:
             messages.error(request, "La cabra no existe")
             return redirect('info_animales')
-
         cabra_data = doc.to_dict()
-
         if cabra_data.get('usuario_id') != uid:
             messages.error(request, "No tienes permiso para editar esta cabra")
             return redirect('info_animales')
-
         if request.method == 'POST':
             cod = request.POST.get('codigo')
             nombre = request.POST.get('nombre')
@@ -2208,13 +1693,10 @@ def editar_vacunas(request, cabra_id):
             color = request.POST.get('color')
             cod_madre = request.POST.get('cod_madre')
             cod_padre = request.POST.get('cod_padre')
-
             medicamento = request.POST.get('medicamento')
             cantidad = request.POST.get('cantidad')
             via_admin = request.POST.get('via_admin')
-            veterinario_responsable = request.POST.get(
-                'veterinario_responsable')
-
+            veterinario_responsable = request.POST.get('veterinario_responsable')
             cabra_ref.update({
                 'codigo': cod,
                 'nombre': nombre,
@@ -2225,21 +1707,18 @@ def editar_vacunas(request, cabra_id):
                 'color': color,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
-
                 'medicamento': medicamento,
                 'cantidad': cantidad,
                 'via_admin': via_admin,
                 'veterinario_responsable': veterinario_responsable,
                 'fecha_anadido': firestore.SERVER_TIMESTAMP
             })
-
             messages.success(request, "✅ Cabra actualizada correctamente.")
             return redirect('info_animales')
     except Exception as e:
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
     return render(request, 'info/editar/editar_vacuna.html', {'cabra': cabra_data, 'id': cabra_id})
-
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_vacunas(request, cabra_id):
     """
@@ -2250,22 +1729,15 @@ def eliminar_vacunas(request, cabra_id):
         messages.success(request, "🗑️ Cabra eliminada de Vacunas.")
     except Exception as e:
         messages.error(request, f"Error al eliminar: {e}")
-
     return redirect('info_animales')
-
 @login_required_firebase
 def csv_vacunas(request):
-
     uid = request.session.get('uid')
-
     response = HttpResponse(content_type='text/csv')
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_vacunas.csv"'
     )
-
     writer = csv.writer(response)
-
     writer.writerow([
         'Código',
         'Nombre',
@@ -2277,17 +1749,12 @@ def csv_vacunas(request):
         'Vía Administración',
         'Veterinario Responsable'
     ])
-
     try:
-
         docs = db.collection('vacunas')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             writer.writerow([
                 cabra.get('codigo', '-'),
                 cabra.get('nombre', '-'),
@@ -2299,23 +1766,15 @@ def csv_vacunas(request):
                 cabra.get('via_admin', '-'),
                 cabra.get('veterinario_responsable', '-')
             ])
-
     except Exception as e:
         print(e)
-
     return response
-
 @login_required_firebase
 def excel_vacunas(request):
-
     uid = request.session.get('uid')
-
     workbook = Workbook()
-
     sheet = workbook.active
-
     sheet.title = 'Vacunas'
-
     sheet.append([
         'Código',
         'Nombre',
@@ -2327,17 +1786,12 @@ def excel_vacunas(request):
         'Vía Administración',
         'Veterinario Responsable'
     ])
-
     try:
-
         docs = db.collection('vacunas')\
             .where('usuario_id', '==', uid)\
             .stream()
-
         for doc in docs:
-
             cabra = doc.to_dict()
-
             sheet.append([
                 cabra.get('codigo', '-'),
                 cabra.get('nombre', '-'),
@@ -2349,22 +1803,16 @@ def excel_vacunas(request):
                 cabra.get('via_admin', '-'),
                 cabra.get('veterinario_responsable', '-')
             ])
-
     except Exception as e:
         print(e)
-
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
-
     response['Content-Disposition'] = (
         'attachment; filename="reporte_vacunas.xlsx"'
     )
-
     workbook.save(response)
-
     return response
-
 @login_required_firebase
 def registrar_enfermo(request, cabra_id):
     uid = request.session.get('uid')
@@ -2374,11 +1822,9 @@ def registrar_enfermo(request, cabra_id):
             messages.error(request, "La cabra no existe")
             return redirect('info_animales')
         cabra = doc.to_dict()
-
     except Exception as e:
         messages.error(request, f"Error al obtener la cabra: {e}")
         return redirect('info_animales')
-
     if request.method == 'POST':
         existe = (
             db.collection('enfermas')
@@ -2386,7 +1832,6 @@ def registrar_enfermo(request, cabra_id):
             .where('usuario_id', '==', uid)
             .stream()
         )
-
         if list(existe):
             messages.error(
                 request,
@@ -2406,19 +1851,14 @@ def registrar_enfermo(request, cabra_id):
                 'codigo_madre': cabra.get('codigo_madre'),
                 'codigo_padre': cabra.get('codigo_padre')
             })
-
             messages.success(request, "Cabra registrada como enferma 🐐")
             return redirect('info_animales')
-
         except Exception as e:
-
             messages.error(
                 request,
                 f"Error al registrar la cabra enferma: {e}"
             )
-
     return redirect('info_animales')
-
 @login_required_firebase
 def editar_enfermas(request, cabra_id):
     """
@@ -2426,20 +1866,15 @@ def editar_enfermas(request, cabra_id):
     """
     uid = request.session.get('uid')
     cabra_ref = db.collection('enfermas').document(cabra_id)
-
     try:
         doc = cabra_ref.get()
-
         if not doc.exists:
             messages.error(request, "La cabra no existe")
             return redirect('info_animales')
-
         cabra_data = doc.to_dict()
-
         if cabra_data.get('usuario_id') != uid:
             messages.error(request, "No tienes permiso para editar esta cabra")
             return redirect('info_animales')
-
         if request.method == 'POST':
             cod = request.POST.get('codigo')
             nombre = request.POST.get('nombre')
@@ -2450,12 +1885,10 @@ def editar_enfermas(request, cabra_id):
             color = request.POST.get('color')
             cod_madre = request.POST.get('cod_madre')
             cod_padre = request.POST.get('cod_padre')
-
             tratamiento = request.POST.get('tratamiento')
             temperatura = request.POST.get('temperatura') + "°"
             estado_evolucion = request.POST.get('estado_evolucion')
             veterinario_responsable = request.POST.get('veterinario_responsable')
-
             cabra_ref.update({
                 'codigo': cod,
                 'nombre': nombre,
@@ -2466,21 +1899,18 @@ def editar_enfermas(request, cabra_id):
                 'color': color,
                 'codigo_madre': cod_madre,
                 'codigo_padre': cod_padre,
-
                 'tratamiento': tratamiento,
                 'temperatura': temperatura,
                 'estado_evolucion': estado_evolucion,
                 'veterinario_responsable': veterinario_responsable,
                 'fecha_anadido': firestore.SERVER_TIMESTAMP
             })
-
             messages.success(request, "✅ Cabra actualizada correctamente.")
             return redirect('info_animales')
     except Exception as e:
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
     return render(request, 'info/editar/editar_enfermas.html', {'cabra': cabra_data, 'id': cabra_id})
-
 @login_required_firebase  # Verifica que el usuario esta loggeado
 def eliminar_enfermas(request, cabra_id):
     """
@@ -2491,5 +1921,4 @@ def eliminar_enfermas(request, cabra_id):
         messages.success(request, "🗑️ Cabra eliminada de Enfermas.")
     except Exception as e:
         messages.error(request, f"Error al eliminar: {e}")
-
     return redirect('info_animales')
