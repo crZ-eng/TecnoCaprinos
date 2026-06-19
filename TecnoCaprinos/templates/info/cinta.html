@@ -16,6 +16,9 @@
             --color-trazos: #7F5637;
             --white: #f8f8f8;
             --header-table: #d2b48c;
+
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.18);
         }
 
         body {
@@ -111,6 +114,59 @@
             margin: 40px auto 20px auto;
             padding: 30px;
             box-sizing: border-box;
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #7F5637, #ab7b41);
+            color: white;
+            padding: 12px 22px;
+            border-radius: 18px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Fredoka', sans-serif;
+            display: flex;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: 0.3s ease;
+        }
+
+        .dropdown-export {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            min-width: 220px;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 2px solid var(--color-trazos);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: var(--color-trazos);
+            font-weight: 600;
+            background: #fff8e1;
+            transition: 0.25s ease;
+        }
+
+        .dropdown-content a:hover {
+            background: var(--bg-cuadros);
+            padding-left: 24px;
+        }
+
+        .dropdown-export:hover .dropdown-content {
+            display: block;
         }
 
         .table-title {
@@ -327,6 +383,17 @@
             <img src="{% static 'logo.jpeg' %}" alt="Logo">
         </a>
         <h1 class="header-title">TECNOCAPRINOS - EN CINTA</h1>
+        <div class="dropdown-export">
+            <button class="btn-pdf dropdown-btn">
+                Descargar ▼
+            </button>
+        
+            <div class="dropdown-content">
+                <a href="{% url 'pdf_en_cinta' %}">Descargar PDF</a>
+                <a href="{% url 'excel_en_cinta' %}">Descargar Excel</a>
+                <a href="{% url 'csv_en_cinta' %}">Descargar CSV</a>
+            </div>
+        </div>
     </div>
 
     <!-- CONTENIDO -->

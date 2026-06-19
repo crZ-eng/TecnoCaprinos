@@ -14,6 +14,7 @@
             --white: #f8f8f8;
             --header-table: #d2b48c;
             --primario-oscuro: #5c3e27;
+            
             --shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
             --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.18);
         }
@@ -77,16 +78,10 @@
             font-family: 'Fredoka', sans-serif;
             display: flex;
             align-items: center;
-            gap: 10px;
             border: none;
             cursor: pointer;
             box-shadow: var(--shadow);
             transition: 0.3s ease;
-        }
-
-        .btn-pdf:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
         }
 
         .dropdown-export {
@@ -98,7 +93,7 @@
             position: absolute;
             right: 0;
             top: 100%;
-            margin-top: 10px;
+            margin-top: 0px;
             min-width: 220px;
             background: white;
             border-radius: 18px;
@@ -394,11 +389,6 @@
 
             .header-title {
                 font-size: 0.85rem;
-            }
-
-            .btn-pdf {
-                padding: 8px 12px;
-                font-size: 0.75rem;
             }
         }
     </style>
