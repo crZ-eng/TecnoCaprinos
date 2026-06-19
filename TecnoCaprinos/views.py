@@ -922,7 +922,7 @@ def pdf_produccion(request):
 
     try:
 
-        docs = db.collection('vacunas')\
+        docs = db.collection('Produccion')\
             .where('usuario_id', '==', uid)\
             .stream()
 
