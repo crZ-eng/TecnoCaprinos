@@ -256,26 +256,14 @@
         }
 
     </style>
-
 </head>
-
 <body>
     <div class="white-header">
         <div class="header-left">
-            <img 
-                src="{% static 'logo.jpeg' %}" 
-                alt="Logo TecnoCaprinos"
-                class="logo"
-            >
-            <h1 class="header-title">
-                TECNOCAPRINOS
-            </h1>
+            <img src="{% static 'logo.jpeg' %}" alt="Logo TecnoCaprinos" class="logo">
+            <h1 class="header-title">TECNOCAPRINOS</h1>
         </div>
-        <div class="welcome-user">
-            Bienvenido/a,
-            <strong>
-                {{ datos.nombre|default:"Ganadero" }}
-            </strong>
+        <div class="welcome-user">Bienvenido/a,<strong>{{ datos.nombre|default:"Ganadero" }}</strong>
         </div>
     </div>
     <div class="contenido">
@@ -287,80 +275,30 @@
                     </div>
                 {% endfor %}
             {% endif %}
-            <h2 class="dashboard-title">
-                Perfil del Ganadero
-            </h2>
-
-            <!-- INFORMACION -->
-
+            <h2 class="dashboard-title">Perfil del Ganadero</h2>
             <div class="perfil-container">
-
                 <div class="info-box">
-
-                    <div class="info-title">
-                        Nombre
-                    </div>
-
-                    <div class="info-data">
-                        {{ datos.nombre }}
-                    </div>
-
+                    <div class="info-title">Nombre:</div>
+                    <div class="info-data">{{ datos.nombre }}</div>
                 </div>
-
                 <div class="info-box">
-
-                    <div class="info-title">
-                        Correo Electrónico
-                    </div>
-
-                    <div class="info-data">
-                        {{ datos.email }}
-                    </div>
-
+                    <div class="info-title">Correo Electrónico:</div>
+                    <div class="info-data">{{ datos.email }}</div>
                 </div>
-
                 <div class="info-box">
-
-                    <div class="info-title">
-                        Miembro Desde
-                    </div>
-
-                    <div class="info-data">
-                        {{ datos.fecha_registro }}
-                    </div>
-
+                    <div class="info-title">Miembro Desde</div>
+                    <div class="info-data">{{ datos.fecha_registro }}</div>
                 </div>
-
             </div>
-
-            <!-- BOTONES -->
-
             <div class="acciones">
-
-                <a href="{% url 'info_animales' %}" class="btn btn-primary">
-
-                    🐐 Ver Mis Animales
-
-                </a>
-
+                <a href="{% url 'info_animales' %}" class="btn btn-primary">🐐 Ver Mis Animales</a>
+                <a href="{% url 'quienesSomos' %}" class="btn btn-primary">❓ Quienes Somos ❓</a>
                 <form action="{% url 'logout' %}" method="POST">
-
                     {% csrf_token %}
-
-                    <button type="submit" class="btn btn-logout">
-
-                        Cerrar Sesión
-
-                    </button>
-
+                    <button type="submit" class="btn btn-logout">Cerrar Sesión</button>
                 </form>
-
             </div>
-
         </div>
-
     </div>
-
 </body>
-
 </html>

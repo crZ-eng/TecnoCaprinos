@@ -16,16 +16,21 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import landscape, letter
 from django.templatetags.static import static
+
 # Inicializar Firebase
 db = initialize_firebase()
+
 # =========================
 # VISTA PRINCIPAL
 # =========================
+
 def bienvenido(request):
     return render(request, 'home.html')
+
 # =========================
 # REGISTRO
 # =========================
+
 def registro_usuario(request):
     mensaje = None
     if request.method == 'POST':
@@ -189,7 +194,14 @@ def info_animales(request):
             'razas': sorted(razas)
         }
     )
-    
+
+# ========================
+# QUIENES SOMOS
+# ========================
+
+def quienesSomos(request):
+    return render(request, 'quienesSomos.html')
+   
 # =========================
 # AÑADIR CABRA
 # =========================
