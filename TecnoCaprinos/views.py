@@ -32,26 +32,67 @@ def bienvenido(request):
 # =========================
 
 def registro_usuario(request):
-    mensaje = None
+
     if request.method == 'POST':
-        nombre = request.POST.get('nombre')
-        email = request.POST.get('email')
+        nombre = request.POST.get('nombre', '').strip()
+        email = request.POST.get('email', '').strip()
         password = request.POST.get('password')
+        TyC = request.POST.get('TyC')
+
         try:
-            user = auth.create_user(email=email,password=password)
+
+            if not nombre:
+                messages.error(request, "Debes ingresar tu nombre.")
+                return render(request, 'registro.html')
+
+            if not TyC:
+                messages.error(request, "Debes aceptar los Términos y Condiciones.")
+                return render(request, 'registro.html')
+
+            user = auth.create_user(
+                email=email,
+                password=password
+            )
+
             db.collection('usuarios').document(user.uid).set({
                 'nombre': nombre,
                 'email': email,
                 'uid': user.uid,
+                'TyC': TyC,
                 'fecha_registro': firestore.SERVER_TIMESTAMP,
             })
-            mensaje = f"Te has registrado correctamente 😊: {nombre}"
+
+            messages.success(
+                request,
+                f"😊 Bienvenido {nombre}, tu cuenta fue creada correctamente."
+            )
+
+            return redirect('login')
         except Exception as e:
-            mensaje = f"Error: {e}"
-    return render(request, 'registro.html', {
-        'mensaje': mensaje
-    })
-    
+
+            error = str(e)
+
+            errores = {
+                "EMAIL_EXISTS": "Ya existe una cuenta registrada con ese correo.",
+                "INVALID_EMAIL": "El correo electrónico no es válido.",
+                "INVALID_PASSWORD": "La contraseña debe tener al menos 6 caracteres.",
+                "MISSING_EMAIL": "Debes ingresar un correo electrónico.",
+                "MISSING_PASSWORD": "Debes ingresar una contraseña.",
+                "USER_DISABLED": "Esta cuenta ha sido deshabilitada.",
+                "TOO_MANY_ATTEMPTS_TRY_LATER": "Demasiados intentos. Inténtalo más tarde."
+            }
+
+            mensaje = "Ocurrió un error al registrar la cuenta."
+
+            for codigo, texto in errores.items():
+                if codigo in error:
+                    mensaje = texto
+                    break
+
+            messages.error(request, mensaje)
+
+    return render(request, 'registro.html', {'mensaje': mensaje})
+
 # =========================
 # DECORADOR LOGIN
 # =========================
