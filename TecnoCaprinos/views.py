@@ -117,6 +117,48 @@ def login(request):
             messages.error(request, f"Error inesperado: {str(e)}")
     return render(request, 'login.html')
 
+#==========================
+# RECUPERAR CONTRASEÑA
+#==========================
+
+def recuperar_password(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+
+        apiKey = os.getenv("FIREBASE_WEB_API_KEY")
+
+        url = f"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={apiKey}"
+
+        payload = {
+            "requestType": "PASSWORD_RESET",
+            "email": email
+        }
+
+        try:
+            response = requests.post(url, json=payload)
+            
+            if response.status_code == 200:
+                messages.success(
+                    request,
+                    "Si el correo está registrado, recibirás un enlace para restablecer tu contraseña. REVISA TU SPAM, PROMOCIONES, ETC."
+                )
+                return redirect("login")
+
+            data = response.json()
+            error = data.get("error", {}).get("message")
+
+            errores = {
+                "EMAIL_NOT_FOUND": "No existe una cuenta con ese correo.",
+                "INVALID_EMAIL": "El correo no es válido."
+            }
+
+            messages.error(request, errores.get(error, "Ocurrió un error."))
+
+        except Exception:
+            messages.error(request, "Error de conexión con Firebase.")
+
+    return render(request, "recuperar_password.html")
+
 # =========================
 # CERRAR SESIÓN
 # =========================
@@ -201,7 +243,7 @@ def info_animales(request):
 
 def quienesSomos(request):
     return render(request, 'quienesSomos.html')
-   
+
 # =========================
 # AÑADIR CABRA
 # =========================

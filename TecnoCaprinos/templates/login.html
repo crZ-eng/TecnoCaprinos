@@ -5,12 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ganado Digital - Iniciar Sesión</title>
-
     <link rel="icon" href="{% static 'logo.jpeg' %}">
     <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Besley&display=swap" rel="stylesheet">
-
     <style>
-        /* ===== BODY ===== */
         body {
             margin: 0;
             padding: 0;
@@ -24,20 +21,17 @@
             overflow-x: hidden; 
         }
 
-        /* ===== CONTENEDOR GENERAL (AJUSTADO PARA CLONAR IMAGE_21D60B.JPG) ===== */
-        /* Cambiado a width: auto para que el formulario y la cabra se queden juntos en el centro */
         .container {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            gap: 80px; /* Separación exacta entre los dos bloques */
+            gap: 80px;
             width: auto; 
             padding: 40px;
             box-sizing: border-box;
         }
 
-        /* ===== BLOQUE DE LOGIN ===== */
         .login-box {
             display: flex;
             flex-direction: column;
@@ -45,7 +39,6 @@
             flex-shrink: 0; 
         }
 
-        /* ===== FORMULARIO ===== */
         form {
             background: #EAD4B8;
             padding: 40px 30px;
@@ -66,7 +59,6 @@
             margin: 0;
         }
 
-        /* ===== INPUTS ===== */
         input {
             width: 91%;
             padding: 14px;
@@ -84,7 +76,6 @@
             opacity: 0.7;
         }
 
-        /* ===== BOTÓN ===== */
         .btn {
             display: flex;
             justify-content: center;
@@ -103,7 +94,6 @@
             transition: 0.3s;
         }
 
-        /* ===== LINKS ===== */
         .links {
             margin-top: 20px;
             text-align: center;
@@ -118,7 +108,6 @@
             font-size: 14px;
         }
 
-        /* ===== IMAGEN (PC - FLUJO NATURAL CENTRAL) ===== */
         .imagen {
             display: flex;
             justify-content: center;
@@ -127,7 +116,7 @@
         }
 
         .imagen img {
-            width: 450px; /* Tamaño ideal y controlado para que se vea igual a la foto */
+            width: 450px;
             height: 450px;
             object-fit: cover;
             border-radius: 50%; 
@@ -135,9 +124,6 @@
             box-shadow: 0 20px 30px rgba(0,0,0,0.2);
         }
 
-        /* ==========================================================
-        ===== RESPONSIVE GENERAL (REMANENTE SIN TOCAR EL ESCRITORIO) =====
-        ========================================================== */
         @media (max-width: 1024px) {
             body {
                 align-items: flex-start;
@@ -177,43 +163,31 @@
         }
     </style>
 </head>
-
 <body>
-
     <div class="container">
-
-        <!-- BLOQUE DE LOGIN -->
         <div class="login-box">
             <form method="POST">
                 {% csrf_token %}
                 <h2>Iniciar Sesión</h2>
-
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
-
                 <div class="btn">
                     <button type="submit">iniciar sesión</button>
                 </div>
-
                 {% if messages %}
                     {% for message in messages %}
                         <p style="color: red; text-align: center; font-size: 12px; margin-top: 10px;">{{ message }}</p>
                     {% endfor %}
                 {% endif %}
             </form>
-
             <div class="links">
-                <a href="#" class="link">¿Olvidaste tu Contraseña?</a>
+                <a href="{% url 'recuperar_password'%}" class="link">¿Olvidaste tu Contraseña?</a>
                 <a href="{% url 'registro' %}" class="link" style="text-decoration: underline;">¿No tienes cuenta? regístrate</a>
             </div>
         </div>
-
-        <!-- LADO DERECHO (IMAGEN COPIADA DE IMAGE_21D60B.JPG) -->
         <div class="imagen">
             <img src="{% static 'cabrafeliz.jpg' %}" alt="cabra">
         </div>
-
     </div>
-
 </body>
 </html>
