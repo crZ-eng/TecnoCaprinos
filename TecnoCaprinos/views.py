@@ -32,6 +32,7 @@ def bienvenido(request):
 # =========================
 
 def registro_usuario(request):
+    mensaje = ""
 
     if request.method == 'POST':
         nombre = request.POST.get('nombre', '').strip()
@@ -40,14 +41,15 @@ def registro_usuario(request):
         TyC = request.POST.get('TyC')
 
         try:
-
             if not nombre:
-                messages.error(request, "Debes ingresar tu nombre.")
-                return render(request, 'registro.html')
+                mensaje = "Debes ingresar tu nombre."
+                messages.error(request, mensaje)
+                return render(request, 'registro.html', {'mensaje': mensaje})
 
             if not TyC:
-                messages.error(request, "Debes aceptar los Términos y Condiciones.")
-                return render(request, 'registro.html')
+                mensaje = "Debes aceptar los Términos y Condiciones."
+                messages.error(request, mensaje)
+                return render(request, 'registro.html', {'mensaje': mensaje})
 
             user = auth.create_user(
                 email=email,
@@ -68,8 +70,8 @@ def registro_usuario(request):
             )
 
             return redirect('login')
-        except Exception as e:
 
+        except Exception as e:
             error = str(e)
 
             errores = {
