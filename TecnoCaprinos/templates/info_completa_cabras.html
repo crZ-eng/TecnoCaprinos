@@ -23,7 +23,12 @@
             min-height: 100vh;
         }
 
-        .white-header {
+        h1, h2, h3, h4{
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
             width: 100%;
             background-color: var(--white);
             display: flex;
@@ -48,10 +53,9 @@
 
         .title {
             color: var(--color-trazos);
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 30px;
-            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #foto-cabra {
@@ -72,6 +76,11 @@
             flex-direction: column;
         }
 
+        .btn-izquierda button{
+            width: 100%;
+            font-size: 1rem;
+        }
+
         .container {
             background-color: var(--bg-cuadros);
             border-radius: 30px;
@@ -80,15 +89,28 @@
             padding: 20px;
             display: flex;
             flex-direction: column;
+            align-items: center;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
 
-        .container h3,
+        .contenido {
+            grid-column: 1 / 3;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 7px
+        }
+
+        .container .title,
         .container .image-placeholder,
         .container .info-item {
-            grid-column: 1 / 4;
+            grid-column: 1 / 3;
+        }
+
+        .container .title{
+            display: flex;
+            justify-content: center;
         }
 
         .datos_cabra {
@@ -156,33 +178,20 @@
             transform: scale(1.02);
         }
 
-        @media (max-width: 950px) {
-            .white-header {
-                padding: 10px 20px;
-                flex-direction: column;
-                gap: 10px;
+        @media (max-width: 992px) {
+
+            .header {
+                padding: 10px 25px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
                 text-align: center;
             }
 
-            .white-header div {
-                display: none; /* Oculta el div espaciador */
-            }
-
-            .header-title {
-                font-size: 2rem;
-            }
-
-            .container {
-                grid-template-columns: 1fr;
-                margin: 10px;
-                padding: 15px;
-            }
-
-            .container h3,
-            .container .image-placeholder,
-            .container .info-item,
-            .datos_cabra {
-                grid-column: 1 / 2;
+            #foto-cabra {
+                width: 220px;
+                height: 220px;
             }
 
             .image-placeholder {
@@ -190,9 +199,57 @@
                 gap: 20px;
             }
 
+            .btn-izquierda {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .contenido {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-item {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .header {
+                gap: 10px;
+                padding: 15px;
+                text-align: center;
+            }
+
+            .header h1 {
+                display: none;
+            }
+
+            .logo-container img {
+                height: 50px;
+            }
+
+            .irDashboard svg {
+                width: 45px;
+                height: 45px;
+            }
+
+            .container {
+                margin: 10px;
+                padding: 15px;
+                border-width: 5px;
+            }
+
             #foto-cabra {
-                width: 200px;
-                height: 200px;
+                width: 180px;
+                height: 180px;
+            }
+
+            .image-placeholder {
+                flex-direction: column;
+                gap: 20px;
             }
 
             .btn-izquierda {
@@ -201,24 +258,36 @@
 
             .btn-izquierda button {
                 width: 100%;
+                font-size: 1rem;
+            }
+
+            .contenido {
+                grid-template-columns: 1fr;
+            }
+
+            .datos_cabra {
+                padding: 10px 15px;
+            }
+
+            .datos_cabra h2 {
+                font-size: 1rem;
             }
 
             .info-item {
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
+                align-items: stretch;
             }
 
             .info-item a {
                 text-align: center;
-                width: 100%;
-                box-sizing: border-box;
             }
         }
     </style>
 </head>
 <body>
-    <div class="white-header">
+    <div class="header">
         <div class="logo-container">
             <a href="{% url 'info_animales' %}">
                 <img src="{% static 'logo.jpeg' %}" alt="Logo">
@@ -257,38 +326,40 @@
                 </form>
             </div>
         </div>
-        <div class="datos_cabra">
-            <h2>Codigo: <span style="font-weight: normal;">{{ cabra.codigo }}</span></h2>
-        </div>
-        <div class="datos_cabra">
-            <h2>Nombre: <span style="font-weight: normal;">{{ cabra.nombre }}</span></h2>
-        </div>
-        <div class="datos_cabra">
-            <h2>Color: <span style="font-weight: normal;">{{ cabra.color }}</span></h2>
-        </div>
-        <div class="datos_cabra">
-            <h2>Peso: <span style="font-weight: normal;">{{ cabra.peso }}</span></h2>
-        </div>
-        <div class="datos_cabra">
-            <h2>Fecha de Nacimiento: <span style="font-weight: normal;">{{ cabra.fecha_nacimiento }}</span></h2>
-        </div>
-        <div class="datos_cabra">
-            <h2>Raza: <span style="font-weight: normal;">{{ cabra.raza }}</span></h2>
-        </div>
-        <div class="datos_cabra">
-            <h2>Sexo: <span style="font-weight: normal;">{{ cabra.sexo }}</span></h2>
-        </div>
-        <div class="datos_cabra">
-            <h2>Codigo de la Madre: <span style="font-weight: normal;">{{ cabra.codigo_madre }}</span></h2>
-        </div>
-        <div class="datos_cabra">
-            <h2>Codigo del Padre: <span style="font-weight: normal;">{{ cabra.codigo_padre }}</span></h2>
-        </div>
-        <div class="info-item">
-            <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
-            <a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">Editar</a>
-            <a href="{% url 'eliminar_cabra' cabra.id %}" onclick="return confirm('¿Seguro que deseas eliminar esta cabra?');" style="color: red;">Eliminar</a>
-            <a href="{% url 'todo_cabra' cabra.codigo %}">Ver todo sobre {{ cabra.nombre }}</a>
+        <div class="contenido">
+            <div class="datos_cabra">
+                <h2>Codigo: <span style="font-weight: normal;">{{ cabra.codigo }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Nombre: <span style="font-weight: normal;">{{ cabra.nombre }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Color: <span style="font-weight: normal;">{{ cabra.color }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Peso: <span style="font-weight: normal;">{{ cabra.peso }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Fecha de Nacimiento: <span style="font-weight: normal;">{{ cabra.fecha_nacimiento }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Raza: <span style="font-weight: normal;">{{ cabra.raza }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Sexo: <span style="font-weight: normal;">{{ cabra.sexo }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Codigo de la Madre: <span style="font-weight: normal;">{{ cabra.codigo_madre }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Codigo del Padre: <span style="font-weight: normal;">{{ cabra.codigo_padre }}</span></h2>
+            </div>
+            <div class="info-item">
+                <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
+                <a href="{% url 'editar_cabra' cabra.id %}" style="color: rgb(0, 191, 0);">Editar</a>
+                <a href="{% url 'eliminar_cabra' cabra.id %}" onclick="return confirm('¿Seguro que deseas eliminar esta cabra?');" style="color: red;">Eliminar</a>
+                <a href="{% url 'todo_cabra' cabra.codigo %}">Ver todo sobre {{ cabra.nombre }}</a>
+            </div>
         </div>
     </div>
 </body>

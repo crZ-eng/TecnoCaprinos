@@ -1685,7 +1685,7 @@ def editar_enCinta(request, cabra_id):
             estado_gestacion = request.POST.get('estado_gestacion')
             peso_actual = request.POST.get('peso_actual')
             veterinario_responsable = request.POST.get('veterinario_responsable')
-            
+
             cabra_ref.update({
                 'codigo': cod,
                 'nombre': nombre,
@@ -1733,38 +1733,25 @@ def registrar_vacuna(request, cabra_id):
     except Exception as e:
         messages.error(request, f"Error al obtener la cabra: {e}")
         return redirect('info_animales')
-    if request.method == 'POST':
-        existe = (
-            db.collection('vacunas')
-            .where('codigo', '==', cabra['codigo'])
-            .where('usuario_id', '==', uid)
-            .stream()
-        )
-        if list(existe):
-            messages.error(
-                request,
-                "Esta cabra ya está registrada en vacunas"
-            )
-            return redirect('info_animales')
-        try:
-            db.collection('vacunas').add({
-                'codigo': cabra['codigo'],
-                'nombre': cabra['nombre'],
-                'raza': cabra['raza'],
-                'peso': cabra['peso'],
-                'fecha_nacimiento': cabra['fecha_nacimiento'],
-                'sexo': cabra['sexo'],
-                'color': cabra['color'],
-                'usuario_id': uid,
-                'codigo_madre': cabra.get('codigo_madre'),
-                'codigo_padre': cabra.get('codigo_padre')
-            })
-            messages.success(request, "Cabra registrada en Vacunas 🐐")
-            return redirect('info_animales')
-        except Exception as e:
-            messages.error(
-                request,
-                f"Error al registrar la cabra en Vacunas: {e}"
+    try:
+        db.collection('vacunas').add({
+            'codigo': cabra['codigo'],
+            'nombre': cabra['nombre'],
+            'raza': cabra['raza'],
+            'peso': cabra['peso'],
+            'fecha_nacimiento': cabra['fecha_nacimiento'],
+            'sexo': cabra['sexo'],
+            'color': cabra['color'],
+            'usuario_id': uid,
+            'codigo_madre': cabra.get('codigo_madre'),
+            'codigo_padre': cabra.get('codigo_padre')
+        })
+        messages.success(request, "Cabra registrada en Vacunas 🐐")
+        return redirect('info_animales')
+    except Exception as e:
+        messages.error(
+            request,
+            f"Error al registrar la cabra en Vacunas: {e}"
             )
     return redirect('info_animales')
 

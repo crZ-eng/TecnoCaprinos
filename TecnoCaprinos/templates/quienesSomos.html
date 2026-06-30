@@ -104,50 +104,79 @@
             font-size: 25px;
         }
 
-        @media(max-width: 768px) {
-            .header {
-                padding: 15px 20px;
-                flex-wrap: nowrap;
-                justify-content: space-between;
-            }
+        @media (max-width: 1024px) {
 
-            .header .header-title {
-                display: none;
-            }
-
-            .logo-container {
-                flex: none;
-            }
-
-            .irDashboard {
-                flex: none;
-            }
-
-            .main-container {
-                padding: 20px;
-                border-radius: 28px;
-            }
-
-            .top-content {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .section-title {
-                text-align: center;
+            .header-title{
                 font-size: 2rem;
             }
 
-            .search-bar {
-                min-width: 100%;
+            .quienesSomos{
+                flex-direction: column;
+                padding: 40px;
+                gap: 40px;
             }
 
-            .cards-grid {
-                grid-template-columns: 1fr;
+            #logoQuienesSomos{
+                width: 280px;
+                height: 280px;
             }
 
-            .bottom-actions {
-                justify-content: center;
+            #quienesSomos{
+                margin: 0;
+                text-align: justify;
+            }
+
+            .contenido{
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .header{
+                gap: 15px;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .header-title{
+                display: none;
+            }
+
+            .logo-container img{
+                height: 50px;
+            }
+
+            #btnVolver{
+                font-size: 18px;
+                padding: 10px 20px;
+            }
+
+            .contenido{
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .quienesSomos{
+                flex-direction: column;
+                padding: 10px;
+                gap: 30px;
+            }
+
+            #logoQuienesSomos{
+                width: 180px;
+                height: 180px;
+            }
+
+            #subtitle{
+                text-align: center;
+            }
+
+            #quienesSomos{
+                margin: 0;
+                font-size: 16px;
+                line-height: 1.7;
+                text-align: justify;
             }
         }
     </style>
