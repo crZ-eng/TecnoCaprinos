@@ -3,23 +3,41 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from dotenv import load_dotenv
 
-load_dotenv()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 def initialize_firebase():
-    if not firebase_admin._apps:
-        try:
-            base_dir = os.path.dirname(os.path.abspath(__file__))
 
-            file_name = os.getenv('FIREBASE_KEYS_PATH')
-            cert_path = os.path.join(base_dir, file_name)
+    if firebase_admin._apps:
+        return firestore.client()
 
-            if not os.path.exists(cert_path):
-                raise FileNotFoundError(f" ❌ No se encontró el archivo en: {cert_path}")
+    try:
 
-            cred = credentials.Certificate(cert_path)
-            firebase_admin.initialize_app(cred)
-            print(f" 👌 Firebase SDK inicializado con ruta absoluta")
-        except Exception as e:
-            print(f" ❌ Error al inicializar Firebase: {e}")
-            return None
-    return firestore.client()
+        file_name = os.getenv("FIREBASE_KEYS_PATH")
+
+        if not file_name:
+            raise Exception(
+                "No existe FIREBASE_KEYS_PATH dentro del archivo .env"
+            )
+
+        cert_path = os.path.join(BASE_DIR, file_name)
+
+        if not os.path.exists(cert_path):
+            raise FileNotFoundError(
+                f"No existe el archivo:\n{cert_path}"
+            )
+
+        cred = credentials.Certificate(cert_path)
+
+        firebase_admin.initialize_app(cred)
+
+        print("✅ Firebase inicializado correctamente")
+
+        return firestore.client()
+
+    except Exception as e:
+
+        print(f"❌ Error Firebase: {e}")
+
+        return None

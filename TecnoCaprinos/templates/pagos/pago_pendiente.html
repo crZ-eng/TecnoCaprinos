@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+Pago Pendiente
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card text-center shadow">
+
+        <div class="card-body">
+
+            <h1 class="text-warning">
+
+                ⏳ Pago en proceso
+
+            </h1>
+
+            <br>
+
+            <p>
+
+                Estamos esperando la confirmación del pago.
+
+            </p>
+
+            <p>
+
+                Actualizaremos tu plan automáticamente cuando Wompi confirme la transacción.
+
+            </p>
+
+            <a href="{% url 'dashboard' %}" class="btn btn-warning">
+
+                Volver al Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

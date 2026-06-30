@@ -1,0 +1,274 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoCaprinos | Planes</title>
+
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        body{
+            font-family: 'Fredoka', sans-serif;
+            background:#C9A06D;
+            margin:0;
+            color:#6d4b31;
+        }
+
+        .header{
+            background:white;
+            border-bottom:4px solid #7F5637;
+            padding:15px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logo{
+            height:60px;
+        }
+
+        h1{
+            color:#EAD4B8;
+            -webkit-text-stroke:1px #7F5637;
+        }
+
+        .container{
+            width:90%;
+            max-width:1200px;
+            margin:40px auto;
+        }
+
+        .card{
+            background:#EAD4B8;
+            border:5px solid #7F5637;
+            border-radius:25px;
+            padding:25px;
+            margin-bottom:30px;
+        }
+
+        .planes{
+            display:flex;
+            gap:25px;
+            flex-wrap:wrap;
+        }
+
+        .plan{
+            flex:1;
+            min-width:280px;
+            background:white;
+            border-radius:20px;
+            border:3px solid #7F5637;
+            padding:25px;
+        }
+
+        .plan h2{
+            margin-top:0;
+        }
+
+        ul{
+            padding-left:20px;
+        }
+
+        .btn{
+            display:block;
+            width:100%;
+            padding:12px;
+            text-align:center;
+            text-decoration:none;
+            border-radius:15px;
+            font-weight:bold;
+            margin-top:20px;
+        }
+
+        .gratis{
+            background:#888;
+            color:white;
+        }
+
+        .pro{
+            background:#0d6efd;
+            color:white;
+        }
+
+        .premium{
+            background:#198754;
+            color:white;
+        }
+
+        .actual{
+            background:#666;
+            color:white;
+            cursor:not-allowed;
+        }
+
+        .progress{
+            background:#ddd;
+            height:18px;
+            border-radius:10px;
+            overflow:hidden;
+            margin-top:10px;
+        }
+
+        .progress-bar{
+            background:#198754;
+            height:100%;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <img src="{% static 'logo.jpeg' %}" class="logo">
+
+    <h1>Centro de Suscripción</h1>
+
+</div>
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>💳 Tu plan actual</h2>
+
+        <h3>{{ plan_actual|title }}</h3>
+
+        {% if limite == -1 %}
+
+            <p><strong>{{ cabras }}</strong> / ∞ cabras</p>
+
+        {% else %}
+
+            <p><strong>{{ cabras }}</strong> / {{ limite }} cabras</p>
+
+            <div class="progress">
+
+                <div class="progress-bar"
+                     style="width:{% widthratio cabras limite 100 %}%">
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    <div class="planes">
+
+        <div class="plan">
+
+            <h2>🐐 Gratis</h2>
+
+            <h3>$0</h3>
+
+            <ul>
+                <li>10 Cabras</li>
+                <li>Sin PDF</li>
+                <li>Sin Excel</li>
+                <li>Sin CSV</li>
+                <li>Sin Gráficos</li>
+            </ul>
+
+            {% if plan_actual == "gratis" %}
+
+                <button class="btn actual">
+
+                    Plan Actual
+
+                </button>
+
+            {% else %}
+
+                <a href="#" class="btn gratis">
+
+                    Cambiar
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+        <div class="plan">
+
+            <h2>🚜 Profesional</h2>
+
+            <h3>$25.000</h3>
+
+            <ul>
+                <li>50 Cabras</li>
+                <li>PDF</li>
+                <li>Categorías</li>
+                <li>Sin Excel</li>
+                <li>Sin CSV</li>
+            </ul>
+
+            {% if plan_actual == "profesional" %}
+
+                <button class="btn actual">
+
+                    Plan Actual
+
+                </button>
+
+            {% else %}
+
+                <a href="{% url 'checkout' 'profesional' %}" class="btn pro">
+
+                    Comprar
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+        <div class="plan">
+
+            <h2>👑 Premium</h2>
+
+            <h3>$45.000</h3>
+
+            <ul>
+                <li>Cabras ilimitadas</li>
+                <li>PDF</li>
+                <li>Excel</li>
+                <li>CSV</li>
+                <li>Gráficos</li>
+            </ul>
+
+            {% if plan_actual == "premium" %}
+
+                <button class="btn actual">
+
+                    Plan Actual
+
+                </button>
+
+            {% else %}
+
+                <a href="{% url 'checkout' 'premium' %}" class="btn premium">
+
+                    Comprar
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

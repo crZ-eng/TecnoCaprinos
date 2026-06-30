@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+Pago Exitoso
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card text-center shadow">
+
+        <div class="card-body">
+
+            <h1 class="text-success">
+
+                ✅ Pago realizado correctamente
+
+            </h1>
+
+            <br>
+
+            <p>
+
+                Tu suscripción ha sido actualizada.
+
+            </p>
+
+            <br>
+
+            <a href="{% url 'dashboard' %}" class="btn btn-success">
+
+                Ir al Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

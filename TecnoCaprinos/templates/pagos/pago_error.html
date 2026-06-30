@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+Pago Rechazado
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card text-center shadow">
+
+        <div class="card-body">
+
+            <h1 class="text-danger">
+
+                ❌ El pago no pudo realizarse
+
+            </h1>
+
+            <br>
+
+            <p>
+
+                Intenta nuevamente o utiliza otro método de pago.
+
+            </p>
+
+            <br>
+
+            <a href="{% url 'planes' %}" class="btn btn-danger">
+
+                Volver a los planes
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

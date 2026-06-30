@@ -1,0 +1,377 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TecnoCaprinos | Checkout</title>
+
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root{
+
+            --bg-principal:#C9A06D;
+            --bg-cuadros:#EAD4B8;
+            --color-trazos:#7F5637;
+            --white:#ffffff;
+
+        }
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Fredoka',sans-serif;
+        }
+
+        body{
+
+            background:var(--bg-principal);
+
+        }
+
+        .header{
+
+            background:white;
+
+            border-bottom:4px solid var(--color-trazos);
+
+            padding:18px 40px;
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+        }
+
+        .logo{
+
+            height:60px;
+
+        }
+
+        .titulo{
+
+            font-size:2rem;
+
+            color:var(--bg-cuadros);
+
+            -webkit-text-stroke:1px var(--color-trazos);
+
+        }
+
+        .contenedor{
+
+            width:90%;
+
+            max-width:800px;
+
+            margin:40px auto;
+
+        }
+
+        .card{
+
+            background:var(--bg-cuadros);
+
+            border:5px solid var(--color-trazos);
+
+            border-radius:25px;
+
+            padding:35px;
+
+        }
+
+        h2{
+
+            text-align:center;
+
+            margin-bottom:25px;
+
+            color:var(--color-trazos);
+
+        }
+
+        h3{
+
+            margin-top:20px;
+
+            color:#6d4b31;
+
+        }
+
+        hr{
+
+            margin:20px 0;
+
+            border:none;
+
+            border-top:2px solid #7F5637;
+
+        }
+
+        ul{
+
+            padding-left:25px;
+
+            margin-top:10px;
+
+        }
+
+        li{
+
+            margin-bottom:8px;
+
+        }
+
+        .precio{
+
+            font-size:2rem;
+
+            font-weight:bold;
+
+            color:#198754;
+
+        }
+
+        .metodos{
+
+            display:grid;
+
+            grid-template-columns:repeat(2,1fr);
+
+            gap:15px;
+
+            margin-top:20px;
+
+        }
+
+        .metodo{
+
+            background:white;
+
+            border:2px solid #7F5637;
+
+            border-radius:15px;
+
+            padding:20px;
+
+            text-align:center;
+
+            font-size:1.1rem;
+
+        }
+
+        .btn{
+
+            display:block;
+
+            width:100%;
+
+            padding:15px;
+
+            margin-top:30px;
+
+            background:#198754;
+
+            color:white;
+
+            text-decoration:none;
+
+            text-align:center;
+
+            border-radius:18px;
+
+            font-size:1.1rem;
+
+            font-weight:bold;
+
+            transition:.3s;
+
+        }
+
+        .btn:hover{
+
+            background:#157347;
+
+        }
+
+        .volver{
+
+            background:#7F5637;
+
+            margin-top:15px;
+
+        }
+
+        .volver:hover{
+
+            background:#6b472d;
+
+        }
+
+        @media(max-width:700px){
+
+            .metodos{
+
+                grid-template-columns:1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <img src="{% static 'logo.jpeg' %}" class="logo">
+
+    <h1 class="titulo">
+
+        TECNOCAPRINOS
+
+    </h1>
+
+</div>
+
+<div class="contenedor">
+
+    <div class="card">
+
+        <h2>
+
+            💳 Confirmar Compra
+
+        </h2>
+
+        <h3>
+
+            {{ plan.nombre }}
+
+        </h3>
+
+        <hr>
+
+        <h3>
+
+            Precio
+
+        </h3>
+
+        <div class="precio">
+
+            $ {{ plan.precio }}
+
+        </div>
+
+        <hr>
+
+        <h3>
+
+            Beneficios
+
+        </h3>
+
+        <ul>
+
+            {% if plan.cabras == -1 %}
+
+                <li>Cabras ilimitadas</li>
+
+            {% else %}
+
+                <li>{{ plan.cabras }} Cabras</li>
+
+            {% endif %}
+
+            {% if plan.categorias %}
+            <li>Categorías</li>
+            {% endif %}
+
+            {% if plan.pdf %}
+            <li>Exportar PDF</li>
+            {% endif %}
+
+            {% if plan.excel %}
+            <li>Exportar Excel</li>
+            {% endif %}
+
+            {% if plan.csv %}
+            <li>Exportar CSV</li>
+            {% endif %}
+
+            {% if plan.graficos %}
+            <li>Gráficos de Producción</li>
+            {% endif %}
+
+        </ul>
+
+        <hr>
+
+        <h3>
+
+            Métodos de Pago
+
+        </h3>
+
+        <div class="metodos">
+
+            <div class="metodo">
+
+                💳 Visa
+
+            </div>
+
+            <div class="metodo">
+
+                💳 Mastercard
+
+            </div>
+
+            <div class="metodo">
+
+                🟣 Nequi
+
+            </div>
+
+            <div class="metodo">
+
+                🔵 Daviplata
+
+            </div>
+
+        </div>
+
+        <a href="#" class="btn">
+
+            Continuar con el Pago
+
+        </a>
+
+        <a href="{% url 'planes' %}" class="btn volver">
+
+            ← Volver a Planes
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
