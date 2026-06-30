@@ -1,0 +1,20 @@
+[33m271153c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mZ[m[33m, [m[1;31morigin/Z[m[33m, [m[1;31morigin/JRMM[m[33m)[m HEAD@{0}: pull origin JRMM: Fast-forward
+[33me4eac73[m HEAD@{1}: rebase (abort): returning to refs/heads/Z
+[33m6f33e1d[m HEAD@{2}: commit (merge): union rama Z JRMM (terminos y condiciones y recuperar contraseña)
+[33mdad44e9[m HEAD@{3}: commit: creación html pagos (nuevas vistas y archivos independientes)
+[33m4a76247[m HEAD@{4}: pull origin main --rebase (pick): se añade la imagen en grande en lugar de abajo
+[33m44ff547[m HEAD@{5}: pull origin main --rebase (pick): responsive de info_completa_cabras
+[33m44920f8[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/alejodark[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{6}: pull origin main --rebase (start): checkout 44920f8fe222b84c35f0de8f2051ce747928cc24
+[33me4eac73[m HEAD@{7}: commit (merge): union ramas (eliminación de espacios en views para optimización)
+[33m71cef91[m HEAD@{8}: commit: union rama laura con (imagen de cabra en añadir actualizada)
+[33m31233b7[m[33m ([m[1;31morigin/laura[m[33m)[m HEAD@{9}: pull origin laura: Fast-forward
+[33m6d841a3[m HEAD@{10}: pull origin main: Fast-forward
+[33m792745c[m HEAD@{11}: commit: ultima union de todas las ramas entrega de vistas completas y descaga de informes
+[33m86d7d23[m HEAD@{12}: commit: solucion de conflicto rama alejodark
+[33ma7adcd2[m HEAD@{13}: commit: re estructuracion rama Z
+[33m6723270[m HEAD@{14}: commit: Union ramas Z alejo 2
+[33m369af62[m HEAD@{15}: pull origin main: Merge made by the 'ort' strategy.
+[33me96ddff[m HEAD@{16}: commit (merge): Union ramas Z alejo
+[33m17f92ce[m HEAD@{17}: pull origin laura: Merge made by the 'ort' strategy.
+[33m5a9937b[m HEAD@{18}: pull origin JRMM: Merge made by the 'ort' strategy.
+[33m07dda01[m HEAD@{19}: commit: cambio apykey por real para lanzamiedo despliegue
