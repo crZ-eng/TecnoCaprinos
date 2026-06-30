@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoCaprinos - Todos los Datos</title>
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* (Mantenemos tus estilos originales intactos) */
+        :root {
+            --bg-principal: #C9A06D;
+            --bg-cuadros: #EAD4B8;
+            --color-trazos: #7F5637;
+            --white: #f8f8f8;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg-principal);
+            min-height: 100vh;
+        }
+
+        .white-header {
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            box-sizing: border-box;
+            border-bottom: 4px solid var(--color-trazos);
+        }
+
+        .logo-container img {
+            height: 60px;
+        }
+
+        .left-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .title {
+            color: var(--color-trazos);
+            text-align: center;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        .top{
+            background-color: var(--bg-cuadros);
+            border-radius: 30px;
+            border: 5px var(--color-trazos) solid;
+            margin: 20px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: grid;
+            grid-template-columns: 66.66% 33.33%;
+        }
+
+        #foto-cabra {
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            border: solid 1px var(--color-trazos);
+            gap: 15px;
+        }
+
+        .datosGenerales, .datosEnfermos, .datosGestacionales, .datosProducción, .datosVacunas {
+            background-color: var(--bg-cuadros);
+            border-radius: 30px;
+            border: 5px var(--color-trazos) solid;
+            margin: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .datosGenerales h3, .datosEnfermos h3, .datosGestacionales h3, .datosProducción h3, .datosVacunas h3{
+            grid-column: 1 / 5;
+        }
+
+        .datos_cabra {
+            background-color: var(--white);
+            border: 3px solid var(--color-trazos);
+            border-radius: 18px;
+            padding: 12px 18px;
+            transition: transform 0.2s;
+        }
+
+        .datos_cabra:hover {
+            transform: scale(1.01);
+        }
+
+        .datos_cabra h2 {
+            margin: 0;
+            color: var(--color-trazos);
+            font-size: 1.1rem;
+        }
+
+        .datos_cabra span {
+            font-weight: normal;
+            color: #5f432b;
+        }
+
+        .lineaDivisora{
+            border: var(--color-trazos) 2.5px solid;
+            border-radius: 30px;
+            grid-column: 1 / 3;
+        }
+
+        .contenido{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+    </style>
+</head>
+<body>
+    <div class="white-header">
+        <div class="logo-container">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo TecnoCaprinos">
+        </div>
+        <h1 class="title">TECNOCAPRINOS</h1>
+        <a href="{% url 'dashboard' %}" class="irDashboard">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="#c5a373">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+            </svg>
+        </a>
+    </div>
+    <div class="top">
+        <h2 class="title">Todos los Datos de {{ cabra.nombre }}</h2>
+        <img src="{{ cabra.foto_url }}" id="foto-cabra" alt="foto-cabra">
+    </div>
+    <div class="contenido">
+        <!-- ========================= -->
+        <!-- ==== DATOS GENERALES ==== -->
+        <!-- ========================= -->
+
+        <div class="datosGenerales">
+            <h3 class="title">Datos Generales</h3>
+            <div class="datos_cabra">
+                <h2>Codigo: <span style="font-weight: normal;">{{ cabra.codigo }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Nombre: <span style="font-weight: normal;">{{ cabra.nombre }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Color: <span style="font-weight: normal;">{{ cabra.color }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Peso: <span style="font-weight: normal;">{{ cabra.peso }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Fecha de Nacimiento: <span style="font-weight: normal;">{{ cabra.fecha_nacimiento }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Raza: <span style="font-weight: normal;">{{ cabra.raza }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Sexo: <span style="font-weight: normal;">{{ cabra.sexo }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Codigo de la Madre: <span style="font-weight: normal;">{{ cabra.codigo_madre }}</span></h2>
+            </div>
+            <div class="datos_cabra">
+                <h2>Codigo del Padre: <span style="font-weight: normal;">{{ cabra.codigo_padre }}</span></h2>
+            </div>
+        </div>
+
+        <!-- ======================== -->
+        <!-- ==== DATOS ENFERMOS ==== -->
+        <!-- ======================== -->
+        
+        <div class="datosEnfermos">
+            <h3 class="title">Datos De Enfermedad</h3>
+            {% if enfermedades %}
+                {% for enfermedad in enfermedades %}
+                    <div class="datos_cabra">
+                        <h2>Tratamiento: <span style="font-weight: normal;">{{ enfermedad.tratamiento|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Temperatura (°C): <span style="font-weight: normal;">{{ enfermedad.temperatura|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Estado de Evolución: <span style="font-weight: normal;">{{ enfermedad.estado_evolucion|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Veterinario Responsable: <span style="font-weight: normal;">{{ enfermedad.veterinario_responsable|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="lineaDivisora"></div>
+                {% endfor %}
+            {% else %}
+                <div class="datos_cabra">
+                    <h2>No se encontró información</h2>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- ============================= -->
+        <!-- ==== DATOS GESTACIONALES ==== -->
+        <!-- ============================= -->
+        
+        <div class="datosGestacionales">
+            <h3 class="title">Datos Gestacionales</h3>
+            {% if gestacion %}
+                {% for registro in gestacion %}
+                    <div class="datos_cabra">
+                        <h2>Estado de Gestación: <span style="font-weight: normal;">{{ registro.estado_gestacion|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Mes de Gestación: <span style="font-weight: normal;">{{ registro.mes_gestacion|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Peso Actual: <span style="font-weight: normal;">{{ registro.peso_actual|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Veterinario Responsable: <span style="font-weight: normal;">{{ registro.veterinario_responsable|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Fecha de Registro: <span style="font-weight: normal;">{{ registro.fecha_anadido|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="lineaDivisora"></div>
+                {% endfor %}
+            {% else %}
+                <div class="datos_cabra">
+                    <h2>No se encontró información</h2>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- ======================= -->
+        <!-- ==== DATOS VACUNAS ==== -->
+        <!-- ======================= -->
+        
+        <div class="datosVacunas">
+            <h3 class="title">Datos de Vacunas</h3>
+            {% if vacunas %}
+                {% for vacuna in vacunas %}
+                    <div class="datos_cabra">
+                        <h2>Medicamento: <span style="font-weight: normal;">{{ vacuna.medicamento|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Cantidad: <span style="font-weight: normal;">{{ vacuna.cantidad|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Vía de Administración: <span style="font-weight: normal;">{{ vacuna.via_admin|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Veterinario Responsable: <span style="font-weight: normal;">{{ vacuna.veterinario_responsable|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Fecha de Registro: <span style="font-weight: normal;">{{ vacuna.fecha_anadido|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="lineaDivisora"></div>
+                {% endfor %}
+            {% else %}
+                <div class="datos_cabra">
+                    <h2>No se encontró información</h2>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- ======================= -->
+        <!-- ==== DATOS PRODUCCION ==== -->
+        <!-- ======================= -->
+        
+        <div class="datosProducción">
+            <h3 class="title">Datos de Producción Lechera</h3>
+            {% if produccion %}
+                {% for registro in produccion %}
+                    <div class="datos_cabra">
+                        <h2>Ordeño Mañana: <span style="font-weight: normal;">{{ registro.ordeno_manana|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Ordeño Tarde: <span style="font-weight: normal;">{{ registro.ordeno_tarde|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Observaciones: <span style="font-weight: normal;">{{ registro.observaciones|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Responsable: <span style="font-weight: normal;">{{ registro.responsable|default:"No se encontró información" }}</span></h2>
+                    </div>
+                    <div class="datos_cabra">
+                        <h2>Fecha de Registro: <span style="font-weight: normal;">{{ registro.fecha_anadido|default:"No se encontró información" }}</span></h2> 
+                    </div>
+                    <div class="lineaDivisora"></div>
+                {% endfor %}
+            {% else %}
+                <div class="datos_cabra">
+                    <h2>No se encontró información</h2>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

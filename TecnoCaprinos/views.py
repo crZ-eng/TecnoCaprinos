@@ -376,7 +376,7 @@ def anadir_cabra(request):
 # ELIMINAR CABRA
 # =========================
 
-@login_required_firebase  # Verifica que el usuario esta loggeado
+@login_required_firebase
 def eliminar_cabra(request, cabra_id):
     """
     DELETE: Eliminar un documento especifico por id
@@ -500,6 +500,7 @@ def csv_en_cinta(request):
     except Exception as e:
         print(e)
     return response
+
 @login_required_firebase
 def excel_en_cinta(request):
     uid = request.session.get('uid')
@@ -594,6 +595,7 @@ def enfermas(request):
             'cabras': cabras
         }
     )
+
 def info_completa_cabra(request, cabra_id):
     try:
         doc = db.collection('cabras').document(cabra_id).get()
@@ -603,12 +605,9 @@ def info_completa_cabra(request, cabra_id):
         print(e)
         cabra = None
     return render(
-        request,
-        'info_completa_cabras.html',
-        {
-            'cabra': cabra
-        }
+        request, 'info_completa_cabras.html', {'cabra': cabra}
     )
+
 @login_required_firebase
 def csv_enfermas(request):
     uid = request.session.get('uid')
@@ -646,6 +645,7 @@ def csv_enfermas(request):
     except Exception as e:
         print(e)
     return response
+
 @login_required_firebase
 def excel_enfermas(request):
     uid = request.session.get('uid')
@@ -688,6 +688,7 @@ def excel_enfermas(request):
     )
     workbook.save(response)
     return response
+
 @login_required_firebase
 def pdf_vacunas(request):
     uid = request.session.get('uid')
@@ -1206,18 +1207,6 @@ def registrar_produccion(request, cabra_id):
         return redirect('info_animales')
     if request.method == 'POST':
         if cabra['sexo'] == 'Hembra':
-            existe = (
-                db.collection('produccion')
-                .where('codigo', '==', cabra['codigo'])
-                .where('usuario_id', '==', uid)
-                .stream()
-            )
-            if list(existe):
-                messages.error(
-                    request,
-                    "Esta cabra ya está registrada en producción"
-                )
-                return redirect('info_animales')
             try:
                 db.collection('produccion').add({
                     'codigo': cabra['codigo'],
@@ -1239,6 +1228,7 @@ def registrar_produccion(request, cabra_id):
             messages.error(
                 request, 'Solo las hembras pueden entrar en producción')
     return redirect('info_animales')
+
 @login_required_firebase
 def editar_produccion(request, cabra_id):
     """
@@ -1268,6 +1258,7 @@ def editar_produccion(request, cabra_id):
             ordeno_tarde = request.POST.get('ordeno_tarde')
             observaciones = request.POST.get('observaciones')
             responsable = request.POST.get('responsable')
+
             cabra_ref.update({
                 'codigo': cod,
                 'nombre': nombre,
@@ -1289,7 +1280,8 @@ def editar_produccion(request, cabra_id):
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
     return render(request, 'info/editar/editar_produccion.html', {'cabra': cabra_data, 'id': cabra_id})
-@login_required_firebase  # Verifica que el usuario esta loggeado
+
+@login_required_firebase
 def eliminar_produccion(request, cabra_id):
     """
     DELETE: Eliminar un documento especifico por id
@@ -1392,6 +1384,7 @@ def excel_produccion(request):
     )
     workbook.save(response)
     return response
+
 @login_required_firebase
 def guardar_produccion(request, cabra_id):
     cabra_ref = db.collection('cabras').document(cabra_id)
@@ -1421,6 +1414,7 @@ def guardar_produccion(request, cabra_id):
             'id': cabra_id
         }
     )
+
 def lista_cabras(request):
     uid = request.session.get('uid')
     cabras = []
@@ -1434,6 +1428,7 @@ def lista_cabras(request):
     return render(request, 'info/produccion.html', {
         'cabras': cabras
     })
+
 def cabras(request):
     uid = request.session.get('uid')
     cabras = db.collection('cabras').where('usuario_id', '==', uid).stream()
@@ -1443,6 +1438,7 @@ def cabras(request):
         data['id'] = doc.id
         lista.append(data)
     return render(request, 'info/cabras.html', {'cabras': lista})
+
 def produccion(request):
     uid = request.session.get('uid')
     registros = db.collection('produccion').where('usuario_id', '==', uid).stream()
@@ -1452,6 +1448,7 @@ def produccion(request):
         d['id'] = doc.id
         data.append(d)
     return render(request, 'info/produccion.html', {'cabras': data})
+
 @login_required_firebase
 def pdf_enfermas(request):
     uid = request.session.get('uid')
@@ -1530,6 +1527,7 @@ def pdf_enfermas(request):
     elementos.append(tabla)
     doc.build(elementos)
     return response
+
 @login_required_firebase
 def pdf_en_cinta(request):
     uid = request.session.get('uid')
@@ -1608,6 +1606,7 @@ def pdf_en_cinta(request):
     elementos.append(tabla)
     doc.build(elementos)
     return response
+
 @login_required_firebase
 def registrar_seguimiento_gestacion(request, cabra_id):
     uid = request.session.get('uid')
@@ -1655,6 +1654,7 @@ def registrar_seguimiento_gestacion(request, cabra_id):
             messages.error(
                 request, 'Solo las hembras pueden entrar en En Cinta')
     return redirect('info_animales')
+
 @login_required_firebase
 def editar_enCinta(request, cabra_id):
     """
@@ -1685,6 +1685,7 @@ def editar_enCinta(request, cabra_id):
             estado_gestacion = request.POST.get('estado_gestacion')
             peso_actual = request.POST.get('peso_actual')
             veterinario_responsable = request.POST.get('veterinario_responsable')
+            
             cabra_ref.update({
                 'codigo': cod,
                 'nombre': nombre,
@@ -1707,7 +1708,8 @@ def editar_enCinta(request, cabra_id):
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
     return render(request, 'info/editar/editar_enCinta.html', {'cabra': cabra_data, 'id': cabra_id})
-@login_required_firebase  # Verifica que el usuario esta loggeado
+
+@login_required_firebase
 def eliminar_enCinta(request, cabra_id):
     """
     DELETE: Eliminar un documento especifico por id
@@ -1719,6 +1721,7 @@ def eliminar_enCinta(request, cabra_id):
         messages.error(request, f"Error al eliminar: {e}")
     return redirect('info_animales')
 @login_required_firebase
+
 def registrar_vacuna(request, cabra_id):
     uid = request.session.get('uid')
     try:
@@ -1764,6 +1767,7 @@ def registrar_vacuna(request, cabra_id):
                 f"Error al registrar la cabra en Vacunas: {e}"
             )
     return redirect('info_animales')
+
 @login_required_firebase
 def editar_vacunas(request, cabra_id):
     """
@@ -1794,6 +1798,7 @@ def editar_vacunas(request, cabra_id):
             cantidad = request.POST.get('cantidad')
             via_admin = request.POST.get('via_admin')
             veterinario_responsable = request.POST.get('veterinario_responsable')
+
             cabra_ref.update({
                 'codigo': cod,
                 'nombre': nombre,
@@ -1816,7 +1821,8 @@ def editar_vacunas(request, cabra_id):
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
     return render(request, 'info/editar/editar_vacuna.html', {'cabra': cabra_data, 'id': cabra_id})
-@login_required_firebase  # Verifica que el usuario esta loggeado
+
+@login_required_firebase
 def eliminar_vacunas(request, cabra_id):
     """
     DELETE: Eliminar un documento especifico por id
@@ -1827,6 +1833,7 @@ def eliminar_vacunas(request, cabra_id):
     except Exception as e:
         messages.error(request, f"Error al eliminar: {e}")
     return redirect('info_animales')
+
 @login_required_firebase
 def csv_vacunas(request):
     uid = request.session.get('uid')
@@ -1866,6 +1873,7 @@ def csv_vacunas(request):
     except Exception as e:
         print(e)
     return response
+
 @login_required_firebase
 def excel_vacunas(request):
     uid = request.session.get('uid')
@@ -1910,6 +1918,7 @@ def excel_vacunas(request):
     )
     workbook.save(response)
     return response
+
 @login_required_firebase
 def registrar_enfermo(request, cabra_id):
     uid = request.session.get('uid')
@@ -1922,40 +1931,28 @@ def registrar_enfermo(request, cabra_id):
     except Exception as e:
         messages.error(request, f"Error al obtener la cabra: {e}")
         return redirect('info_animales')
-    if request.method == 'POST':
-        existe = (
-            db.collection('enfermas')
-            .where('codigo', '==', cabra['codigo'])
-            .where('usuario_id', '==', uid)
-            .stream()
+    try:
+        db.collection('enfermas').add({
+            'codigo': cabra['codigo'],
+            'nombre': cabra['nombre'],
+            'raza': cabra['raza'],
+            'peso': cabra['peso'],
+            'fecha_nacimiento': cabra['fecha_nacimiento'],
+            'sexo': cabra['sexo'],
+            'color': cabra['color'],
+            'usuario_id': uid,
+            'codigo_madre': cabra.get('codigo_madre'),
+            'codigo_padre': cabra.get('codigo_padre')
+        })
+        messages.success(request, "Cabra registrada como enferma 🐐")
+        return redirect('info_animales')
+    except Exception as e:
+        messages.error(
+            request,
+            f"Error al registrar la cabra enferma: {e}"
         )
-        if list(existe):
-            messages.error(
-                request,
-                "Esta cabra ya está registrada en enfermas"
-            )
-            return redirect('info_animales')
-        try:
-            db.collection('enfermas').add({
-                'codigo': cabra['codigo'],
-                'nombre': cabra['nombre'],
-                'raza': cabra['raza'],
-                'peso': cabra['peso'],
-                'fecha_nacimiento': cabra['fecha_nacimiento'],
-                'sexo': cabra['sexo'],
-                'color': cabra['color'],
-                'usuario_id': uid,
-                'codigo_madre': cabra.get('codigo_madre'),
-                'codigo_padre': cabra.get('codigo_padre')
-            })
-            messages.success(request, "Cabra registrada como enferma 🐐")
-            return redirect('info_animales')
-        except Exception as e:
-            messages.error(
-                request,
-                f"Error al registrar la cabra enferma: {e}"
-            )
     return redirect('info_animales')
+
 @login_required_firebase
 def editar_enfermas(request, cabra_id):
     """
@@ -1983,9 +1980,10 @@ def editar_enfermas(request, cabra_id):
             cod_madre = request.POST.get('cod_madre')
             cod_padre = request.POST.get('cod_padre')
             tratamiento = request.POST.get('tratamiento')
-            temperatura = request.POST.get('temperatura') + "°"
+            temperatura = request.POST.get('temperatura')
             estado_evolucion = request.POST.get('estado_evolucion')
             veterinario_responsable = request.POST.get('veterinario_responsable')
+
             cabra_ref.update({
                 'codigo': cod,
                 'nombre': nombre,
@@ -2008,7 +2006,8 @@ def editar_enfermas(request, cabra_id):
         messages.error(request, f"Error al editar la cabra: {e}")
         return redirect('info_animales')
     return render(request, 'info/editar/editar_enfermas.html', {'cabra': cabra_data, 'id': cabra_id})
-@login_required_firebase  # Verifica que el usuario esta loggeado
+
+@login_required_firebase
 def eliminar_enfermas(request, cabra_id):
     """
     DELETE: Eliminar un documento especifico por id
@@ -2019,3 +2018,50 @@ def eliminar_enfermas(request, cabra_id):
     except Exception as e:
         messages.error(request, f"Error al eliminar: {e}")
     return redirect('info_animales')
+
+from django.http import HttpResponse
+
+def todoCabra(request, cabra_cod):
+    try:
+        docs = (
+            db.collection("cabras").where("codigo", "==", cabra_cod).limit(1).stream()
+        )
+
+        cabra = None
+
+        for doc in docs:
+            cabra = doc.to_dict()
+            cabra["id"] = doc.id
+            break
+
+        if cabra is None:
+            return HttpResponse("Cabra no encontrada", status=404)
+
+        # Buscar registros relacionados por código
+        vacunas = [
+            doc.to_dict() for doc in db.collection("vacunas").where("codigo", "==", cabra_cod).stream()
+            ]
+
+        produccion = [
+            doc.to_dict() for doc in db.collection("produccion").where("codigo", "==", cabra_cod).stream()
+            ]
+
+        enfermedades = [
+            doc.to_dict() for doc in db.collection("enfermas").where("codigo", "==", cabra_cod).stream()
+            ]
+
+        gestacion = [
+            doc.to_dict() for doc in db.collection("en_cinta").where("codigo", "==", cabra_cod).stream()
+            ]
+
+        return render(request, "todoCabra.html", {
+            "cabra": cabra,
+            "vacunas": vacunas,
+            "produccion": produccion,
+            "enfermedades": enfermedades,
+            "gestacion": gestacion,
+        })
+
+    except Exception as e:
+        print(e)
+        return HttpResponse("Ocurrió un error.", status=500)

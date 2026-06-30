@@ -48,6 +48,7 @@ urlpatterns = [
     # CRUD
     path('info-animales/anadir/', views.anadir_cabra, name='anadir'),
     path('info-animales/info_cabra/<str:cabra_id>/', views.info_completa_cabra, name='info_completa_cabra'),
+    path('info-animales/info_absoluta_cabra/<str:cabra_cod>/', views.todoCabra, name='todo_cabra'),
     path('info-animales/listar/eliminar/<str:cabra_id>/', views.eliminar_cabra, name='eliminar_cabra'),
     path('info-animales/listar/editar/<str:cabra_id>/', views.editar_cabra, name='editar_cabra'),
 
