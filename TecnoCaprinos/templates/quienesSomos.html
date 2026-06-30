@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoCaprinos - Info Animales</title>
+    <link rel="icon" href="{% static 'logo.jpeg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Besley&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cafe-fondo: #7a5230;
+            --beige-botones: #c5a373;
+            --blanco: #ffffff;
+            --bg-principal: #C9A06D;
+            --bg-cuadros: #EAD4B8;
+            --color-trazos: #7F5637;
+            --white: #f8f8f8;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg-principal);
+            margin: 0;
+            color: black;
+        }
+
+        .header {
+            background-color: var(--blanco);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 5%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-bottom: 4px solid var(--color-trazos);
+        }
+
+        .logo-container img {
+            height: 60px;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--bg-cuadros);
+            -webkit-text-stroke: 1.5px var(--color-trazos);
+            margin: 0;
+        }
+
+        .irDashboard {
+            text-decoration: none;
+        }
+
+        .contenido{
+            padding: 10px;
+            margin: 30px;
+            border-radius: 30px;
+            border: var(--color-trazos) 4px solid;
+            background-color: var(--bg-cuadros);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #subtitle{
+            color: var(--color-trazos);
+        }
+
+        .quienesSomos{
+            display: grid;
+            grid-template-columns: 33% 66%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 100px 100px 100px;
+        }
+
+        .razonSocial, .sobreNosotros{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #quienesSomos{
+            color: var(--color-trazos);
+            margin: 40px;
+        }
+
+        #logoQuienesSomos{
+            border-radius: 100%;
+            height: 350px;
+            width: 350px;
+        }
+
+        #btnVolver{
+            padding: 15px;
+            border-radius: 30px;
+            background-color: var(--color-trazos);
+            color: var(--blanco);
+            text-decoration: none;
+            font-size: 25px;
+        }
+
+        @media (max-width: 1024px) {
+
+            .header-title{
+                font-size: 2rem;
+            }
+
+            .quienesSomos{
+                flex-direction: column;
+                padding: 40px;
+                gap: 40px;
+            }
+
+            #logoQuienesSomos{
+                width: 280px;
+                height: 280px;
+            }
+
+            #quienesSomos{
+                margin: 0;
+                text-align: justify;
+            }
+
+            .contenido{
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .header{
+                gap: 15px;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .header-title{
+                display: none;
+            }
+
+            .logo-container img{
+                height: 50px;
+            }
+
+            #btnVolver{
+                font-size: 18px;
+                padding: 10px 20px;
+            }
+
+            .contenido{
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .quienesSomos{
+                flex-direction: column;
+                padding: 10px;
+                gap: 30px;
+            }
+
+            #logoQuienesSomos{
+                width: 180px;
+                height: 180px;
+            }
+
+            #subtitle{
+                text-align: center;
+            }
+
+            #quienesSomos{
+                margin: 0;
+                font-size: 16px;
+                line-height: 1.7;
+                text-align: justify;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="{% static 'logo.jpeg' %}" alt="Logo">
+        </div>
+        <h1 class="header-title">TECNOCAPRINOS</h1>
+        <a id="btnVolver" href="{% url 'info_animales' %}"><- Volver</a>
+    </div>
+    <div class="contenido">
+        <h1 id="subtitle">¿Quienes Somos?</h1>
+        <div class="quienesSomos">
+            <div class="razonSocial">
+                <h2 id="subtitle">Razon Social</h2>
+                <img id="logoQuienesSomos" src="{% static 'logoCompleto.jpeg' %}" alt="Logo TC">
+            </div>
+            <div class="sobreNosotros">
+                <h2 id="subtitle">Sobre Nosotros</h2>
+                <p id="quienesSomos">TecnoCaprinos es una plataforma web diseñada para facilitar la administración y el control de explotaciones caprinas mediante herramientas tecnológicas modernas. Nuestro objetivo es ayudar a productores, estudiantes y administradores a gestionar de manera eficiente la información de sus animales, optimizando los procesos de seguimiento y toma de decisiones.<br><br>La plataforma permite registrar y consultar información relacionada con los caprinos, incluyendo datos generales, producción de leche, control sanitario, vacunación, tratamientos médicos y seguimiento reproductivo. De esta manera, se centraliza la información en un solo lugar, mejorando la organización y reduciendo el uso de registros manuales.<br><br>En TecnoCaprinos creemos que la tecnología puede contribuir al crecimiento del sector agropecuario, ofreciendo soluciones prácticas, accesibles y adaptadas a las necesidades de quienes trabajan diariamente en el manejo de animales caprinos. Nuestro compromiso es brindar una herramienta confiable que facilite la gestión, el control y la productividad de cada explotación.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

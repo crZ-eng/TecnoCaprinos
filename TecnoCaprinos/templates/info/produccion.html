@@ -123,6 +123,7 @@
 
         .page-content {
             display: flex;
+            flex-direction: column;
             gap: 30px;
             width: 95%;
             max-width: 1500px;
@@ -135,10 +136,6 @@
             border: 5px solid var(--color-trazos);
             border-radius: 30px;
             padding: 25px;
-            text-align: center;
-            position: sticky;
-            top: 95px;
-            align-self: flex-start;
             box-shadow: var(--shadow);
         }
 
@@ -272,7 +269,8 @@
         }
 
         canvas {
-            max-width: 100%;
+            width: 100% !important;
+            height: 300px !important;
         }
 
         th, td {
@@ -470,7 +468,7 @@
 
         {% for cabra in cabras %}
 
-        nombres.push("{{ cabra.nombre|escapejs }}");
+        nombres.push("{{ cabra.nombre|escapejs }} - {{ cabra.fecha_anadido|date:"d/m/Y H:i" }}");
 
         totalLeche.push(
             (
