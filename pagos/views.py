@@ -11,6 +11,7 @@ from pagos.utils import (
 )
 
 
+
 def planes(request):
 
     uid = request.session.get("uid")
@@ -31,30 +32,24 @@ def planes(request):
             "limite": limite
         }
     )
-    
 def checkout(request, plan):
 
     uid = request.session.get("uid")
 
     if plan not in PLANES:
-
         return redirect("planes")
 
     orden = crear_orden(uid, plan)
 
-    contexto = {
-
-        "plan": PLANES[plan],
-
-        "orden": orden
-
-    }
-
     return render(
         request,
         "pagos/checkout.html",
-        contexto
+        {
+            "plan": PLANES[plan],
+            "orden": orden
+        }
     )
+
 def pago_exitoso(request):
 
     return render(

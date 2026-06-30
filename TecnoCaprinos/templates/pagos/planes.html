@@ -130,6 +130,7 @@
     <img src="{% static 'logo.jpeg' %}" class="logo">
 
     <h1>Centro de Suscripción</h1>
+    <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
 
 </div>
 
@@ -202,7 +203,7 @@
 
             <h2>🚜 Profesional</h2>
 
-            <h3>$25.000</h3>
+            <h3>$22.000</h3>
 
             <ul>
                 <li>50 Cabras</li>
@@ -221,13 +222,8 @@
                 </button>
 
             {% else %}
-
-                <a href="{% url 'checkout' 'profesional' %}" class="btn pro">
-
-                    Comprar
-
-                </a>
-
+                
+      <a href="https://checkout.wompi.co/l/JAnQr9"class="btn btn-primary">Comprar Profesional</a>
             {% endif %}
 
         </div>
@@ -236,7 +232,7 @@
 
             <h2>👑 Premium</h2>
 
-            <h3>$45.000</h3>
+            <h3>$40.000</h3>
 
             <ul>
                 <li>Cabras ilimitadas</li>
@@ -256,17 +252,17 @@
 
             {% else %}
 
-                <a href="{% url 'checkout' 'premium' %}" class="btn premium">
 
-                    Comprar
-
-                </a>
+<a href="https://checkout.wompi.co/l/Zql7Yr"
+   class="btn btn-success">
+    Comprar Premium
 
             {% endif %}
 
         </div>
 
     </div>
+    
 
 </div>
 

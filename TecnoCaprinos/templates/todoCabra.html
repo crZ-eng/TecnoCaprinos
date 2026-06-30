@@ -260,6 +260,10 @@
         <h2 class="title">Todos los Datos de {{ cabra.nombre }}</h2>
         <img src="{{ cabra.foto_url }}" id="foto-cabra" alt="foto-cabra">
     </div>
+     <div class="search-bar">
+                    <span>🔍</span>
+                    <input type="text" id="searchInput" placeholder="Buscar cabra...">
+                </div>
     <div class="contenido">
         <!-- ========================= -->
         <!-- ==== DATOS GENERALES ==== -->
@@ -424,5 +428,45 @@
             {% endif %}
         </div>
     </div>
+<script>
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("keyup", function () {
+
+    const texto = this.value.toLowerCase();
+
+    const secciones = [
+        ".datosGenerales",
+        ".datosEnfermos",
+        ".datosVacunas",
+        ".datosProducción",
+        ".datosGestacionales"
+    ];
+
+    if(texto === ""){
+
+        secciones.forEach(selector=>{
+            document.querySelector(selector).style.display = "grid";
+        });
+
+        return;
+    }
+
+    secciones.forEach(selector=>{
+
+        const contenedor = document.querySelector(selector);
+
+        const contenido = contenedor.textContent.toLowerCase();
+
+        if(contenido.includes(texto)){
+            contenedor.style.display = "grid";
+        }else{
+            contenedor.style.display = "none";
+        }
+
+    });
+
+});
+</script>  
 </body>
 </html>

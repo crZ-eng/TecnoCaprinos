@@ -356,22 +356,26 @@
 
         </div>
 
-        <a href="#" class="btn">
-
-            Continuar con el Pago
-
-        </a>
-
         <a href="{% url 'planes' %}" class="btn volver">
 
-            ← Volver a Planes
+            Volver a Planes
 
         </a>
 
     </div>
 
 </div>
-
+<form>
+<script
+    src="https://checkout.wompi.co/widget.js"
+    data-render="button"
+    data-public-key="{{ orden.public_key }}"
+    data-currency="{{ orden.currency }}"
+    data-amount-in-cents="{{ orden.amount_in_cents }}"
+    data-reference="{{ orden.referencia }}"
+    data-redirect-url="http://127.0.0.1:8000/planes/exitoso/">
+</script>
+</form>
 </body>
 
 </html>
