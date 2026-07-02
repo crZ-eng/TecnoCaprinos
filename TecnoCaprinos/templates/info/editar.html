@@ -371,8 +371,8 @@
                     <select name="nuevo-sexo" required>
                         <option value="No Seleccionado">Seleccione...</option>
                         <option selected value="{{ cabra.sexo }}">{{ cabra.sexo }}</option>
-                        <option value="M">Macho (Cabro)</option>
-                        <option value="F">Hembra (Cabra)</option>
+                        <option value="Macho">Macho (Cabro)</option>
+                        <option value="Hembra">Hembra (Cabra)</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -417,7 +417,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn-submit">GUARDAR REGISTRO</button>
-                <a href="{% url 'listar' %}" class="btn-volver">VOLVER</a>
+                <a href="{% url 'info_animales' %}" class="btn-volver">VOLVER</a>
             </form>
         </div>
     </div>
