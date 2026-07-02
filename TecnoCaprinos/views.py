@@ -17,6 +17,80 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import landscape, letter
 from django.templatetags.static import static
 
+from reportlab.platypus import TableStyle
+from reportlab.lib import colors
+
+
+def aplicar_estilo_tabla(tabla):
+    """
+    Aplica el estilo institucional de TECNOCAPRINOS
+    a cualquier tabla de los reportes PDF.
+    """
+
+    tabla.setStyle(TableStyle([
+
+        # =========================
+        # HEADER
+        # =========================
+
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 9),
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, 0), 'TOP'),
+        ('TOPPADDING', (0, 0), (-1, 0), 8),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+
+        # =========================
+        # CUERPO
+        # =========================
+
+        ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#FFFDF9')),
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.HexColor('#3E2A1F')),
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 1), (-1, -1), 7),
+
+        # =========================
+        # FILAS ALTERNAS
+        # =========================
+
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
+            colors.HexColor('#FFFDF9'),
+            colors.HexColor('#F5E6D3')
+        ]),
+
+        # =========================
+        # BORDES
+        # =========================
+
+        ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#7F5637')),
+        ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#7F5637')),
+
+        # =========================
+        # ALINEACIÓN
+        # =========================
+
+        ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 1), (-1, -1), 'TOP'),
+
+        # =========================
+        # ESPACIADOS
+        # =========================
+
+        ('TOPPADDING', (0, 1), (-1, -1), 5),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 5),
+        ('LEFTPADDING', (0, 0), (-1, -1), 4),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+
+        # =========================
+        # AJUSTE TEXTO
+        # =========================
+
+        ('WORDWRAP', (0, 0), (-1, -1), 'CJK'),
+
+    ]))
+
 # Inicializar Firebase
 db = initialize_firebase()
 
@@ -843,67 +917,11 @@ def pdf_vacunas(request):
         ],
         repeatRows=1
     )
+    ('TOPPADDING',(0,1),(-1,-1),6),
+    ('BOTTOMPADDING',(0,1),(-1,-1),6),
 
-    # =========================
-    # ESTILOS TABLA
-    # =========================
-
-    tabla.setStyle(TableStyle([
-
-        # =========================
-        # HEADER
-        # =========================
-
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 11),
-        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-        # AJUSTAR TEXTO
-        ('WORDWRAP', (0, 0), (-1, -1), 'CJK'),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('TOPPADDING', (0, 0), (-1, 0), 12),
-
-        # =========================
-        # CUERPO TABLA
-        # =========================
-
-        ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#FFFDF9')),
-        ('TEXTCOLOR', (0, 1), (-1, -1), colors.HexColor('#3E2A1F')),
-        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 1), (-1, -1), 9),
-
-        # =========================
-        # FILAS ALTERNADAS
-        # =========================
-
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
-            colors.HexColor('#FFFDF9'),
-            colors.HexColor('#F5E6D3')
-        ]),
-
-        # =========================
-        # BORDES
-        # =========================
-
-        ('GRID', (0, 0), (-1, -1), 1.2, colors.HexColor('#7F5637')),
-        ('BOX', (0, 0), (-1, -1), 2, colors.HexColor('#7F5637')),
-
-        # =========================
-        # ALINEACIÓN
-        # =========================
-
-        ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-
-        # =========================
-        # ESPACIADO
-        # =========================
-
-        ('TOPPADDING', (0, 1), (-1, -1), 8),
-        ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
-    ]))
-
+    aplicar_estilo_tabla(tabla)
+    
     elementos.append(tabla)
     elementos.append(Spacer(1, 25))
 
@@ -924,7 +942,7 @@ def pdf_vacunas(request):
     elementos.append(footer)
 
     # =========================
-    # CREAR PDF
+    # CONSTRUIR PDF
     # =========================
 
     doc.build(elementos)
@@ -958,7 +976,7 @@ def pdf_produccion(request):
     uid = request.session.get('uid')
     cabras = []
     try:
-        docs = db.collection('Produccion')\
+        docs = db.collection('produccion')\
             .where('usuario_id', '==', uid)\
             .stream()
         for doc in docs:
@@ -1089,83 +1107,21 @@ def pdf_produccion(request):
         repeatRows=1,
         splitByRow=True,
         colWidths=[
-            200,   # Código
-            120,  # Nombre
-            110,  # Raza
-            50,   # Peso
-            70,   # Ordeño mañana
-            70,   # Ordeño tarde
-            150,  # Observaciones
-            120   # Responsable
+            55,   # Código
+            90,   # Nombre
+            80,   # Raza
+            45,   # Peso
+            80,   # Mañana
+            80,   # Tarde
+            180,  # Observaciones
+            100   # Responsable
         ]
     )
 
-    # =========================
-    # ESTILOS TABLA
-    # =========================
-
-    tabla.setStyle(TableStyle([
-        
-        # =========================
-        # HEADER
-        # =========================
-
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 9),
-        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-        ('VALIGN', (0, 0), (-1, 0), 'MIDDLE'),
-        ('TOPPADDING', (0, 0), (-1, 0), 8),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
-
-        # =========================
-        # CUERPO
-        # =========================
-
-        ('BACKGROUND', (0, 1), (-1, -1), colors.HexColor('#FFFDF9')),
-        ('TEXTCOLOR', (0, 1), (-1, -1), colors.HexColor('#3E2A1F')),
-        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 1), (-1, -1), 7),
-
-        # =========================
-        # FILAS ALTERNAS
-        # =========================
-
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
-            colors.HexColor('#FFFDF9'),
-            colors.HexColor('#F5E6D3')
-        ]),
-
-        # =========================
-        # BORDES
-        # =========================
-
-        ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#7F5637')),
-        ('BOX', (0, 0), (-1, -1), 1.5, colors.HexColor('#7F5637')),
-
-        # =========================
-        # ALINEACIÓN
-        # =========================
-
-        ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
-        ('VALIGN', (0, 1), (-1, -1), 'MIDDLE'),
-
-        # =========================
-        # ESPACIADOS
-        # =========================
-
-        ('TOPPADDING', (0, 1), (-1, -1), 5),
-        ('BOTTOMPADDING', (0, 1), (-1, -1), 5),
-        ('LEFTPADDING', (0, 0), (-1, -1), 4),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 4),
-
-        # =========================
-        # AJUSTE TEXTO
-        # =========================
-
-        ('WORDWRAP', (0, 0), (-1, -1), 'LTR'),
-    ]))
+    ('TOPPADDING',(0,1),(-1,-1),6),
+    ('BOTTOMPADDING',(0,1),(-1,-1),6),
+    
+    aplicar_estilo_tabla(tabla)
 
     elementos.append(tabla)
     elementos.append(Spacer(1, 20))
@@ -1489,11 +1445,27 @@ def pdf_enfermas(request):
     )
     elementos.append(titulo)
     elementos.append(Spacer(1, 20))
+    
+    # =========================
+    # FECHA
+    # =========================
+
+    from datetime import datetime
+    fecha = datetime.now().strftime("%d/%m/%Y %H:%M")
+    info = Paragraph(
+        f"""
+        <font size="10" color="#3E2A1F">
+        <b>Fecha de generación:</b> {fecha}
+        </font>
+        """,
+        estilos['Normal']
+    )
+    elementos.append(info)
+    elementos.append(Spacer(1, 15))
+    
     datos = [[
         'Código',
         'Nombre',
-        'Raza',
-        'Peso',
         'Tratamiento',
         'Temperatura',
         'Estado Evolución',
@@ -1503,8 +1475,6 @@ def pdf_enfermas(request):
         datos.append([
             cabra.get('codigo', '-'),
             cabra.get('nombre', '-'),
-            cabra.get('raza', '-'),
-            cabra.get('peso', '-'),
             cabra.get('tratamiento', '-'),
             cabra.get('temperatura', '-'),
             cabra.get('estado_evolucion', '-'),
@@ -1512,19 +1482,46 @@ def pdf_enfermas(request):
         ])
     tabla = Table(
         datos,
-        repeatRows=1
+        repeatRows=1,
+        splitByRow=True,
+        colWidths=[
+            55,
+            100,
+            90,
+            70,
+            220,
+            120
+        ]
     )
-    tabla.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
-            colors.HexColor('#FFFDF9'),
-            colors.HexColor('#F5E6D3')
-        ]),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER')
-    ]))
+    
+    ('TOPPADDING',(0,1),(-1,-1),6),
+    ('BOTTOMPADDING',(0,1),(-1,-1),6),
+        
+    aplicar_estilo_tabla(tabla)
+    
     elementos.append(tabla)
+    elementos.append(Spacer(1, 25))
+    
+    # =========================
+    # FOOTER
+    # =========================
+
+    footer = Paragraph(
+        """
+        <para align="center">
+        <font size="9" color="#7F5637">
+        Documento generado automáticamente por TECNOCAPRINOS
+        </font>
+        </para>
+        """,
+        estilos['Normal']
+    )
+    elementos.append(footer)
+    
+    # =========================
+    # CONSTRUIR PDF
+    # =========================
+
     doc.build(elementos)
     return response
 
@@ -1568,6 +1565,24 @@ def pdf_en_cinta(request):
     )
     elementos.append(titulo)
     elementos.append(Spacer(1, 20))
+    
+    # =========================
+    # FECHA
+    # =========================
+
+    from datetime import datetime
+    fecha = datetime.now().strftime("%d/%m/%Y %H:%M")
+    info = Paragraph(
+        f"""
+        <font size="10" color="#3E2A1F">
+        <b>Fecha de generación:</b> {fecha}
+        </font>
+        """,
+        estilos['Normal']
+    )
+    elementos.append(info)
+    elementos.append(Spacer(1, 15))
+    
     datos = [[
         'Código',
         'Nombre',
@@ -1591,19 +1606,48 @@ def pdf_en_cinta(request):
         ])
     tabla = Table(
         datos,
-        repeatRows=1
+        repeatRows=1,
+        splitByRow=True,
+        colWidths=[
+            55,
+            80,
+            80,
+            50,
+            100,
+            120,
+            90,
+            80
+        ]
     )
-    tabla.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#7F5637')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
-            colors.HexColor('#FFFDF9'),
-            colors.HexColor('#F5E6D3')
-        ]),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER')
-    ]))
+
+    ('TOPPADDING',(0,1),(-1,-1),6),
+    ('BOTTOMPADDING',(0,1),(-1,-1),6),
+
+    aplicar_estilo_tabla(tabla)
+    
     elementos.append(tabla)
+    elementos.append(Spacer(1, 25))
+    
+    # =========================
+    # FOOTER
+    # =========================
+
+    footer = Paragraph(
+        """
+        <para align="center">
+        <font size="9" color="#7F5637">
+        Documento generado automáticamente por TECNOCAPRINOS
+        </font>
+        </para>
+        """,
+        estilos['Normal']
+    )
+    elementos.append(footer)
+    
+    # =========================
+    # CONSTRUIR PDF
+    # =========================
+
     doc.build(elementos)
     return response
 
