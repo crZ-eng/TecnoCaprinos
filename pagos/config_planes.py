@@ -37,7 +37,7 @@ PLANES = {
 
         "nombre": "Plan Profesional",
 
-        "precio": 25000,
+        "precio": 22000,
 
         "cabras": 50,
 

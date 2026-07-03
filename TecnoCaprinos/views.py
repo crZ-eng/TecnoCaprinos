@@ -61,6 +61,15 @@ def registro_usuario(request):
                 'email': email,
                 'uid': user.uid,
                 'TyC': TyC,
+                'plan': 'gratis',
+                'estado_plan': 'activo',
+                'cabras_extra': 0,
+                'pdf_extra': False,
+                'excel_extra': False,
+                'csv_extra': False,
+                'graficos_extra': False,
+                'fecha_inicio_plan': None,
+                'fecha_fin_plan': None,
                 'fecha_registro': firestore.SERVER_TIMESTAMP,
             })
 
@@ -94,7 +103,6 @@ def registro_usuario(request):
             messages.error(request, mensaje)
 
     return render(request, 'registro.html', {'mensaje': mensaje})
-
 # =========================
 # DECORADOR LOGIN
 # =========================
